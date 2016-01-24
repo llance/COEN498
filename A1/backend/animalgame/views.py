@@ -12,4 +12,7 @@ import json
 @csrf_exempt
 def test(request):
     if request.method == 'GET':
-        return HttpResponse(json.dumps("hello world!"), content_type="applicationn/json")
+        return render(request, 'index.html')
+
+
+        # return HttpResponse(json.dumps("hello world!"), content_type="applicationn/json")
