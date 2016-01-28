@@ -12,9 +12,9 @@ jQuery(document).ready(function($) {
     }
 
     $('#yesButton').click(function() {
-        var testurl = 'test2';
+        var url = 'play';
         //console.log("clicked" + testurl);
-        httpGet(testurl);
+        httpGet(url);
     });
 
     $('#noButton').click(function() {

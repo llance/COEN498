@@ -9,18 +9,23 @@ import json
 
 # Create your views here.
 
-@csrf_exempt
 def test(request):
     if request.method == 'GET':
         return render(request, 'index.html')
 
-
-
-def test2(request):
+def play(request):
     if request.method == 'GET':
         print('user clicked yes ');
+
         return HttpResponse("hello world",status=200)
-        #return render(request, 'test.html')
+
+
+    if request.method == 'POST':
+        print('request body is : ' + request.body);
+        #parse through the body
+
+
+
 
 def test3(request):
     if request.method == 'GET':
