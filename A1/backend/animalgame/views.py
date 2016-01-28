@@ -18,7 +18,7 @@ def test(request):
 
 def test2(request):
     if request.method == 'GET':
-        print('user clicked yes called');
+        print('user clicked yes ');
         return HttpResponse("hello world",status=200)
         #return render(request, 'test.html')
 

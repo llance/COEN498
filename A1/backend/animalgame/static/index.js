@@ -1,5 +1,4 @@
 jQuery(document).ready(function($) {
-
     function httpGet(theUrl) {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function() {
@@ -8,11 +7,8 @@ jQuery(document).ready(function($) {
             }
             document.getElementById("contentHolder").innerHTML = xmlHttp.responseText;
         }
-
-
         xmlHttp.open("GET", theUrl, true); // false for synchronous request
         xmlHttp.send();
-        //return xmlHttp.responseText;
     }
 
     $('#yesButton').click(function() {
