@@ -15,13 +15,13 @@ jQuery(document).ready(function($) {
         //return xmlHttp.responseText;
     }
 
-    $('#sendHttpYes').click(function() {
+    $('#yesButton').click(function() {
         var testurl = 'test2';
         //console.log("clicked" + testurl);
         httpGet(testurl);
     });
 
-    $('#sendHttpNo').click(function() {
+    $('#noButton').click(function() {
         var testurl = 'test3';
         console.log("clicked" + testurl);
         httpGet(testurl);
