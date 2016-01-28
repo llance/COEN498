@@ -19,5 +19,8 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^test$', 'animalgame.views.test'),
+    url(r'^test2$', 'animalgame.views.test2'),
+    url(r'^test3$', 'animalgame.views.test3'),
+
 
 ]

@@ -2,17 +2,29 @@ jQuery(document).ready(function($) {
 
     function httpGet(theUrl) {
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", theUrl, false); // false for synchronous request
-        xmlHttp.send(null);
-        return xmlHttp.responseText;
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState == 4) {
+                console.log("xmlHttp response text is : " + xmlHttp.responseText);
+            }
+            document.getElementById("contentHolder").innerHTML = xmlHttp.responseText;
+        }
+
+
+        xmlHttp.open("GET", theUrl, true); // false for synchronous request
+        xmlHttp.send();
+        //return xmlHttp.responseText;
     }
 
+    $('#sendHttpYes').click(function() {
+        var testurl = 'test2';
+        //console.log("clicked" + testurl);
+        httpGet(testurl);
+    });
 
-    $('#sendHttp').click(function() {
+    $('#sendHttpNo').click(function() {
+        var testurl = 'test3';
         console.log("clicked" + testurl);
-
-        var testurl = 'test';
-        httpGet();
+        httpGet(testurl);
     });
 
 });

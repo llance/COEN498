@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, JsonResponse
 
 # from django.shortcuts import render
@@ -15,4 +15,14 @@ def test(request):
         return render(request, 'index.html')
 
 
-        # return HttpResponse(json.dumps("hello world!"), content_type="applicationn/json")
+
+def test2(request):
+    if request.method == 'GET':
+        print('user clicked yes called');
+        return HttpResponse("hello world",status=200)
+        #return render(request, 'test.html')
+
+def test3(request):
+    if request.method == 'GET':
+        print("user clicked no");
+        return HttpResponse("why you lyin",status=200)

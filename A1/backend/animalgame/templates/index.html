@@ -6,8 +6,29 @@
 		<title>KennyS</title>
 	</head>
 	<body>
+
 		<script src="../static/kennyS.js"></script>
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static "animalgame/mystyle.css" %}" />
+
 		<h3>JW Good But Not Best</h3>
-		<button type="button" id="sendHttp">KennyS!</button>
+
+        <img id="kennyPic" src="{% static "animalgame/kennyS.jpg" %}"/>
+
+        <h3>You are thinking of an animal...</h3>
+
+        <div id="userInteraction">
+            <div id="displayMe">
+                <p id="contentHolder">is KennyS better than JW?</p>
+            </div>
+
+            <div id="buttonLocation">
+                <button id="yesButton" type="button" id="sendHttpYes">Yes!</button>
+                <button id="noButton" type="button" id="sendHttpNo">No!</button>
+            </div>
+        </div>
+
+
+
 	 </body>
 </html>
