@@ -18,5 +18,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^test/', 'shelvedApp.views'),
+    url(r'^test/', 'shelvedApp.views.play'),
+    url(r'^test2/', 'shelvedApp.views.retrieve'),
 ]
