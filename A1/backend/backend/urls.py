@@ -21,6 +21,5 @@ urlpatterns = [
     url(r'^test$', 'animalgame.views.test'),
     url(r'^play$', 'animalgame.views.play'),
     url(r'^test3$', 'animalgame.views.test3'),
-
-
+    url(r'^testDB$', 'animalgame.views.testDB'),
 ]
