@@ -1,15 +1,13 @@
 # Create your views here.
 from django.http import HttpResponse
-from django.db import models
-from djangotoolbox.fields import ListField
-from mongoengine import *
 from shelvedApp.models import *
+from django.views.decorators.csrf import csrf_exempt
+from pymongo import MongoClient, InsertOne, DeleteOne, ReplaceOne
 
-
+@csrf_exempt
 def play(request):
     if request.method == 'GET':
         print('user clicked yes ');
-
         connect('myMongoDb') #connect to db called myMongoDb
         post = Post.objects.create(
             title='Hello MongoDB!',
@@ -17,13 +15,31 @@ def play(request):
             tags=['mongodb', 'django'])
         post.save()
         return HttpResponse("hello world",status=200)
+    if request.method == 'POST':
 
+        print("POST Request body is : " + str(request.POST.get('foo')));
 
+        myMongoClient = MongoClient()
+        myMongoDb = myMongoClient.myMongoDb
+
+        requests = [InsertOne({'y': str(request.POST.get('foo'))})]
+        result = myMongoDb.test.bulk_write(requests)
+
+        print('mongoDB write result is : ' + str(result));
+
+        return HttpResponse("OK", status=200);
+
+@csrf_exempt
 def retrieve(request):
     if request.method == 'GET':
         print('retrieving from mongo');
 
-    connect('myMongoDb') #connect to db called myMongoDb
-    for post in Post.objects.all():
-        print("post is : " + str(post.title))
-    return HttpResponse("hello world",status=200)
+        myMongoClient = MongoClient()
+        myMongoDb = myMongoClient.myMongoDb
+
+        insertedDatas = myMongoDb.test.find()
+
+        for insertedData in insertedDatas:
+            print("post title is : " + str(insertedData) )
+            
+        return HttpResponse("hello world",status=200)
