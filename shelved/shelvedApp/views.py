@@ -41,5 +41,5 @@ def retrieve(request):
 
         for insertedData in insertedDatas:
             print("post title is : " + str(insertedData) )
-            
+
         return HttpResponse("hello world",status=200)

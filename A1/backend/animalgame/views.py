@@ -34,7 +34,18 @@ def testDB(request):
     if request.method == 'GET':
         print("testdb called!");
         questions = Questions.objects.all();
+
+        objects = Objects.objects.all();
+
+        playlog = Playlog.objects.all();
+
+        for pl in playlog:
+            print("playlog is : " + str(pl.data));
+
+        # for object in objects:
+        #     print("object is : " + str(object.name));
+
         #print("question is : " + str(questions));
-        for question in questions:
-            print("question is : " + str(question.text));
+        #for question in questions:
+        #    print("question is : " + str(question.text));
         return HttpResponse("why you lyin",status=200)
