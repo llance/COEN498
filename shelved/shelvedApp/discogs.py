@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+import discogs_client
 
 __author__ = 'lanceli'
 
@@ -8,8 +9,21 @@ def discogs(request):
     if request.method == 'GET':
         print("discogs called")
 
-        d = discogs_client.Client('ExampleApplication/0.1')
-        results = d.search('Stockholm By Night', type='release')
+        consumer_key = 'MEkvKirNCzRPMeSFAvPz'
+        consumer_secret = 'DbpYOkkRJwMLBlpPSMVRlccnexYJqVIA'
+
+        discogsclient = discogs_client.Client('ExampleApplication/0.1')
+
+        discogsclient.set_consumer_key(consumer_key, consumer_secret)
+        token, secret, url = discogsclient.get_authorize_url()
+
+
+        print(' == Request Token == ')
+        print('    * oauth_token        = {0}'.format(token))
+        print('    * oauth_token_secret = {0}'.format(secret))
+
+
+        results = discogsclient.search('Stockholm By Night', type='release')
         print("results.pages is : " + results.pages)
         artist = results[0].artists[0]
         print("artist.name is : " + artist.name)
@@ -19,8 +33,7 @@ def discogs(request):
 
 
 
-        # consumer_key = 'MEkvKirNCzRPMeSFAvPz'
-        # consumer_secret = 'DbpYOkkRJwMLBlpPSMVRlccnexYJqVIA'
+
         #
         # request_token_url = 'https://api.discogs.com/oauth/request_token'
         # authorize_url = 'https://www.discogs.com/oauth/authorize'
@@ -45,10 +58,7 @@ def discogs(request):
         #
         # token, secret, url = discogsclient.get_authorize_url()
         #
-        #
-        # print(' == Request Token == ')
-        # print('    * oauth_token        = {0}'.format(token))
-        # print('    * oauth_token_secret = {0}'.format(secret))
+
         #
         #
         # #user = discogsclient.identity()
