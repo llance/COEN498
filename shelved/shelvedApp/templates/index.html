@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link type="text/css" rel="stylesheet" href="stylesheet.css"/>
+        <script src="../static/jquery-2.2.0.min.js"></script>
+		<title>KennyS</title>
+	</head>
+	<body>
+
+		<script src="../static/index.js"></script>
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static "shelvedApp/mystyle.css" %}" />
+
+		<h3>JW Good But Not Best</h3>
+
+        <img id="kennyPic" src="{% static "shelvedApp/kennyS.jpg" %}"/>
+
+        <h3>You are thinking of an animal...</h3>
+
+        <div id="userInteraction">
+            <div id="displayMe">
+                <p id="contentHolder">is KennyS better than JW?</p>
+            </div>
+
+            <div id="buttonLocation">
+                <button id="yesButton" type="button" >Yes!</button>
+                <button id="noButton" type="button" >No!</button>
+            </div>
+        </div>
+
+
+
+	 </body>
+</html>

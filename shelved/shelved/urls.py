@@ -15,9 +15,20 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+import shelvedApp.views
+import shelvedApp.discogs
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^test/', 'shelvedApp.views.play'),
-    url(r'^test2/', 'shelvedApp.views.retrieve'),
+
+    # url(r'^login/', shelvedApp.views.login),
+    # url(r'^users/register', shelvedApp.views.create_user),
+
+
+    #url(r'^', shelvedApp.views.welcome),
+    url(r'^set/', shelvedApp.views.set),
+    url(r'^test/', shelvedApp.views.setwithMongoEngine),
+    url(r'^retrieve/', shelvedApp.views.retrieve),
+    url(r'^discogs/', shelvedApp.discogs.discogs),
 ]

@@ -1,0 +1,26 @@
+#kennyPic {
+    display:block;
+    width: 200px;
+    height: 200px;
+}
+
+#buttonLocation{
+    display: block;
+    float:right;
+}
+
+/*#displayMe{*/
+    /*float: left;*/
+/*}*/
+
+#yesButton{
+    float:left;
+    clear:both;
+}
+#noButton {
+    float:left;
+    clear:both;
+}
+body {
+    font-size:20px;
+}
