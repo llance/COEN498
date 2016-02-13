@@ -1,11 +1,30 @@
 # Create your views here.
 from animalgame.models import *
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, JsonResponse
 
 # from django.shortcuts import render
-# from django.template import RequestContext
+from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
+
+def mainPage(request):
+    if request.method == 'GET':
+        return render(request, 'mainPage.html')
+    else:
+        return HttpResponse(status=404);
+
+def startGame(request):
+    if request.method == 'GET':
+
+        print("start game has been called")
+        return render_to_response('test.html', context_instance=RequestContext(request))
+    else:
+        return HttpResponse(status=404);
+
+
+
+
+
 
 
 def test(request):

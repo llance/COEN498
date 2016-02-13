@@ -11,6 +11,18 @@ jQuery(document).ready(function($) {
         xmlHttp.send();
     }
 
+    function httpg(theUrl) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState == 4) {
+                console.log("xmlHttp response text is : " + xmlHttp.responseText);
+                document.write(xmlHttp.response);
+            }
+        }
+        xmlHttp.open("GET", theUrl, true); // false for synchronous request
+        xmlHttp.send();
+    }
+
     $('#yesButton').click(function() {
         var url = 'play';
         //console.log("clicked" + testurl);
@@ -23,4 +35,9 @@ jQuery(document).ready(function($) {
         httpGet(testurl);
     });
 
+    $('#playNow').click(function() {
+            httpg('startGame');
+        }
+
+    );
 });

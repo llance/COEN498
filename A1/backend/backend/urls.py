@@ -19,6 +19,11 @@ import animalgame.views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^$', animalgame.views.mainPage),
+
+    url(r'^startGame', animalgame.views.startGame),
+
     url(r'^test$', animalgame.views.test),
     url(r'^play$', animalgame.views.play),
     url(r'^test3$', animalgame.views.test3),
