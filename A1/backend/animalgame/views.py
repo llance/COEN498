@@ -15,7 +15,7 @@ from rest_framework.response import Response
 
 def mainPage(request):
     if request.method == 'GET':
-        return render(request, 'mainPage.html')
+        return render(request, 'index.html')
     else:
         return HttpResponse(status=404);
 
@@ -28,15 +28,14 @@ class testView(APIView):
         return Response(questions)
 
 
-def startGame(request):
-    if request.method == 'GET':
+class startGame(APIView):
+    def get(self, request, format=None):
         print("start game has been called");
 
         randomQuestionIndex = random.randint(1, Questions.objects.all().count())
-        #print("randomQuestionIndex is : " + str(randomQuestionIndex))
+        print("randomQuestionIndex is : " + str(randomQuestionIndex))
         #print("total number of questions is : ", Questions.objects.all().count())
         #print("first questions is : " + str(Questions.objects.get(pk=randomQuestionIndex)))
-
         try:
             firstQuestion = Questions.objects.get(pk=randomQuestionIndex)
         except Questions.DoesNotExist:
@@ -48,13 +47,17 @@ def startGame(request):
         serializer = serializers.QuestionSerializer(firstQuestion)
         print("serializer data is : " + str(serializer.data))
 
-        # data = {}
-        # data['question'] = firstQuestion.text
-        # json_data = json.dumps(data)
+        data = {}
+        data['question'] = firstQuestion.text
+        json_data = json.dumps(data)
 
-        return render(request, 'index.html', context={"my_data": data} )
-    else:
-        return HttpResponse(status=404);
+        return Response(firstQuestion.text)
+
+@csrf_exempt
+def question_answer(request):
+    if request.method == 'POST':
+        print('request body is : ' + request.body);
+        return HttpResponse("HELLO WORLD",status=200)
 
 
 def play(request):

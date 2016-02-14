@@ -22,13 +22,16 @@ from rest_framework import routers, serializers, viewsets
 
 
 urlpatterns = [
-    url(r'^test$', animalgame.views.testView.as_view(), name='post-list'),
+    url(r'^test$', animalgame.views.testView.as_view(), name='test-view'),
+    url(r'^startGame/', animalgame.views.startGame.as_view(), name='start-game'),
+
+
 
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^$', animalgame.views.mainPage),
 
-    url(r'^startGame', animalgame.views.startGame),
+    url(r'^question_answer', animalgame.views.question_answer),
 
 
     url(r'^play$', animalgame.views.play),
