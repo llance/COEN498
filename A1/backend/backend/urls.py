@@ -16,15 +16,21 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 import animalgame.views
+from django.contrib.auth.models import User
+from rest_framework import routers, serializers, viewsets
+
+
 
 urlpatterns = [
+    url(r'^test$', animalgame.views.testView.as_view(), name='post-list'),
+
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^$', animalgame.views.mainPage),
 
     url(r'^startGame', animalgame.views.startGame),
 
-    url(r'^test$', animalgame.views.test),
+
     url(r'^play$', animalgame.views.play),
     url(r'^test3$', animalgame.views.test3),
     url(r'^testDB$', animalgame.views.testDB),
