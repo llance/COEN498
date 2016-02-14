@@ -22,8 +22,10 @@ from rest_framework import routers, serializers, viewsets
 
 
 urlpatterns = [
+
     url(r'^test$', animalgame.views.testView.as_view(), name='test-view'),
     url(r'^startGame/', animalgame.views.startGame.as_view(), name='start-game'),
+    url(r'^question_answer/', animalgame.views.questionAnswer.as_view(), name='question_answer'),
 
 
 
@@ -31,7 +33,6 @@ urlpatterns = [
 
     url(r'^$', animalgame.views.mainPage),
 
-    url(r'^question_answer', animalgame.views.question_answer),
 
 
     url(r'^play$', animalgame.views.play),

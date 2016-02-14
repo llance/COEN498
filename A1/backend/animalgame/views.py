@@ -49,15 +49,16 @@ class startGame(APIView):
 
         data = {}
         data['question'] = firstQuestion.text
+        data['question_id'] = firstQuestion.id
+
         json_data = json.dumps(data)
+        return Response(serializer.data)
 
-        return Response(firstQuestion.text)
-
-@csrf_exempt
-def question_answer(request):
-    if request.method == 'POST':
+class questionAnswer(APIView):
+    def post(self, request, format=None):
         print('request body is : ' + request.body);
-        return HttpResponse("HELLO WORLD",status=200)
+        return Response("HELLO WORLD",status=200)
+
 
 
 def play(request):

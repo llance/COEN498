@@ -3,13 +3,22 @@ jQuery(document).ready(function($) {
 
     function httpGet(theUrl) {
         var xmlHttp = new XMLHttpRequest();
+        var parsedJson;
+
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4) {
-                console.log("xmlHttp response text is : " + xmlHttp.responseText);
-                result = xmlHttp.responseText;
-            }
-            document.getElementById("contentHolder").innerHTML = xmlHttp.responseText;
+                console.log("xmlHttp response text is : " + xmlHttp.response);
 
+                parsedJson = JSON.parse(xmlHttp.response);
+                for (var key in parsedJson) {
+                  if (parsedJson.hasOwnProperty(key)) {
+                    console.log(key + " -> " + parsedJson[key]);
+                  }
+                }
+                console.log("parsedJson['question'] is : " + parsedJson.question[1]);
+
+                document.getElementById("contentHolder").innerHTML = parsedJson.question;
+            }
         }
         xmlHttp.open("GET", theUrl, true); // false for synchronous request
         xmlHttp.send();
@@ -19,12 +28,13 @@ jQuery(document).ready(function($) {
     function httpPost(theUrl, AnswerInBool) {
         console.log("result is : " + result);
         var xmlHttp = new XMLHttpRequest();
+
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4) {
                 console.log("xmlHttp response text is : " + xmlHttp.responseText);
                 result = xmlHttp.responseText;
             }
-            document.getElementById("contentHolder").innerHTML = xmlHttp.responseText;
+            //document.getElementById("contentHolder").innerHTML = xmlHttp.responseText;
 
         }
         xmlHttp.open("POST", theUrl, true); // false for synchronous request
@@ -45,7 +55,7 @@ jQuery(document).ready(function($) {
     });
 
     $('#noButton').click(function() {
-        var url = 'question_answer$';
+        var url = 'question_answer';
         console.log("clicked" + url);
         httpPost(url, false);
     });
@@ -55,13 +65,4 @@ jQuery(document).ready(function($) {
         console.log("clicked" + url);
         httpGet(url);
     });
-
-
-
-    $('#playNow').click(function() {
-            httpg('startGame');
-
-        }
-
-    );
 });
