@@ -10,14 +10,16 @@ jQuery(document).ready(function($) {
                 console.log("xmlHttp response text is : " + xmlHttp.response);
 
                 parsedJson = JSON.parse(xmlHttp.response);
+
+                result = parsedJson;
                 for (var key in parsedJson) {
                   if (parsedJson.hasOwnProperty(key)) {
                     console.log(key + " -> " + parsedJson[key]);
                   }
                 }
-                console.log("parsedJson['question'] is : " + parsedJson.question[1]);
+                console.log("parsedJson['question'] is : " + parsedJson.text);
 
-                document.getElementById("contentHolder").innerHTML = parsedJson.question;
+                document.getElementById("contentHolder").innerHTML = parsedJson.text;
             }
         }
         xmlHttp.open("GET", theUrl, true); // false for synchronous request
@@ -34,8 +36,7 @@ jQuery(document).ready(function($) {
                 console.log("xmlHttp response text is : " + xmlHttp.responseText);
                 result = xmlHttp.responseText;
             }
-            //document.getElementById("contentHolder").innerHTML = xmlHttp.responseText;
-
+            document.getElementById("contentHolder").innerHTML = xmlHttp.responseText;
         }
         xmlHttp.open("POST", theUrl, true); // false for synchronous request
         xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
