@@ -10,7 +10,7 @@
 #     Contains functions to handle database queries.
 # '''
 #
-
+import web
 
 #
 # def add_object(name):
@@ -85,13 +85,15 @@
 #     except IndexError:
 #         return None
 #
-# def get_object_by_id(id):
-#     '''Returns a Storage object containing an object where id=id.'''
-#     try:
-#         return db.select('objects', vars=locals(), where='id = $id')[0]
-#     except IndexError:
-#         return None
-#
+def get_object_by_id(id):
+    '''Returns a Storage object containing an object where id=id.'''
+    db = web.database(dbn='sqlite', db='20q.db')
+
+    try:
+        return db.select('objects', vars=locals(), where='id = $id')[0]
+    except IndexError:
+        return None
+
 # def get_question_by_id(id):
 #     '''Returns a Storage object containing a question where id=id.'''
 #     try:
@@ -109,6 +111,8 @@
 def get_data_by_question_id(question_id):
     '''Returns an IterBetter all weights for a particular question_id, where each
        row is a Storage object.'''
+    db = web.database(dbn='sqlite', db='20q.db')
+
     try:
         return db.select('data', vars=locals(), where='question_id=$question_id')
     except IndexError:

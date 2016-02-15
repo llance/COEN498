@@ -24,6 +24,8 @@ urlpatterns = [
     url(r'^startGame/', animalgame.views.startGame.as_view(), name='start-game'),
     url(r'^question_answer', animalgame.views.questionAnswer.as_view(), name='question_answer'),
 
+    url(r'^guess', animalgame.views.guess.as_view(), name='guess'),
+
     #url(r'^test', animalgame.views.test.as_view(), name='test'),
 
     url(r'^admin/', include(admin.site.urls)),

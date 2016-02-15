@@ -71,14 +71,15 @@ class questionAnswer(APIView):
 
         print("objects_values is : " + str(objects_values))
 
-        if (str(data['answer']) == True):
-            yes_no_answer = 'yes'
-        if (str(data['answer']) == False):
+        yes_no_answer = None;
+        if (str(data['answer']) == 'True'):
+            yes_no_answer = 1
+        if (str(data['answer']) == 'False'):
             print('foo')
-            yes_no_answer = 'no'
+            yes_no_answer = -1
 
 
-        game.update_local_knowledgebase(objects_values, data['question']['text'], data['question']['id'], -1)
+        game.update_local_knowledgebase(objects_values, data['question']['text'], data['question']['id'], yes_no_answer)
 
 
         # question_id = int(question_id) # otherwise it's unicode
@@ -91,3 +92,14 @@ class questionAnswer(APIView):
         # raise web.seeother('/')
 
         return Response("HELLO WORLD",status=200)
+
+
+class guess(APIView):
+    def get(self, request, format=None):
+        '''Displays the computer's guess of who the user is thinking of.'''
+        global objects_values
+        chosen = game.guess(objects_values)
+
+        print("chosen is : " + str(chosen))
+        return Response(status=200)
+            #render.guess(chosen)

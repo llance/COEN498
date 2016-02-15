@@ -61,6 +61,12 @@ jQuery(document).ready(function($) {
         httpPost(url, false);
     });
 
+    $('#guessButton').click(function() {
+        var url = 'guess';
+        console.log("clicked" + url);
+        httpGet(url, false);
+    });
+
     $('#nextQuestion').click(function() {
         var url = 'startGame';
         console.log("clicked" + url);

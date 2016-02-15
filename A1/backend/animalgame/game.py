@@ -192,6 +192,8 @@ def update_local_knowledgebase(objects_values, asked_questions, question_id, ans
                     value *= 5 # penalizes disagreement more
                     
                 objects_values[weight.object_id] += answer*value
+        print("asked_questions is : " + asked_questions)
+        asked_questions ={}
         asked_questions[question_id] = answer
 
 def guess(objects_values):
