@@ -1,0 +1,24 @@
+{
+  "animals": {
+    "Owl": [
+      true,
+      false,
+      null
+    ],
+    "Shark": [
+      false,
+      true,
+      false
+    ],
+    "Human": [
+      false,
+      null,
+      true
+    ]
+  },
+  "questions": [
+    "Can it fly?",
+    "Can it swim?",
+    "Can it walk?"
+  ]
+}

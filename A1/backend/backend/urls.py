@@ -20,9 +20,11 @@ import animalgame.views
 
 urlpatterns = [
 
-    url(r'^test$', animalgame.views.testView.as_view(), name='test-view'),
+    #url(r'^test$', animalgame.views.testView.as_view(), name='test-view'),
     url(r'^startGame/', animalgame.views.startGame.as_view(), name='start-game'),
     url(r'^question_answer', animalgame.views.questionAnswer.as_view(), name='question_answer'),
+
+    #url(r'^test', animalgame.views.test.as_view(), name='test'),
 
     url(r'^admin/', include(admin.site.urls)),
 

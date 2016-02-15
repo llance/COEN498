@@ -1,0 +1,20 @@
+{
+    "has": [
+        "fur",
+        "feathers",
+        "a long trout",
+        "a beek",
+        "horns",
+        "a beek",
+        "wings",
+        "claws"
+    ],
+    "is": [
+        "two-legged",
+        "four-legged",
+        "slow",
+        "fast",
+        "big",
+        "small"
+    ]
+}
