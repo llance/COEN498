@@ -2,6 +2,8 @@
 import random
 from django.shortcuts import render
 from django.http import HttpResponse
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from animalgame.models import *
@@ -11,32 +13,68 @@ from django.utils.six import BytesIO
 from rest_framework.parsers import JSONParser
 
 objects_values = {};
+asked_questions= {};
+initial_questions = [];
+count = 1
 
-def mainPage(request):
-    if request.method == 'GET':
-        return render(request, 'index.html')
-    else:
-        return HttpResponse(status=404);
 
-class testView(APIView):
-    def get(self, request, format=None):
-        """
-        Return a list of all users.
-        """
-        questions = [question.text for question in Questions.objects.all()]
-        return Response(questions)
+class mainPage(RetrieveAPIView):
+    def get(self, request, *args, **kwargs):
+        global initial_questions
+        global objects_values
+        global asked_questions
+        global count
+
+        print('foo');
+
+        renderer_classes = (TemplateHTMLRenderer,)
+
+        return Response(template_name='mainPage.html')
+
+        #'''Shows the index page and asks the questions.'''
+
+        # if config.DISPLAY_CANDIDATES: # clean up this section somehow
+        #     nearby_objects_values = game.get_nearby_objects_values(session.objects_values, how_many=10)
+        # else:
+        #     nearby_objects_values = None
+
+        # if not(session.get('asked_questions')) and not(session.get('initial_questions')):
+        #     question = 'begin'
+        # else:
+        #question = game.choose_question(initial_questions, objects_values, asked_questions)
+        # if question == None or count > 20:
+        #     chosen = game.guess(objects_values)
+        #     print("chosen is : " + str(chosen))
+        #     return Response(str(chosen), status=200)
+
+        #return render.index(question, session.get('count'), nearby_objects_values)
+
+        #return render(request, 'index.html')
+
+# class askQuestion(APIView):
+#     def get(self, request, format=None):
+#         global initial_questions
+#         global objects_values
+#         global asked_questions
+#
+#         question = game.choose_question(initial_questions, objects_values, asked_questions)
+#         if question is not None
+#         return Response(question, status=200)
+
 
 class startGame(APIView):
     def get(self, request, format=None):
+        global initial_questions
+        global objects_values
+        initial_questions = game.load_initial_questions()
+        objects_values = game.load_objects_values()
+
         randomQuestionIndex = random.randint(1, Questions.objects.all().count())
         #print("randomQuestionIndex is : " + str(randomQuestionIndex))
         try:
             firstQuestion = Questions.objects.get(pk=randomQuestionIndex)
         except Questions.DoesNotExist:
             raise
-
-        global objects_values
-        objects_values = game.load_objects_values();
 
         print("objects_values is : " + str(objects_values))
         #print("first questions is : " + firstQuestion.text)
@@ -48,50 +86,47 @@ class startGame(APIView):
         return Response(serializer.data)
 
 
+
 class questionAnswer(APIView):
     def post(self, request, format=None):
-
         '''Updates the local knowledgebase with the answer given to the question_id.'''
+        global count
+        global question
+        global objects_values
 
         print("request.body is :  " + request.body)
 
         stream = BytesIO(request.body)
         data = JSONParser().parse(stream)
 
-        print("data['question'] is : " + str(data['question']))
+        #print("data['question'] is : " + str(data['question']))
+        print("data['question'].text is : " + str(data['question']['text']))
         print("data['answer'] is : " + str(data['answer']))
 
-
-        print("data['question'].text is : " + str(data['question']['text']))
-
-
-
-        for elem in data['question']:
-            print("elem is : " + str(elem))
-
-        print("objects_values is : " + str(objects_values))
+        # for elem in data['question']:
+        #     print("elem is : " + str(elem))
+        #
+        # print("objects_values is : " + str(objects_values))
 
         yes_no_answer = None;
         if (str(data['answer']) == 'True'):
             yes_no_answer = 1
-        if (str(data['answer']) == 'False'):
-            print('foo')
-            yes_no_answer = -1
 
+        if (str(data['answer']) == 'False'):
+            yes_no_answer = -1
 
         game.update_local_knowledgebase(objects_values, data['question']['text'], data['question']['id'], yes_no_answer)
 
+        count += 1
 
-        # question_id = int(question_id) # otherwise it's unicode
-        # a = web.input().answer
-        # if a in ['yes','no','unsure']: answer = eval('game.' + a)
-        # else: answer = game.unsure
-        # if answer != game.unsure:
-        #     session.count += 1
-        # game.update_local_knowledgebase(session.objects_values, session.asked_questions, question_id, answer)
-        # raise web.seeother('/')
+        question = game.choose_question(initial_questions, objects_values, asked_questions)
 
-        return Response("HELLO WORLD",status=200)
+        if question == None or count > 20:
+            chosen = game.guess(objects_values)
+            print("chosen is : " + str(chosen))
+            return Response(status=200)
+
+        return startGame.as_view()(self.request)
 
 
 class guess(APIView):
@@ -101,5 +136,4 @@ class guess(APIView):
         chosen = game.guess(objects_values)
 
         print("chosen is : " + str(chosen))
-        return Response(status=200)
-            #render.guess(chosen)
+        return Response(str(chosen), status=200)

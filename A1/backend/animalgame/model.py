@@ -9,9 +9,9 @@
 #
 #     Contains functions to handle database queries.
 # '''
-#
 import web
 
+db = web.database(dbn='sqlite', db='20q.db')
 #
 # def add_object(name):
 #     '''Adds an object with the given name to the objects table in the database.
@@ -64,9 +64,10 @@ import web
 #     '''Returns an IterBetter of all the data in the database, where each row is a Storage object.'''
 #     return db.select('data')
 #
-# def get_questions():
-#     '''Returns an IterBetter of all the quesitons in the database, where each row is a Storage object.'''
-#     return db.select('questions')
+def get_questions():
+    '''Returns an IterBetter of all the quesitons in the database, where each row is a Storage object.'''
+    db = web.database(dbn='sqlite', db='20q.db')
+    return db.select('questions')
 #
 # def get_value(object_id, question_id):
 #     '''Returns the weight for given object_id question_id from data. If the weight
@@ -87,19 +88,19 @@ import web
 #
 def get_object_by_id(id):
     '''Returns a Storage object containing an object where id=id.'''
-    db = web.database(dbn='sqlite', db='20q.db')
-
+    global db
     try:
         return db.select('objects', vars=locals(), where='id = $id')[0]
     except IndexError:
         return None
 
-# def get_question_by_id(id):
-#     '''Returns a Storage object containing a question where id=id.'''
-#     try:
-#         return db.select('questions', vars=locals(), where='id=$id')[0]
-#     except IndexError:
-#         return None
+def get_question_by_id(id):
+    '''Returns a Storage object containing a question where id=id.'''
+    global db
+    try:
+        return db.select('questions', vars=locals(), where='id=$id')[0]
+    except IndexError:
+        return None
 #
 # def get_question_by_text(text):
 #     '''Returns Storage object containing a question where text=text.'''
@@ -111,8 +112,7 @@ def get_object_by_id(id):
 def get_data_by_question_id(question_id):
     '''Returns an IterBetter all weights for a particular question_id, where each
        row is a Storage object.'''
-    db = web.database(dbn='sqlite', db='20q.db')
-
+    global db
     try:
         return db.select('data', vars=locals(), where='question_id=$question_id')
     except IndexError:

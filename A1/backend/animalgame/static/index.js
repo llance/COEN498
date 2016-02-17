@@ -48,6 +48,48 @@ jQuery(document).ready(function($) {
         xmlHttp.send(stringifiedJson);
     }
 
+    function protobufPost(){
+        var ProtoBuf = require("protobufjs");
+
+        var protoify = require("./proto.js"),
+        ByteBuffer = require("protobufjs").ByteBuffer;
+
+        var testjson = {                                                     // Object holding each data type
+            1: 1,
+            0.1: 0.1,
+            "John": "John",
+            true: true,
+            false: false,
+            null: null,
+            array: [],
+            object: {},
+            undefined: undefined
+        }
+        var buf = protoify(testjson);
+
+        // Print some nice debugging information
+        console.log(JSON.stringify(sample));
+        console.log("-------------------------------------------------------------------");
+        console.log(ByteBuffer.wrap(buf).toDebug(true));
+
+        //// Decode the Buffer back to JSON
+        //var decodedSample = protoify.parse(buf);
+
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState == 4) {
+                console.log("xmlHttp response text is : " + xmlHttp.responseText);
+                result = xmlHttp.responseText;
+            }
+            document.getElementById("contentHolder").innerHTML = xmlHttp.responseText;
+        }
+        xmlHttp.open("POST", 'prototest', true); // false for synchronous request
+        xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+        xmlHttp.send(buf);
+    };
+
 
     $('#yesButton').click(function() {
         var url = 'question_answer';
@@ -65,6 +107,12 @@ jQuery(document).ready(function($) {
         var url = 'guess';
         console.log("clicked" + url);
         httpGet(url, false);
+    });
+
+    $('#protoButton').click(function() {
+        var url = 'guess';
+        console.log("clicked" + url);
+        protobufPost();
     });
 
     $('#nextQuestion').click(function() {
