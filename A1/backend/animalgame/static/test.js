@@ -1,6 +1,5 @@
-var protoify = require("./index.js"),
-    ByteBuffer = require("protobufjs").ByteBuffer,
-    assert = require("assert");
+var protoify =  dcodeIO.ProtoBuf,
+    ByteBuffer = dcodeIO.ByteBuffer;
 
 // Array of samples to test
 var samples = [

@@ -1,17 +1,17 @@
-var ProtoBuf = require("protobufjs"),
+var ProtoBuf = dcodeIO.ProtoBuf,
     ByteBuffer = ProtoBuf.ByteBuffer,                    // ProtoBuf.js uses and also exposes ByteBuffer.js
     Long = ProtoBuf.Long;                                // as well as Long.js (not used in this example)
 
 // Option 1: Loading the .proto file directly
-var builder = ProtoBuf.loadProtoFile("./json.proto"),    // Creates the Builder
+var builder = ProtoBuf.loadProtoFile("../static/json.proto"),    // Creates the Builder
     JS = builder.build("js");                            // Returns just the 'js' namespace if that's all we need
 
 // Option 2: Loading the .json file generated through 'proto2js json.proto > json.json'
-var root = ProtoBuf.loadJsonFile("./json.json").build(), // Here we make the Builder return the root namespace
+var root = ProtoBuf.loadJsonFile("../static/json.json").build(), // Here we make the Builder return the root namespace
     JS = root.js;                                        // then we reference 'js' inside. Both is possible.
 
 // Option 3: Loading the module generated through 'proto2js json.proto -commonjs=js > json.js'
-var JS = require("./json.js");                           // Returns what is specified with -commonjs[=XX] (omitted=root)
+//var JS = dcodeIO.js("./json.js");                           // Returns what is specified with -commonjs[=XX] (omitted=root)
 
 // `JS` now contains the js namespace from json.proto: Value, Array and Object
 
@@ -109,14 +109,14 @@ var tempBuffer = ByteBuffer.allocate(1024);
  * @returns {!Buffer|!ArrayBuffer}
  * @expose
  */
-module.exports = function(json) {
-    return _protoify(json)     // Returns the root JS.Value
-           .encode(tempBuffer).flip() // Encodes it to a ByteBuffer, here: reusing tempBuffer forever
-                               // The non-tempBuffer alternative is just doing .encode()
-           .toBuffer();        // Converts it to a Buffer. In the browser, this returns an ArrayBuffer. To return an
-                               // ArrayBuffer explicitly both under node.js and in the browser, use .toArrayBuffer().
-                               // Performance note: This just returns a slice on the ByteBuffer's backing .buffer
-};
+//module.exports = function(json) {
+//    return _protoify(json)     // Returns the root JS.Value
+//           .encode(tempBuffer).flip() // Encodes it to a ByteBuffer, here: reusing tempBuffer forever
+//                               // The non-tempBuffer alternative is just doing .encode()
+//           .toBuffer();        // Converts it to a Buffer. In the browser, this returns an ArrayBuffer. To return an
+//                               // ArrayBuffer explicitly both under node.js and in the browser, use .toArrayBuffer().
+//                               // Performance note: This just returns a slice on the ByteBuffer's backing .buffer
+//};
 
 /**
  * Converts a Buffer to a JSON structure.
@@ -124,24 +124,24 @@ module.exports = function(json) {
  * @returns {*} JSON
  * @expose
  */
-module.exports.parse = function(proto) {
-    return _jsonify(           // Processes JS-namespace objects
-        JS.Value.decode(proto) // Decodes the JS.Value from a ByteBuffer, a Buffer, an ArrayBuffer, an Uint8Array, ...
-    );
-};
+//module.exports.parse = function(proto) {
+//    return _jsonify(           // Processes JS-namespace objects
+//        JS.Value.decode(proto) // Decodes the JS.Value from a ByteBuffer, a Buffer, an ArrayBuffer, an Uint8Array, ...
+//    );
+//};
 
 /**
  * Performs maintenance.
  * @expose
  */
-module.exports.performMaintenance = function() {
-    if (tempBuffer.capacity() > 2048)
-        tempBuffer = ByteBuffer.allocate(1024);
-    // In case this module is running inside of a daemon, we'd just call this
-    // method every now and then to discard the tempBuffer if it becomes too
-    // large. This is just an example on how to reuse ByteBuffers effectively.
-    // You may consider something like this for the performance benefit, which
-    // is decreasing the memory allocation footprint of your app.
-};
+//module.exports.performMaintenance = function() {
+//    if (tempBuffer.capacity() > 2048)
+//        tempBuffer = ByteBuffer.allocate(1024);
+//    // In case this module is running inside of a daemon, we'd just call this
+//    // method every now and then to discard the tempBuffer if it becomes too
+//    // large. This is just an example on how to reuse ByteBuffers effectively.
+//    // You may consider something like this for the performance benefit, which
+//    // is decreasing the memory allocation footprint of your app.
+//};
 
 // Have a nice day!

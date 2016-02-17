@@ -28,6 +28,10 @@ urlpatterns = [
 
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^$', animalgame.views.mainPage.as_view(), name='mainPage'),
+    #url(r'^$', animalgame.views.mainPage.as_view(), name='mainPage'),
+
+    url(r'^$', animalgame.views.mainPage, name='mainPage'),
+
+    url(r'^prototest$', animalgame.views.prototest, name='prototest'),
 
 ]

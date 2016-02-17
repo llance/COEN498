@@ -1,30 +1,35 @@
-// Everything below is located in the js-namespace
-package js;
+package Game.Cars;
 
-// Represents a JavaScript value.
-// Contains exactly one or zero fields.
-message Value {
-    oneof type {
-        sint32 integer = 1;
-        double double = 2;
-        string string = 3;
-        bool boolean = 4;
-        bool null = 5;
-        Array array = 6;
-        Object object = 7;
-        // if none is set: undefined
+// Car
+message Car {
+    
+    // Car Vendor
+    message Vendor {
+        required string name = 1;
+        
+        // Car Vendor Address
+        message Address {
+            required string country = 1;
+        }
+        
+        optional Address address = 2;
+        repeated string models = 3;               // The models sold here.
     }
-}
-
-// Represents a JavaScript array.
-// Contains zero to N values.
-message Array {
-    repeated Value values = 1;
-}
-
-// Represents a JavaScript object.
-// Contains zero to N keys with associated values.
-message Object {
-    repeated Value keys = 1;
-    repeated Value values = 2;
+    
+    required  string  model  = 1;                 // Model name
+    required  Vendor  vendor = 2;                 // Vendor information
+    optional  Speed   speed  = 3 [default=FAST];  // Car speed
+    
+    // Car speed enum
+    enum Speed {
+        FAST      = 1;
+        SUPERFAST = 2;
+    }
+    
+    // Car Holder
+    message Holder {
+        optional  string          first_name = 1;
+        required  string          last_name  = 2;
+        optional  Vendor.Address  address    = 3;
+    }
 }

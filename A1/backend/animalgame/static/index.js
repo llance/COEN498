@@ -49,10 +49,9 @@ jQuery(document).ready(function($) {
     }
 
     function protobufPost(){
-        var ProtoBuf = require("protobufjs");
-
-        var protoify = require("./proto.js"),
-        ByteBuffer = require("protobufjs").ByteBuffer;
+        var ProtoBuf = dcodeIO.ProtoBuf;
+        //var protoify = protoify;
+        var ByteBuffer = dcodeIO.ByteBuffer;
 
         var testjson = {                                                     // Object holding each data type
             1: 1,
@@ -65,12 +64,21 @@ jQuery(document).ready(function($) {
             object: {},
             undefined: undefined
         }
-        var buf = protoify(testjson);
+
+        var builder = ProtoBuf.loadProtoFile("../static/json.proto");
+            Game = builder.build("Game"),
+            Car = Game.Cars.Car;
+        var car = new Car("Rusty", new Car.Vendor("Iron Inc.", new Car.Vendor.Address("US")), Car.Speed.SUPERFAST);
+
+        var buffer = car.encode();
+
+        //console.log("builder is : " + builder);
+        //var buf = builder.build(testjson);
 
         // Print some nice debugging information
-        console.log(JSON.stringify(sample));
+        console.log(JSON.stringify(testjson));
         console.log("-------------------------------------------------------------------");
-        console.log(ByteBuffer.wrap(buf).toDebug(true));
+        //console.log(ByteBuffer.wrap(buf).toDebug(true));
 
         //// Decode the Buffer back to JSON
         //var decodedSample = protoify.parse(buf);
@@ -87,7 +95,7 @@ jQuery(document).ready(function($) {
         xmlHttp.open("POST", 'prototest', true); // false for synchronous request
         xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
-        xmlHttp.send(buf);
+        xmlHttp.send(buffer);
     };
 
 
