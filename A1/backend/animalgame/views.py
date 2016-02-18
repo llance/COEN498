@@ -3,8 +3,6 @@ import random
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.generics import RetrieveAPIView
-from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from animalgame.models import *
@@ -13,6 +11,7 @@ from animalgame import game
 from django.utils.six import BytesIO
 from rest_framework.parsers import JSONParser
 from animalgame import json_pb2
+from google.protobuf import text_format
 
 objects_values = {};
 asked_questions= {};
@@ -23,20 +22,17 @@ def mainPage(request):
     if request.method == 'GET':
         return render(request, 'index.html')
     else:
-        return HttpResponse(status=404);
+        return HttpResponse(status=404)
 
-@csrf_exempt
-def prototest(request):
-    if request.method == 'POST':
-        print("request.body is :  " + request.body)
-        car = json_pb2.Car();
+class prototest(APIView):
+    def post(self, request, format=None):
+        print("request.body is :  " + str(request.body))
+        response = json_pb2.Response()
+        response.ParseFromString(request.body)
+        print("response is : " + str(response))
+        return HttpResponse(response, status=200)
 
-        car.ParseFromString(request.body)
 
-        print("car is : " + car);
-        return HttpResponse(status=200)
-    else:
-        return HttpResponse(status=404);
 
 
 # class mainPage(RetrieveAPIView):

@@ -1,3 +1,4 @@
+var buff;
 jQuery(document).ready(function($) {
     var result;
 
@@ -48,35 +49,23 @@ jQuery(document).ready(function($) {
         xmlHttp.send(stringifiedJson);
     }
 
+
+
     function protobufPost(){
         var ProtoBuf = dcodeIO.ProtoBuf;
-        //var protoify = protoify;
         var ByteBuffer = dcodeIO.ByteBuffer;
 
-        var testjson = {                                                     // Object holding each data type
-            1: 1,
-            0.1: 0.1,
-            "John": "John",
-            true: true,
-            false: false,
-            null: null,
-            array: [],
-            object: {},
-            undefined: undefined
-        }
-
         var builder = ProtoBuf.loadProtoFile("../static/json.proto");
-            Game = builder.build("Game"),
-            Car = Game.Cars.Car;
-        var car = new Car("Rusty", new Car.Vendor("Iron Inc.", new Car.Vendor.Address("US")), Car.Speed.SUPERFAST);
+            MyPkg = builder.build("MyPkg"),
+            Response = MyPkg.Animals.Response;
 
-        var buffer = car.encode();
+        var response = new Response("SHUIXIHELLOWORLD");
 
-        //console.log("builder is : " + builder);
-        //var buf = builder.build(testjson);
+        var buffer = response.encode();
 
-        // Print some nice debugging information
-        console.log(JSON.stringify(testjson));
+        console.log("buffer is : " + buffer);
+
+        buff = buffer;
         console.log("-------------------------------------------------------------------");
         //console.log(ByteBuffer.wrap(buf).toDebug(true));
 
@@ -93,9 +82,9 @@ jQuery(document).ready(function($) {
             document.getElementById("contentHolder").innerHTML = xmlHttp.responseText;
         }
         xmlHttp.open("POST", 'prototest', true); // false for synchronous request
-        xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        //xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
-        xmlHttp.send(buffer);
+        xmlHttp.send(buffer.toArrayBuffer());
     };
 
 
@@ -118,7 +107,7 @@ jQuery(document).ready(function($) {
     });
 
     $('#protoButton').click(function() {
-        var url = 'guess';
+        var url = 'prototest';
         console.log("clicked" + url);
         protobufPost();
     });
