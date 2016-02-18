@@ -66,7 +66,7 @@ db = web.database(dbn='sqlite', db='20q.db')
 #
 def get_questions():
     '''Returns an IterBetter of all the quesitons in the database, where each row is a Storage object.'''
-    db = web.database(dbn='sqlite', db='20q.db')
+    global db
     return db.select('questions')
 #
 # def get_value(object_id, question_id):
@@ -151,31 +151,34 @@ def get_data_by_question_id(question_id):
 #     except IndexError:
 #         return 0
 #
-# def get_num_positives(object_tuple, question_id):
-#     '''Returns the number of objects in the object_tuple where the value for the
-#        given question_id is positive.'''
+def get_num_positives(object_tuple, question_id):
+    '''Returns the number of objects in the object_tuple where the value for the
+       given question_id is positive.'''
+
+    global db
+
+    assert type(object_tuple) == tuple
+
+    where = 'object_id IN %s AND question_id=%d AND value >0' %(object_tuple, question_id)
+    try:
+        rows = db.select('data', vars=locals(), where=where, what='count(*) AS count')
+        return rows[0].count
+    except IndexError:
+        return 0
 #
-#     assert type(object_tuple) == tuple
-#
-#     where = 'object_id IN %s AND question_id=%d AND value >0' %(object_tuple, question_id)
-#     try:
-#         rows = db.select('data', vars=locals(), where=where, what='count(*) AS count')
-#         return rows[0].count
-#     except IndexError:
-#         return 0
-#
-# def get_num_negatives(object_tuple, question_id):
-#     '''Returns the number of objects in the object_tuple where the value for the
-#        given question_id is negative.'''
-#
-#     assert type(object_tuple) == tuple
-#
-#     where = 'object_id in %s AND question_id=%d AND value <0' %(object_tuple, question_id)
-#     try:
-#         rows = db.select('data', vars=locals(), where=where, what='count(*) AS count')
-#         return rows[0].count
-#     except IndexError:
-#         return 0
+def get_num_negatives(object_tuple, question_id):
+    '''Returns the number of objects in the object_tuple where the value for the
+       given question_id is negative.'''
+
+    global db
+    assert type(object_tuple) == tuple
+
+    where = 'object_id in %s AND question_id=%d AND value <0' %(object_tuple, question_id)
+    try:
+        rows = db.select('data', vars=locals(), where=where, what='count(*) AS count')
+        return rows[0].count
+    except IndexError:
+        return 0
 #
 # def delete_question(question_id):
 #     '''Deletes a question and its weights for a particular question_id.'''

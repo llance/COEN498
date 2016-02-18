@@ -9,6 +9,7 @@
 from animalgame import model
 import random
 from animalgame.models import *
+import math
 
 
 yes = 1 # value of a yes answer

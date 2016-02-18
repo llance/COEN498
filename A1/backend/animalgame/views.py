@@ -111,24 +111,15 @@ class questionAnswer(APIView):
         global question
         global objects_values
 
-        print("request.body is :  " + request.body)
-
         stream = BytesIO(request.body)
         data = JSONParser().parse(stream)
 
-        #print("data['question'] is : " + str(data['question']))
         print("data['question'].text is : " + str(data['question']['text']))
         print("data['answer'] is : " + str(data['answer']))
-
-        # for elem in data['question']:
-        #     print("elem is : " + str(elem))
-        #
-        # print("objects_values is : " + str(objects_values))
 
         yes_no_answer = None;
         if (str(data['answer']) == 'True'):
             yes_no_answer = 1
-
         if (str(data['answer']) == 'False'):
             yes_no_answer = -1
 
@@ -138,12 +129,16 @@ class questionAnswer(APIView):
 
         question = game.choose_question(initial_questions, objects_values, asked_questions)
 
+        serializer = serializers.QuestionSerializer(question)
+
+        print("serializer.data is :" + str(serializer.data))
+
         if question == None or count > 20:
             chosen = game.guess(objects_values)
             print("chosen is : " + str(chosen))
             return Response(status=200)
 
-        return startGame.as_view()(self.request)
+        return Response(serializer.data)
 
 
 class guess(APIView):

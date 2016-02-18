@@ -1,4 +1,3 @@
-var buff;
 jQuery(document).ready(function($) {
     var result;
 
@@ -25,7 +24,6 @@ jQuery(document).ready(function($) {
         }
         xmlHttp.open("GET", theUrl, true); // false for synchronous request
         xmlHttp.send();
-
     }
 
     function httpPost(theUrl, AnswerInBool) {
@@ -35,9 +33,17 @@ jQuery(document).ready(function($) {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4) {
                 console.log("xmlHttp response text is : " + xmlHttp.responseText);
-                result = xmlHttp.responseText;
+                parsedJson = JSON.parse(xmlHttp.responseText);
+
+                result = parsedJson;
+                for (var key in parsedJson) {
+                    if (parsedJson.hasOwnProperty(key)) {
+                        console.log(key + " -> " + parsedJson[key]);
+                    }
+                }
+                console.log("parsedJson['question'] is : " + parsedJson.text);
+                document.getElementById("contentHolder").innerHTML = parsedJson.text;
             }
-            document.getElementById("contentHolder").innerHTML = xmlHttp.responseText;
         }
         xmlHttp.open("POST", theUrl, true); // false for synchronous request
         xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -65,13 +71,6 @@ jQuery(document).ready(function($) {
 
         console.log("buffer is : " + buffer);
 
-        buff = buffer;
-        console.log("-------------------------------------------------------------------");
-        //console.log(ByteBuffer.wrap(buf).toDebug(true));
-
-        //// Decode the Buffer back to JSON
-        //var decodedSample = protoify.parse(buf);
-
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.onreadystatechange = function() {
@@ -82,7 +81,7 @@ jQuery(document).ready(function($) {
             document.getElementById("contentHolder").innerHTML = xmlHttp.responseText;
         }
         xmlHttp.open("POST", 'prototest', true); // false for synchronous request
-        //xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
         xmlHttp.send(buffer.toArrayBuffer());
     };
@@ -97,7 +96,19 @@ jQuery(document).ready(function($) {
     $('#noButton').click(function() {
         var url = 'question_answer';
         console.log("clicked" + url);
-        httpPost(url, false);
+        response = httpPost(url, false);
+
+        parsedJson = JSON.parse(response);
+
+        result = parsedJson;
+        for (var key in parsedJson) {
+            if (parsedJson.hasOwnProperty(key)) {
+                console.log(key + " -> " + parsedJson[key]);
+            }
+        }
+        console.log("parsedJson['question'] is : " + parsedJson.text);
+        document.getElementById("contentHolder").innerHTML = response;
+
     });
 
     $('#guessButton').click(function() {
