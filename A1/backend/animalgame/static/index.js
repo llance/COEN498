@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
     var result;
 
-    function httpGet(theUrl) {
+    function httpGet(theUrl, calledFrom) {
         var xmlHttp = new XMLHttpRequest();
         var parsedJson;
 
@@ -11,15 +11,31 @@ jQuery(document).ready(function($) {
 
                 parsedJson = JSON.parse(xmlHttp.response);
 
-                result = parsedJson;
-                for (var key in parsedJson) {
-                  if (parsedJson.hasOwnProperty(key)) {
-                    console.log(key + " -> " + parsedJson[key]);
-                  }
-                }
-                console.log("parsedJson['question'] is : " + parsedJson.text);
+                if (calledFrom == 'guess'){
 
-                document.getElementById("contentHolder").innerHTML = parsedJson.text;
+                    console.log("parsedJson.name is : " + parsedJson.name);
+
+                    for (var key in parsedJson) {
+                        if (parsedJson.hasOwnProperty(key)) {
+                            console.log(key + " -> " + parsedJson[key]);
+                        }
+                    }
+
+                    document.getElementById("contentHolder").innerHTML = parsedJson.name;
+
+                } else {
+                    result = parsedJson;
+                    for (var key in parsedJson) {
+                        if (parsedJson.hasOwnProperty(key)) {
+                            console.log(key + " -> " + parsedJson[key]);
+                        }
+                    }
+                    console.log("parsedJson['question'] is : " + parsedJson.text);
+
+                    document.getElementById("contentHolder").innerHTML = parsedJson.text;
+                }
+
+
             }
         }
         xmlHttp.open("GET", theUrl, true); // false for synchronous request
@@ -61,11 +77,11 @@ jQuery(document).ready(function($) {
         var ProtoBuf = dcodeIO.ProtoBuf;
         var ByteBuffer = dcodeIO.ByteBuffer;
 
-        var builder = ProtoBuf.loadProtoFile("../static/json.proto");
+        var builder = ProtoBuf.loadProtoFile("../static/QnA.proto");
             MyPkg = builder.build("MyPkg"),
-            Response = MyPkg.Animals.Response;
+            Carrier = MyPkg.Animals.Carrier;
 
-        var response = new Response("SHUIXIHELLOWORLD");
+        var response = new Carrier(question = "is this real life?", answer = "not sure");
 
         var buffer = response.encode();
 
@@ -77,13 +93,20 @@ jQuery(document).ready(function($) {
             if (xmlHttp.readyState == 4) {
                 console.log("xmlHttp response text is : " + xmlHttp.responseText);
                 result = xmlHttp.responseText;
+                console.log("result is : " + typeof result);
+                myPkg = builder.build("MyPkg");
+                myCarrier = MyPkg.Animals.Carrier;
+                var myMessage = myCarrier.decode64(result);
+
+                console.log("myMessage is : " + myMessage);
             }
             document.getElementById("contentHolder").innerHTML = xmlHttp.responseText;
         }
         xmlHttp.open("POST", 'prototest', true); // false for synchronous request
-        xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
+        xmlHttp.setRequestHeader("Content-Type", "application/x-google-protobuf;charset=UTF-8");
+        console.log("buffer.toArrayBuffer() is : " + buffer.toArrayBuffer())
         xmlHttp.send(buffer.toArrayBuffer());
+//
     };
 
 
@@ -114,7 +137,7 @@ jQuery(document).ready(function($) {
     $('#guessButton').click(function() {
         var url = 'guess';
         console.log("clicked" + url);
-        httpGet(url, false);
+        httpGet(url, "guess");
     });
 
     $('#protoButton').click(function() {

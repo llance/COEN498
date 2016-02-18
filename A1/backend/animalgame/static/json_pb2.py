@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='json.proto',
   package='MyPkg.Animals',
-  serialized_pb=_b('\n\njson.proto\x12\rMyPkg.Animals\"\x1c\n\x08Response\x12\x10\n\x08question\x18\x01 \x02(\t')
+  serialized_pb=_b('\n\njson.proto\x12\rMyPkg.Animals\",\n\x08Response\x12\x10\n\x08question\x18\x01 \x02(\t\x12\x0e\n\x06\x61nswer\x18\x02 \x02(\t')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -39,6 +39,13 @@ _RESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='answer', full_name='MyPkg.Animals.Response.answer', index=1,
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -51,7 +58,7 @@ _RESPONSE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=29,
-  serialized_end=57,
+  serialized_end=73,
 )
 
 DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE

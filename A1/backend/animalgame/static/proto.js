@@ -3,7 +3,7 @@ var ProtoBuf = dcodeIO.ProtoBuf,
     Long = ProtoBuf.Long;                                // as well as Long.js (not used in this example)
 
 // Option 1: Loading the .proto file directly
-var builder = ProtoBuf.loadProtoFile("../static/json.proto"),    // Creates the Builder
+var builder = ProtoBuf.loadProtoFile("../static/QnA.proto"),    // Creates the Builder
     JS = builder.build("js");                            // Returns just the 'js' namespace if that's all we need
 
 // Option 2: Loading the .json file generated through 'proto2js json.proto > json.json'

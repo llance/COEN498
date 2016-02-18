@@ -2,8 +2,7 @@ syntax = "proto2";
 
 package MyPkg.Animals;
 
-// Car
-message Response {
+message Carrier {
     required  string  question  = 1;                 // question
-
+    required  string  answer = 2;                   //answer
 }

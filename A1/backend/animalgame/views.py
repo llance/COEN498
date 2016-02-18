@@ -10,7 +10,7 @@ from animalgame import serializers
 from animalgame import game
 from django.utils.six import BytesIO
 from rest_framework.parsers import JSONParser
-from animalgame import json_pb2
+from animalgame import QnA_pb2
 from google.protobuf import text_format
 
 objects_values = {};
@@ -26,12 +26,18 @@ def mainPage(request):
 
 class prototest(APIView):
     def post(self, request, format=None):
-        print("request.body is :  " + str(request.body))
-        response = json_pb2.Response()
-        response.ParseFromString(request.body)
-        print("response is : " + str(response))
-        return HttpResponse(response, status=200)
+        print("request.body is :  ",  type(request.body))
+        print("request.body is :  ", request.body)
 
+        response = QnA_pb2.Carrier()
+        foo = response.ParseFromString(request.body)
+        print("response is : " + str(response))
+
+        returnedResult = QnA_pb2.Carrier(question="am I a awesome?", answer="Yes, most definitely")
+        serialized = returnedResult.SerializeToString()
+
+        print("serialized is : ", serialized)
+        return Response(serialized, status=200)
 
 
 
@@ -148,4 +154,10 @@ class guess(APIView):
         chosen = game.guess(objects_values)
 
         print("chosen is : " + str(chosen))
-        return Response(str(chosen), status=200)
+
+        serializer = serializers.GuessSerializer(chosen)
+
+        # for elem in chosen:
+        #     print("elem is : " + elem)
+        #     print("content in elem is : " + str(chosen[elem]))
+        return Response(serializer.data, status=200)
