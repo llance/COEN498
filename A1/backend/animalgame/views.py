@@ -2,7 +2,6 @@
 import random
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from animalgame.models import *
@@ -11,7 +10,6 @@ from animalgame import game
 from django.utils.six import BytesIO
 from rest_framework.parsers import JSONParser
 from animalgame import QnA_pb2
-from google.protobuf import text_format
 
 objects_values = {};
 asked_questions= {};
@@ -40,49 +38,6 @@ class prototest(APIView):
         return Response(serialized, status=200)
 
 
-
-# class mainPage(RetrieveAPIView):
-#     def get(self, request, *args, **kwargs):
-#         global initial_questions
-#         global objects_values
-#         global asked_questions
-#         global count
-#
-#         print('foo');
-#
-#         renderer_classes = (TemplateHTMLRenderer,)
-#
-#         return Response(template_name='mainPage.html')
-#
-#         #'''Shows the index page and asks the questions.'''
-#
-#         # if config.DISPLAY_CANDIDATES: # clean up this section somehow
-#         #     nearby_objects_values = game.get_nearby_objects_values(session.objects_values, how_many=10)
-#         # else:
-#         #     nearby_objects_values = None
-#
-#         # if not(session.get('asked_questions')) and not(session.get('initial_questions')):
-#         #     question = 'begin'
-#         # else:
-#         #question = game.choose_question(initial_questions, objects_values, asked_questions)
-#         # if question == None or count > 20:
-#         #     chosen = game.guess(objects_values)
-#         #     print("chosen is : " + str(chosen))
-#         #     return Response(str(chosen), status=200)
-#
-#         #return render.index(question, session.get('count'), nearby_objects_values)
-#
-#         #return render(request, 'index.html')
-
-# class askQuestion(APIView):
-#     def get(self, request, format=None):
-#         global initial_questions
-#         global objects_values
-#         global asked_questions
-#
-#         question = game.choose_question(initial_questions, objects_values, asked_questions)
-#         if question is not None
-#         return Response(question, status=200)
 
 
 class startGame(APIView):

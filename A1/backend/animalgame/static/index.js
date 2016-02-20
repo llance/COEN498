@@ -78,8 +78,11 @@ jQuery(document).ready(function($) {
         var ByteBuffer = dcodeIO.ByteBuffer;
 
         var builder = ProtoBuf.loadProtoFile("../static/QnA.proto");
-            MyPkg = builder.build("MyPkg"),
-            Carrier = MyPkg.Animals.Carrier;
+        console.log("builder is :  " + builder);
+        var MyPkg = builder.build("MyPkg");
+        console.log("MyPkg is :  " + MyPkg);
+
+        var Carrier = MyPkg.Animals.Carrier;
 
         var response = new Carrier(question = "is this real life?", answer = "not sure");
 
