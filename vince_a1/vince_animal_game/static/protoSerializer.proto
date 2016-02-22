@@ -1,0 +1,6 @@
+package protoData.test;
+
+message protoMessage {
+  required string question = 1;
+  required string answer = 2;
+}
