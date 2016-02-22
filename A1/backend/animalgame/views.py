@@ -18,7 +18,7 @@ count = 1
 
 def mainPage(request):
     if request.method == 'GET':
-        return render(request, 'index.html')
+        return render(request, 'index.html', context={'foo':'bar'})
     else:
         return HttpResponse(status=404)
 

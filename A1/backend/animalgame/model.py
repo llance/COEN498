@@ -1,17 +1,74 @@
-# #!/usr/bin/env python
-# # -*- coding: utf-8 -*-
-# #
-# '''
-#     model.py
-#
-#     Andy Freeland and Dan Levy
-#     5 June 2010
-#
-#     Contains functions to handle database queries.
-# '''
 import web
 
 db = web.database(dbn='sqlite', db='20q.db')
+
+def get_object_by_id(id):
+    '''Returns a Storage object containing an object where id=id.'''
+    global db
+    try:
+        return db.select('objects', vars=locals(), where='id = $id')[0]
+    except IndexError:
+        return None
+
+def get_question_by_id(id):
+    '''Returns a Storage object containing a question where id=id.'''
+    global db
+    try:
+        return db.select('questions', vars=locals(), where='id=$id')[0]
+    except IndexError:
+        return None
+#
+# def get_question_by_text(text):
+#     '''Returns Storage object containing a question where text=text.'''
+#     try:
+#         return db.select('questions', vars=locals(), where='text=$text')[0]
+#     except IndexError:
+#         return None
+#
+def get_data_by_question_id(question_id):
+    '''Returns an IterBetter all weights for a particular question_id, where each
+       row is a Storage object.'''
+    global db
+    try:
+        return db.select('data', vars=locals(), where='question_id=$question_id')
+    except IndexError:
+        return None
+
+
+def get_questions():
+    '''Returns an IterBetter of all the quesitons in the database, where each row is a Storage object.'''
+    global db
+    return db.select('questions')
+
+def get_num_positives(object_tuple, question_id):
+    '''Returns the number of objects in the object_tuple where the value for the
+       given question_id is positive.'''
+
+    global db
+
+    assert type(object_tuple) == tuple
+
+    where = 'object_id IN %s AND question_id=%d AND value >0' %(object_tuple, question_id)
+    try:
+        rows = db.select('data', vars=locals(), where=where, what='count(*) AS count')
+        return rows[0].count
+    except IndexError:
+        return 0
+#
+def get_num_negatives(object_tuple, question_id):
+    '''Returns the number of objects in the object_tuple where the value for the
+       given question_id is negative.'''
+
+    global db
+    assert type(object_tuple) == tuple
+
+    where = 'object_id in %s AND question_id=%d AND value <0' %(object_tuple, question_id)
+    try:
+        rows = db.select('data', vars=locals(), where=where, what='count(*) AS count')
+        return rows[0].count
+    except IndexError:
+        return 0
+
 #
 # def add_object(name):
 #     '''Adds an object with the given name to the objects table in the database.
@@ -63,11 +120,7 @@ db = web.database(dbn='sqlite', db='20q.db')
 # def get_data():
 #     '''Returns an IterBetter of all the data in the database, where each row is a Storage object.'''
 #     return db.select('data')
-#
-def get_questions():
-    '''Returns an IterBetter of all the quesitons in the database, where each row is a Storage object.'''
-    global db
-    return db.select('questions')
+
 #
 # def get_value(object_id, question_id):
 #     '''Returns the weight for given object_id question_id from data. If the weight
@@ -86,37 +139,7 @@ def get_questions():
 #     except IndexError:
 #         return None
 #
-def get_object_by_id(id):
-    '''Returns a Storage object containing an object where id=id.'''
-    global db
-    try:
-        return db.select('objects', vars=locals(), where='id = $id')[0]
-    except IndexError:
-        return None
 
-def get_question_by_id(id):
-    '''Returns a Storage object containing a question where id=id.'''
-    global db
-    try:
-        return db.select('questions', vars=locals(), where='id=$id')[0]
-    except IndexError:
-        return None
-#
-# def get_question_by_text(text):
-#     '''Returns Storage object containing a question where text=text.'''
-#     try:
-#         return db.select('questions', vars=locals(), where='text=$text')[0]
-#     except IndexError:
-#         return None
-#
-def get_data_by_question_id(question_id):
-    '''Returns an IterBetter all weights for a particular question_id, where each
-       row is a Storage object.'''
-    global db
-    try:
-        return db.select('data', vars=locals(), where='question_id=$question_id')
-    except IndexError:
-        return None
 #
 # def get_data_by_object_id(object_id):
 #     '''Returns an IterBetter of all weights for a particular object_id, where each
@@ -151,34 +174,7 @@ def get_data_by_question_id(question_id):
 #     except IndexError:
 #         return 0
 #
-def get_num_positives(object_tuple, question_id):
-    '''Returns the number of objects in the object_tuple where the value for the
-       given question_id is positive.'''
 
-    global db
-
-    assert type(object_tuple) == tuple
-
-    where = 'object_id IN %s AND question_id=%d AND value >0' %(object_tuple, question_id)
-    try:
-        rows = db.select('data', vars=locals(), where=where, what='count(*) AS count')
-        return rows[0].count
-    except IndexError:
-        return 0
-#
-def get_num_negatives(object_tuple, question_id):
-    '''Returns the number of objects in the object_tuple where the value for the
-       given question_id is negative.'''
-
-    global db
-    assert type(object_tuple) == tuple
-
-    where = 'object_id in %s AND question_id=%d AND value <0' %(object_tuple, question_id)
-    try:
-        rows = db.select('data', vars=locals(), where=where, what='count(*) AS count')
-        return rows[0].count
-    except IndexError:
-        return 0
 #
 # def delete_question(question_id):
 #     '''Deletes a question and its weights for a particular question_id.'''
@@ -189,12 +185,7 @@ def get_num_negatives(object_tuple, question_id):
 #     '''Deletes an object and its weights for a particular object_id.'''
 #     db.delete('objects', where='id=$object_id', vars=locals())
 #     db.delete('data', where='object_id=$object_id', vars=locals())
-#
-# def update_times_played(object_id):
-#     '''Increments the number of times played for a particular object_id.'''
-#     current = db.select('objects', vars=locals(), where='id=$object_id')[0].times_played
-#     if current == None: current = 0
-#     db.update('objects', where='id = $object_id', vars=locals(), times_played=current+1)
+
 #
 # def num_objects():
 #     '''Returns the number of objects in database.'''
