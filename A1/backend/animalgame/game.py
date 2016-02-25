@@ -1,4 +1,6 @@
 '''
+    Shuixi Li
+
     This Assignment is based off Andy Freeland and Dan Levy's project called 20questions
 
     I have taken their backend guessing logic, and used their database.
@@ -164,6 +166,10 @@ def choose_question(initial_questions, objects_values, asked_questions, how_many
     return question
 
 def update_local_knowledgebase(objects_values, asked_questions, question_id, answer):
+
+
+    question_id = int(question_id) # otherwise it's unicode
+
     '''Updates the the values for the current candidates based on the previus
        question and reply by the user.'''
     
@@ -193,9 +199,10 @@ def update_local_knowledgebase(objects_values, asked_questions, question_id, ans
                     value *= 5 # penalizes disagreement more
                     
                 objects_values[weight.object_id] += answer*value
-        print("asked_questions is : " + asked_questions)
-        asked_questions ={}
+
+        #print("asked_questions is : " + asked_questions)
         asked_questions[question_id] = answer
+        print("asked questions are : " + str(asked_questions))
 
 def guess(objects_values):
     '''Returns the object with the highest value.'''

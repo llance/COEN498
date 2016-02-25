@@ -95,11 +95,12 @@ jQuery(document).ready(function($) {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4) {
                 console.log("xmlHttp response text is : " + xmlHttp.responseText);
-                result = xmlHttp.responseText;
+                console.log("xmlHttp response is : " + xmlHttp.response);
+                result = xmlHttp.response;
                 console.log("result is : " + typeof result);
-                myPkg = builder.build("MyPkg");
-                myCarrier = MyPkg.Animals.Carrier;
-                var myMessage = myCarrier.decode64(result);
+                var rspPkg = builder.build("MyPkg");
+                var rspCarrier = rspPkg.Animals.Carrier;
+                var myMessage = rspCarrier.decode64(result);
 
                 console.log("myMessage is : " + myMessage);
             }

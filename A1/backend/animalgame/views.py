@@ -28,7 +28,8 @@ class prototest(APIView):
         print("request.body is :  ", request.body)
 
         response = QnA_pb2.Carrier()
-        foo = response.ParseFromString(request.body)
+        response.ParseFromString(request.body)
+
         print("response is : " + str(response))
 
         returnedResult = QnA_pb2.Carrier(question="am I a awesome?", answer="Yes, most definitely")
@@ -36,8 +37,6 @@ class prototest(APIView):
 
         print("serialized is : ", serialized)
         return Response(serialized, status=200)
-
-
 
 
 class startGame(APIView):
@@ -84,7 +83,9 @@ class questionAnswer(APIView):
         if (str(data['answer']) == 'False'):
             yes_no_answer = -1
 
-        game.update_local_knowledgebase(objects_values, data['question']['text'], data['question']['id'], yes_no_answer)
+        game.update_local_knowledgebase(objects_values, asked_questions, data['question']['id'], yes_no_answer)
+
+        print("asked_questions is : " + str(asked_questions))
 
         count += 1
 
