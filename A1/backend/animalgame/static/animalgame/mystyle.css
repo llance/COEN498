@@ -1,7 +1,12 @@
-#kennyPic {
+#guesswhoPic {
     display:block;
-    width: 200px;
-    height: 200px;
+    width: 400px;
+    height: 150px;
+    padding-left: 10cm;
+}
+
+#guesswhoTitle{
+    padding-left: 12cm;
 }
 
 #buttonLocation{
@@ -9,9 +14,10 @@
     float:right;
 }
 
-/*#displayMe{*/
-    /*float: left;*/
-/*}*/
+#displayMe{
+    float: left;
+    margin-left: 12cm;
+}
 
 #yesButton{
     float:left;

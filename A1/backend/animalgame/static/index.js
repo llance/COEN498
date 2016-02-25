@@ -49,7 +49,14 @@ jQuery(document).ready(function($) {
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4) {
                 console.log("xmlHttp response text is : " + xmlHttp.responseText);
-                parsedJson = JSON.parse(xmlHttp.responseText);
+
+                try {
+                    parsedJson = JSON.parse(xmlHttp.responseText);
+                }
+                catch(err) {
+                    document.getElementById("contentHolder").innerHTML = err.message;
+                }
+
 
                 result = parsedJson;
                 for (var key in parsedJson) {
