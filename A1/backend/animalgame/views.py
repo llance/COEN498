@@ -24,28 +24,27 @@ def mainPage(request):
 
 class qna_proto(APIView):
     def post(self, request, format=None):
+        global count
+        global question
+        global objects_values
 
-        #print("request.body is :  ",  type(request.body))
         print("request.body in protobuf is :  ", request.body)
 
         response = QnA_pb2.Carrier()
         response.ParseFromString(request.body)
 
-        print("response in protobuf is : " + str(response))
-        print("response.question in protobuf is : " + str(response.question))
-        print("response.question in protobuf is : " + str(response.id))
-
-        #print("response.body is : " + response)
+        # print("response in protobuf is : " + str(response))
+        # print("response.question in protobuf is : " + str(response.question))
+        # print("response.id in protobuf is : " + str(response.id))
+        # print("response.answer in protobuf is : ", type(response.answer))
 
         yes_no_answer = None;
-        if (str(response.answer) == 'True'):
+        if (response.answer == 'true'):
             yes_no_answer = 1
-        if (str(response.answer) == 'False'):
+        if (response.answer == 'false'):
             yes_no_answer = -1
 
         game.update_local_knowledgebase(objects_values, asked_questions, response.id, yes_no_answer)
-
-        print("asked_questions is : " + str(asked_questions))
 
         count += 1
 
@@ -61,13 +60,6 @@ class qna_proto(APIView):
             return Response(status=200)
 
         return Response(serializer.data)
-
-        # returnedResult = QnA_pb2.Carrier(question="am I a awesome?", answer="Yes, most definitely")
-        # serialized = returnedResult.SerializeToString()
-        #
-        # print("serialized is : ", serialized)
-        # return Response("hello", status=200)
-
 
 class startGame(APIView):
     def get(self, request, format=None):

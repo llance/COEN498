@@ -45,6 +45,10 @@ jQuery(document).ready(function($) {
 
     function httpPost(theUrl, AnswerInBool) {
         var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("POST", theUrl, true); // false for synchronous request
+
+        var ProtoBuf = dcodeIO.ProtoBuf;
+        var ByteBuffer = dcodeIO.ByteBuffer;
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4) {
@@ -67,42 +71,25 @@ jQuery(document).ready(function($) {
         }
 
         if(jsonOrProto == true){
-            xmlHttp.open("POST", theUrl, true); // false for synchronous request
             xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
             var jsonResponse = {};
             jsonResponse.question = result;
             jsonResponse.answer = AnswerInBool;
             var stringifiedJson = JSON.stringify(jsonResponse);
             xmlHttp.send(stringifiedJson);
-
         } else{
-            var ProtoBuf = dcodeIO.ProtoBuf;
-            var ByteBuffer = dcodeIO.ByteBuffer;
-
             var builder = ProtoBuf.loadProtoFile("../static/QnA.proto");
-            //console.log("builder is :  " + builder);
             var MyPkg = builder.build("MyPkg");
-            //console.log("MyPkg is :  " + MyPkg);
-
             var Carrier = MyPkg.Animals.Carrier;
 
-            console.log("Carrier is : " + Carrier);
-
-
-            console.log("result is : " + String(result.text));
-            console.log("id is : " + String(result.id));
-            console.log("answerinbool is : " + AnswerInBool);
-
-            var response = new Carrier(question = result.text, id = result.id, answer = String(AnswerInBool));
+            var response = new Carrier(question = result.text, id = String(result.id), answer = String(AnswerInBool));
 
             console.log('response is : ' , response);
+
             var buffer = response.encode();
 
-            var xmlHttp = new XMLHttpRequest();
-
-            xmlHttp.open("POST", theUrl, true); // false for synchronous request
             xmlHttp.setRequestHeader("Content-Type", "application/x-google-protobuf;charset=UTF-8");
-            console.log("buffer.toArrayBuffer() is : " + buffer.toArrayBuffer())
+            //console.log("buffer.toArrayBuffer() is : " + buffer.toArrayBuffer())
             xmlHttp.send(buffer.toArrayBuffer());
         }
 
