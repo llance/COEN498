@@ -32,6 +32,6 @@ urlpatterns = [
 
     url(r'^$', animalgame.views.mainPage, name='mainPage'),
 
-    url(r'^prototest$', animalgame.views.prototest.as_view(), name='prototest'),
+    url(r'^q_a_proto', animalgame.views.qna_proto.as_view(), name='prototest'),
 
 ]

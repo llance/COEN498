@@ -4,5 +4,6 @@ package MyPkg.Animals;
 
 message Carrier {
     required  string  question  = 1;                 // question
-    required  string  answer = 2;                   //answer
+    required  string  id  = 2;                 // id
+    required  string  answer = 3;                   //answer
 }

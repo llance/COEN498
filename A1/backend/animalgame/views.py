@@ -22,21 +22,51 @@ def mainPage(request):
     else:
         return HttpResponse(status=404)
 
-class prototest(APIView):
+class qna_proto(APIView):
     def post(self, request, format=None):
-        print("request.body is :  ",  type(request.body))
-        print("request.body is :  ", request.body)
+
+        #print("request.body is :  ",  type(request.body))
+        print("request.body in protobuf is :  ", request.body)
 
         response = QnA_pb2.Carrier()
         response.ParseFromString(request.body)
 
-        print("response is : " + str(response))
+        print("response in protobuf is : " + str(response))
+        print("response.question in protobuf is : " + str(response.question))
+        print("response.question in protobuf is : " + str(response.id))
 
-        returnedResult = QnA_pb2.Carrier(question="am I a awesome?", answer="Yes, most definitely")
-        serialized = returnedResult.SerializeToString()
+        #print("response.body is : " + response)
 
-        print("serialized is : ", serialized)
-        return Response(serialized, status=200)
+        yes_no_answer = None;
+        if (str(response.answer) == 'True'):
+            yes_no_answer = 1
+        if (str(response.answer) == 'False'):
+            yes_no_answer = -1
+
+        game.update_local_knowledgebase(objects_values, asked_questions, response.id, yes_no_answer)
+
+        print("asked_questions is : " + str(asked_questions))
+
+        count += 1
+
+        question = game.choose_question(initial_questions, objects_values, asked_questions)
+
+        serializer = serializers.QuestionSerializer(question)
+
+        print("serializer.data is :" + str(serializer.data))
+
+        if question == None or count > 20:
+            chosen = game.guess(objects_values)
+            print("chosen is : " + str(chosen))
+            return Response(status=200)
+
+        return Response(serializer.data)
+
+        # returnedResult = QnA_pb2.Carrier(question="am I a awesome?", answer="Yes, most definitely")
+        # serialized = returnedResult.SerializeToString()
+        #
+        # print("serialized is : ", serialized)
+        # return Response("hello", status=200)
 
 
 class startGame(APIView):
