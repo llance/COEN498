@@ -34,8 +34,8 @@ jQuery(document).ready(function($) {
                 try {
                     parsedJson = JSON.parse(xmlHttp.responseText);
                 }
-                catch (err) {
-                    document.getElementById("questionField").innerHTML = err.message;
+                catch(err) {
+                    document.getElementById("contentHolder").innerHTML = err.message;
                 }
                 result = parsedJson;
                 for (var key in parsedJson) {
@@ -44,7 +44,7 @@ jQuery(document).ready(function($) {
                     }
                 }
                 console.log("parsedJson['question'] is : " + parsedJson.text);
-                document.getElementById("questionField").innerHTML = parsedJson.text;
+                document.getElementById("contentHolder").innerHTML = parsedJson.text;
             }
         }
     }

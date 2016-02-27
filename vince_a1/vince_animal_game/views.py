@@ -5,8 +5,10 @@ from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.utils.six import BytesIO
+from rest_framework.parsers import JSONParser
 from . import game
 from . import protoSerializer_pb2
+from . import serializers
 
 def mainPage(request):
     if request.method == 'GET':
@@ -22,15 +24,17 @@ class get_question(APIView):
 
 class proto(APIView):
     def post(self, request, format=None):
-        protoBufMessage = protoSerializer_pb2.protoMessage()
+        protoBufMessage = protoSerializer_pb2.query()
         protoBufMessage.ParseFromString(request.body)
         print("Parsed protocol Buffer message is : " + str(protoBufMessage))
-        return Response(str(protoBufMessage), status=200)
+        return Response(request.body, status=200)
 
 class json(APIView):
     def post(self, request, format=None):
         requestBody = BytesIO(request.body)
         jsonPayload = JSONParser().parse(requestBody)
-        print("jsonPayload['question'].text is : " + str(jsonPayload['question']['text']))
-        print("jsonPayload['answer'] is : " + str(jsonPayload['answer']))
-        return Response(str(protoBufMessage), status=200)
+        #next_question = game.play(jsonPayload)
+        next_question = {'question' : 'next question'}
+        next_question = serializers.QuestionSerializer(next_question)
+        print(next_question.data)
+        return Response(next_question.data, status=200)
