@@ -1,6 +1,6 @@
-package protoData.test;
+package protoData.animals;
 
-message protoMessage {
+message query {
   required string question = 1;
-  required string answer = 2;
+  required bool answer = 2;
 }

@@ -4,9 +4,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.utils.six import BytesIO
 from . import game
 from . import protoSerializer_pb2
-
 
 def mainPage(request):
     if request.method == 'GET':
@@ -16,18 +16,21 @@ def mainPage(request):
 
 class get_question(APIView):
     def get(self, request, format=None):
-        '''Displays the computer's guess of who the user is thinking of.'''
-        jsondata = game.load_json()
-        qs = jsondata["questions"]
-        # questions = {i: q for i, q in zip(range(len(qs)), qs)}
-        # animals = copy.deepcopy(jsondata["animals"])
-        # responses = [None for i in range(len(questions))]
-        # response_yes = None
-        return Response(qs[1], status=200)
+        initialQuestion = game.first_question()
+        print("first question is: " + initialQuestion)
+        return Response(initialQuestion, status=200)
 
-class protoBufTest(APIView):
+class proto(APIView):
     def post(self, request, format=None):
-        country = protoSerializer_pb2.protoMessage()
-        country.ParseFromString(request.body)
-        print ("country is : " + country)
-        return Response(country, status=200)
+        protoBufMessage = protoSerializer_pb2.protoMessage()
+        protoBufMessage.ParseFromString(request.body)
+        print("Parsed protocol Buffer message is : " + str(protoBufMessage))
+        return Response(str(protoBufMessage), status=200)
+
+class json(APIView):
+    def post(self, request, format=None):
+        requestBody = BytesIO(request.body)
+        jsonPayload = JSONParser().parse(requestBody)
+        print("jsonPayload['question'].text is : " + str(jsonPayload['question']['text']))
+        print("jsonPayload['answer'] is : " + str(jsonPayload['answer']))
+        return Response(str(protoBufMessage), status=200)

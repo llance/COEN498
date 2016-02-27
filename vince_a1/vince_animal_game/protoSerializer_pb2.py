@@ -17,32 +17,32 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='protoSerializer.proto',
-  package='protoData.test',
-  serialized_pb=_b('\n\x15protoSerializer.proto\x12\x0eprotoData.test\"0\n\x0cprotoMessage\x12\x10\n\x08question\x18\x01 \x02(\t\x12\x0e\n\x06\x61nswer\x18\x02 \x02(\t')
+  package='protoData.animals',
+  serialized_pb=_b('\n\x15protoSerializer.proto\x12\x11protoData.animals\")\n\x05query\x12\x10\n\x08question\x18\x01 \x02(\t\x12\x0e\n\x06\x61nswer\x18\x02 \x02(\x08')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
 
-_PROTOMESSAGE = _descriptor.Descriptor(
-  name='protoMessage',
-  full_name='protoData.test.protoMessage',
+_QUERY = _descriptor.Descriptor(
+  name='query',
+  full_name='protoData.animals.query',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='question', full_name='protoData.test.protoMessage.question', index=0,
+      name='question', full_name='protoData.animals.query.question', index=0,
       number=1, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='answer', full_name='protoData.test.protoMessage.answer', index=1,
-      number=2, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
+      name='answer', full_name='protoData.animals.query.answer', index=1,
+      number=2, type=8, cpp_type=7, label=2,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -57,18 +57,18 @@ _PROTOMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=41,
-  serialized_end=89,
+  serialized_start=44,
+  serialized_end=85,
 )
 
-DESCRIPTOR.message_types_by_name['protoMessage'] = _PROTOMESSAGE
+DESCRIPTOR.message_types_by_name['query'] = _QUERY
 
-protoMessage = _reflection.GeneratedProtocolMessageType('protoMessage', (_message.Message,), dict(
-  DESCRIPTOR = _PROTOMESSAGE,
+query = _reflection.GeneratedProtocolMessageType('query', (_message.Message,), dict(
+  DESCRIPTOR = _QUERY,
   __module__ = 'protoSerializer_pb2'
-  # @@protoc_insertion_point(class_scope:protoData.test.protoMessage)
+  # @@protoc_insertion_point(class_scope:protoData.animals.query)
   ))
-_sym_db.RegisterMessage(protoMessage)
+_sym_db.RegisterMessage(query)
 
 
 # @@protoc_insertion_point(module_scope)

@@ -1,9 +1,9 @@
 from rest_framework import serializers
 
-
+#Serialize question to JSON
 class QuestionSerializer(serializers.Serializer):
     id = serializers.CharField()
-    text = serializers.CharField()
+    question = serializers.CharField()
     created = serializers.DateTimeField()
 
 

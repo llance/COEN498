@@ -3,48 +3,30 @@
 import json
 import random
 import copy
+from models import Country
+
+questions = {
+    "Is the country located in North America?" : False,
+    "Is the country located in South America?" : False,
+    "Is the country located in Central America?" : False,
+    "Is the country located in the Carribean" : False,
+    "Is the country located in the Bahamas?" : False,
+    "Is the official language of the country you're thinking about French" : False,
+    "Is the official language of the country you're thinking about English" : False,
+    "Is the official language of the country you're thinking about Spanish" : False,
+    "Is the official language of the country you're thinking about Dutch" : False,
+    "Is the official language of the country you're thinking about Danish" : False,
+    "Is the country you're thinking about big ? (over 1 million square kilometer)" : False,
+    "Is the country you're thinking about landlocked?" : False,
+    "Is the population of the country over 1 million people?" : False,
+}
 
 
-def load_json():
-    """load data. question responses stored here.
-    false means no, true means yes, null/None means unknown (question is new)
-    """
-    f = open("data.json", "r")
-    return json.loads(f.read())
-
-
-def save_json(data):
-    """save data to json file."""
-    o = json.dumps(data)
-    f = open("data.json", "w")
-    f.write(o)
-
-
-def safe_input(prompt):
-    """Allow canceling input without errors"""
-    try:
-        user_input = raw_input(prompt + u"\n> ")
-    except EOFError:
-        user_input = None
-    except KeyboardInterrupt:
-        user_input = None
-
-    return user_input
-
-
-def welcome():
-    """display welcome message"""
-    print(u"Welcome to the Animal Guesser!")
-    safe_input(u"Please think of an animal, then press a key to begin!")
-
-
-def prompt_yes_or_no(prompt):
-    response = safe_input(prompt)
-    return response in (u"Yes", u"yes", u"Y", u"y")
-
-
-def play_again():
-    return prompt_yes_or_no(u"Do you want to play again?")
+def first_question():
+    question = random.choice(questions.keys())
+    allCountries = Country.objects.all()
+    print(allCountries)
+    return question
 
 
 def get_question(questions, animals):

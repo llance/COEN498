@@ -1,5 +1,5 @@
 {
-    "animals": {
+    "Countries": {
         "Owl": [
             true,
             false,
@@ -17,7 +17,7 @@
         ]
     },
     "questions": [
-        "Can it fly?",
+        "Is is part of $Continent?",
         "Can it swim?",
         "Can it walk?"
     ]

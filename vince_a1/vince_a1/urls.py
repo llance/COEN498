@@ -20,7 +20,8 @@ import vince_animal_game.views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^get_question', vince_animal_game.views.get_question.as_view(), name='get_question'),
-    url(r'^protoBuf', vince_animal_game.views.protoBufTest.as_view(), name='get_question'),
+    url(r'^json', vince_animal_game.views.json.as_view(), name='jsonAns'),
+    url(r'^proto', vince_animal_game.views.proto.as_view(), name='protoAns'),
     url(r'^$', vince_animal_game.views.mainPage, name='mainPage'),
 
 ]

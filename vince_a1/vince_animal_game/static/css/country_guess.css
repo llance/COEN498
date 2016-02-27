@@ -1,0 +1,65 @@
+@import url("reset.css");
+
+body {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    color:#333
+}
+
+p {
+    padding: 10px;
+}
+
+h1 {
+    text-align: center;
+    font-size: x-large;
+    line-height: 65px;
+    text-shadow: 0px 2px 3px #555;
+	color: #333;
+}
+
+#wrapper {
+    margin: 0 auto;
+    width: 1000px;
+}
+
+#headerwrap {
+    width: 1000px;
+    float: left;
+    margin: 0 auto;
+}
+
+#header {
+    height: 75px;
+    background: #D9E9FF;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    margin: 5px;
+}
+
+#questionwrap {
+    width: 1000;
+    float: left;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+#question {
+    background: #FFFFFF;
+    border-radius: 10px;
+    border: 1px solid #ebebeb;
+    margin: 5px;
+}
+
+#jsonButtons {
+    padding: 10px;
+}
+
+#protobufButtons {
+    padding: 10px;
+}
+
+#toggleButton {
+    padding: 10px;
+}
+
