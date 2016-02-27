@@ -1,5 +1,4 @@
 # Create your views here.
-import random
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework.views import APIView
@@ -10,6 +9,8 @@ from . import game
 from . import protoSerializer_pb2
 from . import serializers
 
+iterations = 0
+
 def mainPage(request):
     if request.method == 'GET':
         return render(request, 'index.html')
@@ -19,22 +20,35 @@ def mainPage(request):
 class get_question(APIView):
     def get(self, request, format=None):
         initialQuestion = game.first_question()
-        print("first question is: " + initialQuestion)
-        return Response(initialQuestion, status=200)
+        initialQuestion = serializers.QuestionSerializer(initialQuestion)
+        return Response(initialQuestion.data, status=200)
 
 class proto(APIView):
     def post(self, request, format=None):
+        payload = {}
+        global iterations
+        iterations += 1
         protoBufMessage = protoSerializer_pb2.query()
         protoBufMessage.ParseFromString(request.body)
+        #next_question = game.play(protoBufMessage)
+        payload['question'] = protoBufMessage.question
+        payload['answer'] = protoBufMessage.answer
         print("Parsed protocol Buffer message is : " + str(protoBufMessage))
-        return Response(request.body, status=200)
+        next_question = game.play(payload)
+        #next_question = {'question' : 'next question'}
+        next_question = serializers.QuestionSerializer(next_question)
+        return Response(next_question.data, status=200)
 
 class json(APIView):
     def post(self, request, format=None):
+
+        global iterations
+        iterations += 1
         requestBody = BytesIO(request.body)
         jsonPayload = JSONParser().parse(requestBody)
-        #next_question = game.play(jsonPayload)
-        next_question = {'question' : 'next question'}
+        next_question = game.play(jsonPayload)
+        print(next_question)
+        #next_question = {'question' : 'next question'}
         next_question = serializers.QuestionSerializer(next_question)
         print(next_question.data)
         return Response(next_question.data, status=200)

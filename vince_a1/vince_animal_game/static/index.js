@@ -4,15 +4,28 @@ jQuery(document).ready(function($) {
     //Initial question get
     function httpGet(url, question) {
         var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", url, true); // false for synchronous request
+        xmlHttp.send();
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState == 4) {
-                console.log("xmlHttp response text is : " + xmlHttp.response);
-                    document.getElementById("questionField").innerHTML =xmlHttp.response;
+                console.log("xmlHttp response text is : " + xmlHttp.responseText);
+                try {
+                    parsedJson = JSON.parse(xmlHttp.responseText);
                 }
+                catch (err) {
+                    document.getElementById("questionField").innerHTML = err.message;
+                }
+                result = parsedJson;
+                for (var key in parsedJson) {
+                    if (parsedJson.hasOwnProperty(key)) {
+                        console.log(key + " -> " + parsedJson[key]);
+                    }
+                }
+                console.log("parsedJson['question'] is : " + parsedJson['question']);
+                document.getElementById("questionField").innerHTML = parsedJson['question'];
             }
-        xmlHttp.open("GET", url, true); // false for synchronous request
-        xmlHttp.send();
+        }
     }
 
     function httpPost(url, answer) {
@@ -35,7 +48,7 @@ jQuery(document).ready(function($) {
                     parsedJson = JSON.parse(xmlHttp.responseText);
                 }
                 catch(err) {
-                    document.getElementById("contentHolder").innerHTML = err.message;
+                    document.getElementById("questionField").innerHTML = err.message;
                 }
                 result = parsedJson;
                 for (var key in parsedJson) {
@@ -43,8 +56,8 @@ jQuery(document).ready(function($) {
                         console.log(key + " -> " + parsedJson[key]);
                     }
                 }
-                console.log("parsedJson['question'] is : " + parsedJson.text);
-                document.getElementById("contentHolder").innerHTML = parsedJson.text;
+                console.log("parsedJson['question'] is : " + parsedJson['question']);
+                document.getElementById("questionField").innerHTML = parsedJson['question'];
             }
         }
     }
@@ -72,18 +85,23 @@ jQuery(document).ready(function($) {
 
         //Wait for reply from backend
         xmlHttp.onreadystatechange = function() {
-            var newquestion;
             if (xmlHttp.readyState == 4) {
                 console.log("xmlHttp response text is : " + xmlHttp.responseText);
-                result = xmlHttp.responseText;
-                console.log("result is : " + typeof result);
-                protoData = builder.build("protoData");
-                var payloadMessage = protoData.test.protoMessage;
-                var newquestion = payloadMessage.decode(result);
-
-                console.log("newquestion is : " + newquestion);
+                try {
+                    parsedJson = JSON.parse(xmlHttp.responseText);
+                }
+                catch(err) {
+                    document.getElementById("questionField").innerHTML = err.message;
+                }
+                result = parsedJson;
+                for (var key in parsedJson) {
+                    if (parsedJson.hasOwnProperty(key)) {
+                        console.log(key + " -> " + parsedJson[key]);
+                    }
+                }
+                console.log("parsedJson['question'] is : " + parsedJson['question']);
+                document.getElementById("questionField").innerHTML = parsedJson['question'];
             }
-            document.getElementById("questionField").innerHTML = newquestion;
         }
 
     };
