@@ -132,10 +132,11 @@ jQuery(document).ready(function($) {
     });
 
 
-    $('#nextQuestion').click(function() {
+    $('#startGame').click(function() {
         var url = 'startGame';
         console.log("clicked" + url);
         httpGet(url);
+        $("#startGame").hide();
     });
 
     $('#myonoffswitch').click(function() {

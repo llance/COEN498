@@ -16,16 +16,30 @@
 
 #displayMe{
     float: left;
-    margin-left: 12cm;
+    margin-left: 11cm;
 }
 
 #yesButton{
     float:left;
     clear:both;
+    margin-right: 10cm;
 }
 #noButton {
     float:left;
     clear:both;
+    margin-right: 10cm;
+}
+
+#startGame{
+    float:left;
+    clear:both;
+    margin-right: 10cm;
+}
+
+#guessButton{
+    float:left;
+    clear:both;
+    margin-right: 10cm;
 }
 
 body {
