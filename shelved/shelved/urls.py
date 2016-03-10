@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 import shelvedApp.views
+import shelvedApp.amazonQuery
 import shelvedApp.discogs
 
 
@@ -28,7 +29,7 @@ urlpatterns = [
 
     #url(r'^', shelvedApp.views.welcome),
     url(r'^set/', shelvedApp.views.set),
-    url(r'^test/', shelvedApp.views.setwithMongoEngine),
+    url(r'^test/', shelvedApp.amazonQuery.getBookByISBN),
     url(r'^retrieve/', shelvedApp.views.retrieve),
     url(r'^discogs/', shelvedApp.discogs.discogs),
 ]

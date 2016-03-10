@@ -31,9 +31,6 @@ def discogs(request):
 
 
 
-
-
-
         #
         # request_token_url = 'https://api.discogs.com/oauth/request_token'
         # authorize_url = 'https://www.discogs.com/oauth/authorize'
