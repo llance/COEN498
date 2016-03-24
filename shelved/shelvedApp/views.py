@@ -1,5 +1,6 @@
 # Create your views here.
 from django.http import HttpResponse
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from pymongo import MongoClient, InsertOne
 # from rest_framework import status, serializers
@@ -91,7 +92,7 @@ def retrieve(request):
 
         return HttpResponse("hello world",status=200)
 
-# def welcome(request):
-#     if request.method == 'GET':
-#         return render(request, 'index.html')
+def welcome(request):
+    if request.method == 'GET':
+        return render(request, 'index.html')
 
