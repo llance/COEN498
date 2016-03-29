@@ -7,7 +7,10 @@ from pymongo import MongoClient, InsertOne
 # from rest_framework.decorators import api_view
 # from rest_framework.response import Response
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+from django.db import IntegrityError
 import mongoengine
+from django.contrib.auth import login, logout, authenticate
 
 from shelvedApp.models import *
 
@@ -92,7 +95,37 @@ def retrieve(request):
 
         return HttpResponse("hello world",status=200)
 
+@csrf_exempt
 def welcome(request):
     if request.method == 'GET':
         return render(request, 'index.html')
 
+@csrf_exempt
+def register(request):
+    if request.POST:
+        print("register called!")
+        regUsername  = request.POST.get("registrationEmail")
+        regPW = request.POST.get("registrationPW")
+
+
+        # password  = request.POST.get("password")
+        # if password != request.POST.get("passwordConfirm"):
+        #    return redirect("/?passwords_dont_match")
+
+        try:
+            user = User.objects.create_user(
+                regUsername,
+                regPW)
+        except IntegrityError:
+            print("already registered");
+            #return redirect("/?id_already_used")
+        print("trying to save user")
+        user.save()
+
+        user = authenticate(
+            username=regUsername,
+            password=regPW)
+
+        print("user is : ", user)
+        return HttpResponse("USER REGISTERED", status=200);
+        #login(request, user)

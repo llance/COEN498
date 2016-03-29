@@ -27,7 +27,11 @@ urlpatterns = [
     # url(r'^users/register', shelvedApp.views.create_user),
 
 
-    url(r'^', shelvedApp.views.welcome),
+    url(r'^welcome/', shelvedApp.views.welcome),
+
+    url(r'^register/', shelvedApp.views.register),
+
+
     url(r'^set/', shelvedApp.views.set),
     url(r'^test/', shelvedApp.amazonQuery.getBookByISBN),
     url(r'^retrieve/', shelvedApp.views.retrieve),
