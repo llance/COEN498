@@ -26,10 +26,11 @@ urlpatterns = [
     # url(r'^login/', shelvedApp.views.login),
     # url(r'^users/register', shelvedApp.views.create_user),
 
+    url(r'^$', shelvedApp.views.welcome, name='welcome'),
 
-    url(r'^welcome/', shelvedApp.views.welcome),
+    url(r'^register/', shelvedApp.views.register, name='register'),
+    url(r'^login/', shelvedApp.views.login, name='login'),
 
-    url(r'^register/', shelvedApp.views.register),
 
 
     url(r'^set/', shelvedApp.views.set),

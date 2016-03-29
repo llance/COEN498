@@ -1,6 +1,5 @@
 # Create your views here.
 from django.http import HttpResponse
-from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from pymongo import MongoClient, InsertOne
 # from rest_framework import status, serializers
@@ -11,6 +10,8 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 import mongoengine
 from django.contrib.auth import login, logout, authenticate
+from django.shortcuts import render, redirect
+
 
 from shelvedApp.models import *
 
@@ -102,11 +103,10 @@ def welcome(request):
 
 @csrf_exempt
 def register(request):
-    if request.POST:
+    if request.method == 'POST':
         print("register called!")
         regUsername  = request.POST.get("registrationEmail")
         regPW = request.POST.get("registrationPW")
-
 
         # password  = request.POST.get("password")
         # if password != request.POST.get("passwordConfirm"):
@@ -114,11 +114,13 @@ def register(request):
 
         try:
             user = User.objects.create_user(
-                regUsername,
-                regPW)
+                username=regUsername,
+                email=regUsername,
+                password=regPW)
         except IntegrityError:
             print("already registered");
             #return redirect("/?id_already_used")
+
         print("trying to save user")
         user.save()
 
@@ -127,5 +129,34 @@ def register(request):
             password=regPW)
 
         print("user is : ", user)
-        return HttpResponse("USER REGISTERED", status=200);
+        return HttpResponse("USER REGISTERED", status=201);
         #login(request, user)
+
+@csrf_exempt
+def login(request):
+    if request.method == 'POST':
+        user = authenticate(
+            username = request.POST.get('registrationEmail'),
+            password = request.POST.get('registrationPW'))
+
+        print("user is :", user)
+
+        if user is None:
+            return HttpResponse("you have either given wrong user name or wrong password");
+
+        if user is not None and user.is_active:
+            return HttpResponse("logged in!", status=200);
+            #login(request, user)
+
+            redirect_path = request.POST.get("next", "/")
+            if redirect_path == "":
+                redirect_path = "/"
+
+            return redirect(redirect_path)
+
+        resp = redirect("login")
+        parm = request.GET.copy()
+        parm["invalid"] = "1"
+        resp["Location"] += "?" + parm.urlencode()
+
+        return resp

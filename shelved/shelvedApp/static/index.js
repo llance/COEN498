@@ -171,13 +171,24 @@ jQuery(document).ready(function($) {
         var registrationPW = document.getElementById("user-pw").value;
         console.log("user-email is :", document.getElementById("user-email").value);
         console.log("user-email is :", document.getElementById("user-pw").value);
-
         var jsonResponse = {};
         jsonResponse.regEmail = registrationEmail;
         jsonResponse.regPW = registrationPW;
-
         httpPost(url, jsonResponse);
 
+    });
+
+        $('#loginSubmit').click(function() {
+        var url = 'login/';
+
+        var loginEmail = document.getElementById("login_user_email").value;
+        var loginPW = document.getElementById("login_user_pw").value;
+        console.log("user-email is :", document.getElementById("login_user_email").value);
+        console.log("user-email is :", document.getElementById("login_user_pw").value);
+        var jsonResponse = {};
+        jsonResponse.loginEmail = loginEmail;
+        jsonResponse.loginPW = loginPW;
+        httpPost(url, jsonResponse);
     });
 
 });
