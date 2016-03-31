@@ -151,6 +151,7 @@ function httpPost(theUrl, jsonToSend) {
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4) {
             console.log("xmlHttp response text is : " + xmlHttp.responseText);
+            
         }
     }
 

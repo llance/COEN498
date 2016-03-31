@@ -139,7 +139,9 @@ def login(request):
             username = request.POST.get('registrationEmail'),
             password = request.POST.get('registrationPW'))
 
-        print("user is :", user)
+        print("return to another page")
+        return render(request, "mainPage.html", request.GET)
+
 
         if user is None:
             return HttpResponse("you have either given wrong user name or wrong password");
