@@ -1,6 +1,0 @@
-package protoData.animals;
-
-message query {
-  required string question = 1;
-  required bool answer = 2;
-}
