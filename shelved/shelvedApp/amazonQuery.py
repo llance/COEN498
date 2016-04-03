@@ -4,6 +4,7 @@ import datetime
 import requests
 from django.utils import timezone
 import os
+from amazon.api import AmazonAPI
 
 
 
@@ -26,7 +27,13 @@ def getBookByISBN(request):
     print("hello foobar", r.text)
 
 
-
+#revised method using the simple amazon api
+def queryAmazon(upc):
+    amazon = AmazonAPI('AKIAIQOSMQ3XYLJ2OWOQ','xBV4OLH9/OorIXGHhUzyeSkPuQGnME/QVQsKQfGS', 'shelvedWebApp')
+    product = amazon.lookup(IdType='UPC', ItemId=upc , SearchIndex='All')
+    title = product.title #title, include "(format)"
+    format = product.binding #explicit format type "blu-ray" or "dvd"
+    #all other attributes are variable ; published, label, creators...
 
 
     # var today = new Date();
