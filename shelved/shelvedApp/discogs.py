@@ -4,6 +4,7 @@ import discogs_client
 
 __author__ = 'lanceli'
 
+/deprecated?
 @csrf_exempt
 def discogs(request):
     if request.method == 'GET':
@@ -29,6 +30,22 @@ def discogs(request):
         print("artist.name is : " + artist.name)
         return HttpResponse("hello",status=200)
 
+#Set up discogs client, with key auth
+d = discogs_client.Client('shelved/0.1', user_token='vbJueTnrwORBYqihcMCUjUylzyiDsQpKWvbunjik')
+
+#Gets a UPC code
+def queryDiscogs(upc):
+    request = d.search(str(upc))
+    if (len(request) > 0):
+        album = request[0]
+        artists = []
+        for artist in album.artists:
+            artists.append(artist.name)
+        title = album.title
+        physicalMedium = album.formats[0][‘name’]
+        numDisks = album.formats[0][‘qty’]
+        label = album.labels[0].name
+        tracklist  = album.tracklist
 
 
         #
