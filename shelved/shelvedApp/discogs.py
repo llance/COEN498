@@ -42,8 +42,8 @@ def queryDiscogs(upc):
         for artist in album.artists:
             artists.append(artist.name)
         title = album.title
-        physicalMedium = album.formats[0][‘name’]
-        numDisks = album.formats[0][‘qty’]
+        physicalMedium = album.formats[0]['name']
+        numDisks = album.formats[0]['qty']
         label = album.labels[0].name
         tracklist  = album.tracklist
 
