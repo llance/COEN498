@@ -4,7 +4,6 @@ import discogs_client
 
 __author__ = 'lanceli'
 
-/deprecated?
 @csrf_exempt
 def discogs(request):
     if request.method == 'GET':

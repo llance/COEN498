@@ -11,7 +11,7 @@ from django.db import IntegrityError
 import mongoengine
 from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import render, redirect
-
+import json
 
 from shelvedApp.models import *
 
@@ -104,9 +104,17 @@ def welcome(request):
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
-        print("register called!")
-        regUsername  = request.POST.get("registrationEmail")
-        regPW = request.POST.get("registrationPW")
+        print("register called!, body is :", request.body)
+
+        requestbody = json.loads(request.body)
+
+        # for elem in requestbody:
+        #     print ('elem is ', elem, 'val is :',requestbody[elem])
+
+        regUsername = requestbody['username']
+        regPW = requestbody['password']
+
+        # print('regUsername is ', regUsername, 'regPW is ', regPW)
 
         # password  = request.POST.get("password")
         # if password != request.POST.get("passwordConfirm"):
@@ -117,48 +125,37 @@ def register(request):
                 username=regUsername,
                 email=regUsername,
                 password=regPW)
+
         except IntegrityError:
-            print("already registered");
+            print("already registered")
             #return redirect("/?id_already_used")
 
         print("trying to save user")
         user.save()
 
-        user = authenticate(
-            username=regUsername,
-            password=regPW)
+        return HttpResponse(status=201)
 
-        print("user is : ", user)
-        return HttpResponse("USER REGISTERED", status=201);
-        #login(request, user)
+
 
 @csrf_exempt
 def login(request):
     if request.method == 'POST':
+
+        requestbody = json.loads(request.body)
+
+        for elem in requestbody:
+            print ('elem is ', elem, 'val is :',requestbody[elem])
+
+        regUsername = requestbody['username']
+        regPW = requestbody['password']
+
         user = authenticate(
-            username = request.POST.get('registrationEmail'),
-            password = request.POST.get('registrationPW'))
-
-        print("return to another page")
-        return render(request, "mainPage.html", request.GET)
-
+            username = regUsername,
+            password = regPW)
 
         if user is None:
-            return HttpResponse("you have either given wrong user name or wrong password");
+            return HttpResponse("you have either given wrong user name or wrong password", status=404);
 
         if user is not None and user.is_active:
             return HttpResponse("logged in!", status=200);
-            #login(request, user)
 
-            redirect_path = request.POST.get("next", "/")
-            if redirect_path == "":
-                redirect_path = "/"
-
-            return redirect(redirect_path)
-
-        resp = redirect("login")
-        parm = request.GET.copy()
-        parm["invalid"] = "1"
-        resp["Location"] += "?" + parm.urlencode()
-
-        return resp
