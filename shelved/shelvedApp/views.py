@@ -125,3 +125,17 @@ def login(request):
         if user is not None and user.is_active:
             return HttpResponse("logged in!", status=200);
 
+
+@csrf_exempt
+def addIbsn(request):
+    if request.method == 'POST':
+
+        requestbody = json.loads(request.body)
+
+        # for elem in requestbody:
+        #     print ('elem is ', elem, 'val is :',requestbody[elem])
+
+        ibsnNumber = requestbody['ibsnNum']
+
+
+        return HttpResponse("ibsn received", status=200);

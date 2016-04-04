@@ -23,7 +23,7 @@ export class Signup {
     console.log('username is ', username, 'password is ', password);
     event.preventDefault();
     let body = JSON.stringify({ username, password });
-    console.log("body is : ", body);
+    console.log('body is : ', body);
     this.http.post('http://localhost:8000/register/', body, { headers: contentHeaders })
       .subscribe(
         response => {
@@ -31,7 +31,7 @@ export class Signup {
         },
         error => {
           alert(error.text());
-          console.log("had error from sending POST to register");
+          console.log('had error from sending POST to register');
           console.log(error.text());
         }
       );

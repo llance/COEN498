@@ -27,7 +27,7 @@ export class Login {
     this.http.post('http://localhost:8000/login/', body, { headers: contentHeaders })
       .subscribe(
         response => {
-          console.log("routing to /home");
+          console.log('routing to /home');
           this.router.parent.navigateByUrl('/home');
         },
         error => {
