@@ -23,15 +23,8 @@ import shelvedApp.discogs
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
-    # url(r'^login/', shelvedApp.views.login),
-    # url(r'^users/register', shelvedApp.views.create_user),
-
-    # url(r'^$', shelvedApp.views.welcome, name='welcome'),
-
     url(r'^register/', shelvedApp.views.register, name='register'),
     url(r'^login/', shelvedApp.views.login, name='login'),
-
-
 
     url(r'^set/', shelvedApp.views.set),
     url(r'^test/', shelvedApp.amazonQuery.getBookByISBN),

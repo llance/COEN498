@@ -28,7 +28,6 @@ export class Login {
       .subscribe(
         response => {
           console.log("routing to /home");
-          //localStorage.setItem('jwt', response.json().id_token);
           this.router.parent.navigateByUrl('/home');
         },
         error => {

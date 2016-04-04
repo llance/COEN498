@@ -1,50 +1,16 @@
 # Create your views here.
+import json
+
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from pymongo import MongoClient, InsertOne
-# from rest_framework import status, serializers
-# from rest_framework.decorators import api_view
-# from rest_framework.response import Response
-from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 import mongoengine
-from django.contrib.auth import login, logout, authenticate
-from django.shortcuts import render, redirect
-import json
+from django.contrib.auth import authenticate
+from django.shortcuts import render
 
 from shelvedApp.models import *
-
-
-# @csrf_exempt
-# def login(request):
-#     if request.method == 'POST':
-#         print("username is : " + str(request.POST.get('username')));
-#         print("password is : " + str(request.POST.get('password')));
-#
-#         return HttpResponse("OK", status=200);
-#
-#
-# class UserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = get_user_model()
-#
-# @api_view(['POST'])
-# def register(request):
-#     VALID_USER_FIELDS = [f.name for f in get_user_model()._meta.fields]
-#     DEFAULTS = {
-#         # you can define any defaults that you would like for the user, here
-#     }
-#     serialized = UserSerializer(data=request.DATA)
-#     if serialized.is_valid():
-#         user_data = {field: data for (field, data) in request.DATA.items() if field in VALID_USER_FIELDS}
-#         user_data.update(DEFAULTS)
-#         user = get_user_model().objects.create_user(
-#             **user_data
-#         )
-#         return Response(UserSerializer(instance=user).data, status=status.HTTP_201_CREATED)
-#     else:
-#         return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @csrf_exempt
@@ -130,7 +96,7 @@ def register(request):
             print("already registered")
             #return redirect("/?id_already_used")
 
-        print("trying to save user")
+        # print("jwt_auth.views.obtain_jwt_token is :", jwt_auth.views.ObtainJSONWebToken.post(request))
         user.save()
 
         return HttpResponse(status=201)
