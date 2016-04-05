@@ -14,8 +14,10 @@ def queryGoogle(isbn):
     query = str(isbn)
     request = books_service.volumes().list(source='public', q=query)
     books = request.execute()
+
+    print("book is :", books)
     if (books['items'][0]):
-        book = books[‘items’][0]
+        book = books["items"][0]
         title = (book["volumeInfo"]["title"])
         #find a faster streamlined less retarded way
         if (book["volumeInfo"]["subtitle"]):
@@ -25,3 +27,4 @@ def queryGoogle(isbn):
         publisher = (book["volumeInfo"]["publisher"])
         publishedDate = (book["volumeInfo"]["publishedDate"])
         language = (book["volumeInfo"]["language"])
+

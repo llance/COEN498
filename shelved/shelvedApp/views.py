@@ -11,6 +11,7 @@ from django.contrib.auth import authenticate
 from django.shortcuts import render
 
 from shelvedApp.models import *
+from shelvedApp.googleQuery import queryGoogle
 
 
 @csrf_exempt
@@ -136,6 +137,6 @@ def addIbsn(request):
         #     print ('elem is ', elem, 'val is :',requestbody[elem])
 
         ibsnNumber = requestbody['ibsnNum']
-
-
+        print("ibsnNumber is", ibsnNumber)
+        queryGoogle(ibsnNumber)
         return HttpResponse("ibsn received", status=200);
