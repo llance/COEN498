@@ -5,7 +5,6 @@ from pymongo import MongoClient, InsertOne
 from collections import defaultdict
 from collections import Counter
 
-
 #Set up app key
 books_service = build('books', 'v1', developerKey='AIzaSyD6P55381pkncIFbOvxP-Ov0sYt-lcoOP8')
 
@@ -14,44 +13,35 @@ def queryGoogle(isbn):
     query = str(isbn)
     request = books_service.volumes().list(source='public', q=query)
     books = request.execute()
+    data = multi_dimensions(2, Counter)
+    fields = ['title', 'authors', 'subtitle', 'pageCount', 'publisher', 'publishedDate', 'language']
 
     if (books['items'][0]):
-        book = books["items"][0]
-        title = (book["volumeInfo"]["title"])
-        authors = (book["volumeInfo"]["authors"])
-        #find a faster streamlined less retarded way
-        # if (book["volumeInfo"]["subtitle"]):
-        #     subtitle = (book["volumeInfo"]["subtitle"])
-        #     authors = (book["volumeInfo"]["authors"])
-        #     pageCount = (book["volumeInfo"]["pageCount"])
-        #     publisher = (book["volumeInfo"]["publisher"])
-        #     publishedDate = (book["volumeInfo"]["publishedDate"])
-        #     language = (book["volumeInfo"]["language"])
+        book = books["items"][0]['volumeInfo']
+        for key in fields:
+            if key in book:
+                data[str(isbn)][key] = book[key]
 
-        print("title is :", title)
+        print("title is :", str(book['title']))
 
-        addDataToDB(isbn, title, authors)
+        addDataToDB(data)
 
         #print("result of mongo write is :", result)
 
-        return title
+        return str(book['title'])
         # print("authors is :", authors)
         # print("pageCount is :", pageCount)
         # print("publisher is :", publisher)
         # print("publishedDate is :", publishedDate)
         # print("language is :", language)
+    else:
+        return 'Book not found'
 
 
-def addDataToDB(isbn, title, author):
-    print('inserting info for isbn :', str(isbn), 'into MongoDB')
+def addDataToDB(data):
+    #print('inserting info for isbn :', str(isbn), 'into MongoDB')
     myMongoClient = MongoClient()
     myMongoDb = myMongoClient.myMongoDb
-
-    data = multi_dimensions(2, Counter)
-
-
-    data[str(isbn)]['title'] = title
-    data[str(isbn)]['author'] = author
 
     requests = [InsertOne(data)]
     result = myMongoDb.books.bulk_write(requests)
