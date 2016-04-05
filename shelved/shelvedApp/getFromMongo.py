@@ -13,6 +13,8 @@ def getBooks(request):
         myMongoDb = myMongoClient.myMongoDb
         cursor = myMongoDb.books.find()
 
+        json_format_data = {}
+
         list_of_dict = []
 
         for elem in cursor:
@@ -20,18 +22,12 @@ def getBooks(request):
 
         for listIndex, dict_in_list in enumerate(list_of_dict):
             for elem in dict_in_list:
-                print ("elem ",elem, 'val', dict_in_list[elem])
-                createJson(dict_in_list[elem])
-                # if str(elem).contains("u'_id'"):
-                #     print('contain')
-
-        data = {}
-        data['title'] = ''
-        json_data = json.dumps(data)
+                print("elem ", elem, 'val', dict_in_list[elem])
+                if str(elem).find('_id') > -1: #ignore those while creating json
+                    print('not an elem!')
+                else:
+                    json_format_data[elem] = dict_in_list[elem]
+        print('json_format_data', json_format_data)
+        json_data = json.dumps(json_format_data)
         return HttpResponse(json_data, status=200);
 
-def createJson(data_in_dict):
-    data = {}
-
-    for key in data_in_dict:
-        print('key', key, 'val', data_in_dict[key])
