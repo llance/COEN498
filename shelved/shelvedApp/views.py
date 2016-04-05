@@ -49,18 +49,6 @@ def setwithMongoEngine(request):
         return HttpResponse(status=400)
 
 
-@csrf_exempt
-def retrieve(request):
-    if request.method == 'GET':
-        print('retrieving from mongo');
-        myMongoClient = MongoClient()
-        myMongoDb = myMongoClient.myMongoDb
-        insertedDatas = myMongoDb.test.find()
-
-        for insertedData in insertedDatas:
-            print("post title is : " + str(insertedData) )
-
-        return HttpResponse("hello world",status=200)
 
 @csrf_exempt
 def welcome(request):
@@ -137,5 +125,10 @@ def addIbsn(request):
 
         ibsnNumber = requestbody['ibsnNum']
         print("ibsnNumber is", ibsnNumber)
-        queryGoogle(ibsnNumber)
-        return HttpResponse("ibsn received", status=200);
+        booktitle = queryGoogle(ibsnNumber)
+
+        data = {}
+        data['title'] = booktitle
+        json_data = json.dumps(data)
+        return HttpResponse(json_data, status=200);
+

@@ -25,5 +25,19 @@ export class Library {
     constructor(public router: Router, public http: Http) {
     }
 
-   
+    viewBooks() {
+        event.preventDefault();
+        this.http.get('http://localhost:8000/books/', { headers: contentHeaders })
+            .subscribe(
+            response => {
+                var jsonResponse = response.json();
+                console.log('response received!', jsonResponse);
+                // this.router.parent.navigateByUrl('/home');
+            },
+            error => {
+                alert(error.text());
+                console.log(error.text());
+            }
+            );
+    }
 }

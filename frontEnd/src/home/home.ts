@@ -4,7 +4,6 @@ import { Http, Headers } from 'angular2/http';
 import { Router } from 'angular2/router';
 import { contentHeaders } from '../common/headers';
 import { FormBuilder, Validators } from 'angular2/common';
-import {ToasterContainerComponent, ToasterService} from 'angular2-toaster/angular2-toaster';
 
 
 let styles = require('./home.css');
@@ -15,14 +14,6 @@ let template = require('./home.html');
   selector: 'home',
 })
 
-@Component({
-    selector: 'root',
-    directives: [ToasterContainerComponent],
-    providers: [ToasterService],
-    template: `
-        <toaster-container></toaster-container>
-        <button (click)="popToast()">pop toast</button>`
-})
 
 
 @View({
@@ -31,11 +22,9 @@ let template = require('./home.html');
   styles: [styles]
 })
 export class Home {
-    private toasterService: ToasterService;
     ibsnForm: ControlGroup;
 
-    constructor(public router: Router, public http: Http, fb: FormBuilder, toasterService: ToasterService) {
-        this.toasterService = toasterService;
+    constructor(public router: Router, public http: Http, fb: FormBuilder) {
         this.ibsnForm = fb.group({
           ibsnNumber: ['', Validators.required]
       });
@@ -49,9 +38,9 @@ export class Home {
       this.http.post('http://localhost:8000/addIbsn/', body, { headers: contentHeaders })
         .subscribe(
           response => {
-            console.log('response received!');
-
-            // this.router.parent.navigateByUrl('/home');
+            var jsonResponse = response.json();
+            console.log('response received!', jsonResponse.title);
+                        // this.router.parent.navigateByUrl('/home');
           },
           error => {
             alert(error.text());
@@ -60,17 +49,12 @@ export class Home {
         );
   }
 
+  viewLibrary() {
+      this.router.parent.navigateByUrl('/library');
+  }
+
   logout() {
     this.router.parent.navigateByUrl('/login');
   }
 
-  popToast() {
-      this.toasterService.pop('success', 'Args Title', 'Args Body');
-  }
 }
-
-class Root {
-    
-}
-
-bootstrap(Root);

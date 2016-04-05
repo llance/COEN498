@@ -1,3 +1,5 @@
+from pymongo import MongoClient, InsertOne
+
 __author__ = 'vbilodeau'
 
 import datetime
@@ -13,6 +15,10 @@ books_service = build('books', 'v1', developerKey='AIzaSyD6P55381pkncIFbOvxP-Ov0
 def queryGoogle(isbn):
     query = str(isbn)
     request = books_service.volumes().list(source='public', q=query)
+
+    myMongoClient = MongoClient()
+    myMongoDb = myMongoClient.myMongoDb
+
     books = request.execute()
 
     if (books['items'][0]):
@@ -27,8 +33,14 @@ def queryGoogle(isbn):
         #     publishedDate = (book["volumeInfo"]["publishedDate"])
         #     language = (book["volumeInfo"]["language"])
 
-        print("book is :", book)
         print("title is :", title)
+
+        requests = [InsertOne({isbn: title})]
+        result = myMongoDb.books.bulk_write(requests)
+
+        #print("result of mongo write is :", result)
+
+        return title
         # print("authors is :", authors)
         # print("pageCount is :", pageCount)
         # print("publisher is :", publisher)

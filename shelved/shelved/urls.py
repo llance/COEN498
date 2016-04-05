@@ -18,6 +18,7 @@ from django.contrib import admin
 import shelvedApp.views
 import shelvedApp.amazonQuery
 import shelvedApp.discogs
+import shelvedApp.getFromMongo
 
 
 urlpatterns = [
@@ -28,9 +29,9 @@ urlpatterns = [
 
     url(r'^addIbsn/', shelvedApp.views.addIbsn, name='addIbsn'),
 
+    url(r'^books/', shelvedApp.getFromMongo.getBooks, name='getBooks'),
+
 
     url(r'^set/', shelvedApp.views.set),
     url(r'^test/', shelvedApp.amazonQuery.getBookByISBN),
-    url(r'^retrieve/', shelvedApp.views.retrieve),
-    url(r'^discogs/', shelvedApp.discogs.discogs),
 ]
