@@ -9,7 +9,6 @@ from django.db import IntegrityError
 import mongoengine
 from django.contrib.auth import authenticate
 from django.shortcuts import render
-
 from shelvedApp.models import *
 from shelvedApp.googleQuery import queryGoogle
 

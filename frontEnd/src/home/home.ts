@@ -4,6 +4,8 @@ import { Http, Headers } from 'angular2/http';
 import { Router } from 'angular2/router';
 import { contentHeaders } from '../common/headers';
 import { FormBuilder, Validators } from 'angular2/common';
+import {ToasterContainerComponent, ToasterService} from 'angular2-toaster/angular2-toaster';
+
 
 let styles = require('./home.css');
 let template = require('./home.html');
@@ -13,16 +15,28 @@ let template = require('./home.html');
   selector: 'home',
 })
 
+@Component({
+    selector: 'root',
+    directives: [ToasterContainerComponent],
+    providers: [ToasterService],
+    template: `
+        <toaster-container></toaster-container>
+        <button (click)="popToast()">pop toast</button>`
+})
+
+
 @View({
   directives: [CORE_DIRECTIVES],
   template: template,
   styles: [styles]
 })
 export class Home {
+    private toasterService: ToasterService;
     ibsnForm: ControlGroup;
 
-  constructor(public router: Router, public http: Http, fb: FormBuilder) {
-      this.ibsnForm = fb.group({
+    constructor(public router: Router, public http: Http, fb: FormBuilder, toasterService: ToasterService) {
+        this.toasterService = toasterService;
+        this.ibsnForm = fb.group({
           ibsnNumber: ['', Validators.required]
       });
   }
@@ -36,6 +50,7 @@ export class Home {
         .subscribe(
           response => {
             console.log('response received!');
+
             // this.router.parent.navigateByUrl('/home');
           },
           error => {
@@ -48,4 +63,14 @@ export class Home {
   logout() {
     this.router.parent.navigateByUrl('/login');
   }
+
+  popToast() {
+      this.toasterService.pop('success', 'Args Title', 'Args Body');
+  }
 }
+
+class Root {
+    
+}
+
+bootstrap(Root);

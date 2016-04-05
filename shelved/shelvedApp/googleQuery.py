@@ -15,16 +15,24 @@ def queryGoogle(isbn):
     request = books_service.volumes().list(source='public', q=query)
     books = request.execute()
 
-    print("book is :", books)
     if (books['items'][0]):
         book = books["items"][0]
         title = (book["volumeInfo"]["title"])
         #find a faster streamlined less retarded way
-        if (book["volumeInfo"]["subtitle"]):
-            subtitle = (book["volumeInfo"]["subtitle"])
-        authors = (book["volumeInfo"]["authors"])
-        pageCount = (book["volumeInfo"]["pageCount"])
-        publisher = (book["volumeInfo"]["publisher"])
-        publishedDate = (book["volumeInfo"]["publishedDate"])
-        language = (book["volumeInfo"]["language"])
+        # if (book["volumeInfo"]["subtitle"]):
+        #     subtitle = (book["volumeInfo"]["subtitle"])
+        #     authors = (book["volumeInfo"]["authors"])
+        #     pageCount = (book["volumeInfo"]["pageCount"])
+        #     publisher = (book["volumeInfo"]["publisher"])
+        #     publishedDate = (book["volumeInfo"]["publishedDate"])
+        #     language = (book["volumeInfo"]["language"])
+
+        print("book is :", book)
+        print("title is :", title)
+        # print("authors is :", authors)
+        # print("pageCount is :", pageCount)
+        # print("publisher is :", publisher)
+        # print("publishedDate is :", publishedDate)
+        # print("language is :", language)
+
 

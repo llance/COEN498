@@ -18,7 +18,8 @@ export class LoggedInRouterOutlet extends RouterOutlet {
     this.publicRoutes = {
       'login': true,
       'signup': true,
-      'home': true
+      'home': true,
+      'library': true
     };
   }
 
