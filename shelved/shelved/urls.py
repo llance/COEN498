@@ -31,7 +31,5 @@ urlpatterns = [
 
     url(r'^books/', shelvedApp.getFromMongo.getBooks, name='getBooks'),
 
-
     url(r'^set/', shelvedApp.views.set),
-    url(r'^test/', shelvedApp.amazonQuery.getBookByISBN),
 ]

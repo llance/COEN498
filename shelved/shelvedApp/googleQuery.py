@@ -1,12 +1,10 @@
-from pymongo import MongoClient, InsertOne
-
 __author__ = 'vbilodeau'
 
-import datetime
-import requests
-from django.utils import timezone
-import json
 from apiclient.discovery import build
+from pymongo import MongoClient, InsertOne
+from collections import defaultdict
+from collections import Counter
+
 
 #Set up app key
 books_service = build('books', 'v1', developerKey='AIzaSyD6P55381pkncIFbOvxP-Ov0sYt-lcoOP8')
@@ -15,15 +13,12 @@ books_service = build('books', 'v1', developerKey='AIzaSyD6P55381pkncIFbOvxP-Ov0
 def queryGoogle(isbn):
     query = str(isbn)
     request = books_service.volumes().list(source='public', q=query)
-
-    myMongoClient = MongoClient()
-    myMongoDb = myMongoClient.myMongoDb
-
     books = request.execute()
 
     if (books['items'][0]):
         book = books["items"][0]
         title = (book["volumeInfo"]["title"])
+        authors = (book["volumeInfo"]["authors"])
         #find a faster streamlined less retarded way
         # if (book["volumeInfo"]["subtitle"]):
         #     subtitle = (book["volumeInfo"]["subtitle"])
@@ -35,8 +30,7 @@ def queryGoogle(isbn):
 
         print("title is :", title)
 
-        requests = [InsertOne({isbn: title})]
-        result = myMongoDb.books.bulk_write(requests)
+        addDataToDB(isbn, title, authors)
 
         #print("result of mongo write is :", result)
 
@@ -48,3 +42,25 @@ def queryGoogle(isbn):
         # print("language is :", language)
 
 
+def addDataToDB(isbn, title, author):
+    print('inserting info for isbn :', str(isbn), 'into MongoDB')
+    myMongoClient = MongoClient()
+    myMongoDb = myMongoClient.myMongoDb
+
+    data = multi_dimensions(2, Counter)
+
+
+    data[str(isbn)]['title'] = title
+    data[str(isbn)]['author'] = author
+
+    requests = [InsertOne(data)]
+    result = myMongoDb.books.bulk_write(requests)
+    print('result from writing to MongoDb was ', result)
+
+
+def multi_dimensions(n, type):
+  """ Creates an n-dimension dictionary where the n-th dimension is of type 'type'
+  """
+  if n<=1:
+    return type()
+  return defaultdict(lambda:multi_dimensions(n-1, type))

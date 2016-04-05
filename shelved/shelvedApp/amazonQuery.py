@@ -7,26 +7,6 @@ import os
 from amazon.api import AmazonAPI
 
 
-
-def getBookByISBN(request):
-    timeNowISO8601 = datetime.datetime.now().isoformat()
-
-    os.environ['TZ'] = 'America/Toronto'
-
-    print("timezone is : ", timezone.localtime(timezone.now()))
-
-    print("current date time : ", timeNowISO8601)
-
-    print("formated iso time now",timeNowISO8601[:timeNowISO8601.rfind('.')])
-
-    formatedTimeNow = timeNowISO8601[:timeNowISO8601.rfind('.')] + 'Z'
-
-    httpUrl = "http://webservices.amazon.com/onca/xml?  Service=AWSECommerceService  &Operation=ItemLookup  &ResponseGroup=Large  &SearchIndex=All  &IdType=ISBN  &ItemId=076243631X  &AWSAccessKeyId=[Your_AWSAccessKeyID]  &AssociateTag=[Your_AssociateTag]  &Timestamp=" + formatedTimeNow + " &Signature=[Request_Signature]"
-
-    r = requests.get(httpUrl)
-    print("hello foobar", r.text)
-
-
 #revised method using the simple amazon api
 def queryAmazon(upc):
     amazon = AmazonAPI('AKIAIQOSMQ3XYLJ2OWOQ','xBV4OLH9/OorIXGHhUzyeSkPuQGnME/QVQsKQfGS', 'shelvedWebApp')
