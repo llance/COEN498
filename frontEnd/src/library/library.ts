@@ -5,8 +5,7 @@ import { Http, Headers } from 'angular2/http';
 import { Router } from 'angular2/router';
 import { contentHeaders } from '../common/headers';
 import { FormBuilder, Validators } from 'angular2/common';
-// import { Grid } from './grid';
-// import { Column } from './column';
+import { Column } from './column';
 
 let styles = require('./library.css');
 let template = require('./library.html');
@@ -14,45 +13,43 @@ let template = require('./library.html');
 
 @Component({
     selector: 'library',
-    // directives: [CORE_DIRECTIVES], //Grid
-    // // template: '<grid name="person grid" [rows]="people" [columns]="columns"></grid>',
-    // styles: [styles]
+    inputs: ['people: people', 'columns: columns'],
+    templateUrl: './src/library/library.html'
 })
-
-
-@View({
-    directives: [CORE_DIRECTIVES],
-            template: template,
-            styles: [styles]
-        })
 
 export class Library {
     BookInJson;
 
-    // people: Array<Person>;
-    // columns: Array<Column>;
+     people: Array<Person>;
+     columns: Array<Column>;
 
-    // getPeople(): Array<Person> {
-    //     return [
-    //         { title: 'Joe', authors: 'Jackson', subtitle: 20 },
-    //     ];
-    // }
+     getPerson(title1: string, authors1: string, subtitle1: string): Array<Person> {
+         return [
+             { title: title1, authors: authors1, subtitle: subtitle1 },
+         ];
+     }
 
-    // getColumns(): Array<Column> {
-    //     return [
-    //         new Column('title', 'Title'),
-    //         new Column('authors', 'Authors'),
-    //         new Column('subtitle', 'Subtitle'),
-    //         new Column('pageCount', 'Page Count'),
-    //         new Column('publisher', 'Publisher'),
-    //         new Column('publishedDate', 'Published Date'),
-    //         new Column('language', 'Language'),
-    //     ];
-    // }
+     getPeople(): Array<Person> {
+         return [
+             { title: 'Joe', authors: 'Jackson', subtitle: '20' },{ title: 'Joe', authors: 'Jackson', subtitle: '20' },
+         ];
+     }
+
+     getColumns(): Array<Column> {
+         return [
+             new Column('title', 'Title'),
+             new Column('authors', 'Authors'),
+             new Column('subtitle', 'Subtitle'),
+             new Column('pageCount', 'Page Count'),
+             new Column('publisher', 'Publisher'),
+             new Column('publishedDate', 'Published Date'),
+             new Column('language', 'Language'),
+         ];
+     }
 
     constructor(public router: Router, public http: Http) {
-        // this.people = this.getPeople();
-        // this.columns = this.getColumns();
+         this.people = this.getPeople();
+         this.columns = this.getColumns();
     }
 
     viewBooks() {
@@ -64,6 +61,11 @@ export class Library {
                 var jsonResponse = response.json();
                 console.log('response received!', jsonResponse);
                 this.BookInJson = jsonResponse;
+                alert(JSON.stringify(jsonResponse));
+                this.people = this.getPerson('Janice', 'Agustin', '23');
+                //for (var i = 0; i < jsonResponse.length; i++) {
+                //    var item = jsonResponse[i];
+                //}
             },
             error => {
                 alert(error.text());
@@ -81,8 +83,9 @@ export class Library {
     }
 }
 
-// interface Person {
-//     firstName: string;
-//     lastName: string;
-//     age: number;
-// }
+interface Person {
+    title: string;
+    authors: string;
+    subtitle: string;
+}
+

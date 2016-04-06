@@ -4,5 +4,13 @@
         <h1>View your current Library!</h1>
         <p><a class="btn btn-primary btn-lg" role="button" (click)="viewBooks()">View Books</a></p>
     </div>
-    <p> Click <a ng-click="loadBooks()">here</a> to load data.</p>
 </div>
+<h1>Your Library</h1>
+<table class="table table-striped">
+    <tr>
+        <td *ngFor="#col of columns"><a (click)="sort(col.name)">{{col.descr}}</a></td>
+    </tr>
+    <tr *ngFor="#people of people">
+        <td *ngFor="#col of columns">{{people[col.name]}}</td>
+    </tr>
+</table>
