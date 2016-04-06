@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 import mongoengine
 from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
 from django.shortcuts import render
 from shelvedApp.models import *
 from shelvedApp.googleQuery import queryGoogle
@@ -111,23 +112,26 @@ def login(request):
             return HttpResponse("you have either given wrong user name or wrong password", status=404);
 
         if user is not None and user.is_active:
+            print("logging in")
+            auth_login(request, user)
             return HttpResponse("logged in!", status=200);
 
 
 @csrf_exempt
+@login_required
 def addIbsn(request):
     if request.method == 'POST':
 
         requestbody = json.loads(request.body)
-
+        
         # for elem in requestbody:
         #     print ('elem is ', elem, 'val is :',requestbody[elem])
         """current user is always empty, no way to find the current user
-
+        """
         current_user = request.user
         import pdb; pdb.set_trace()
         print('User ID is : ' + current_user.id)
-        """
+        
 
         ibsnNumber = requestbody['ibsnNum']
         print("ibsnNumber is", ibsnNumber)

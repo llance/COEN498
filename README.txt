@@ -19,3 +19,4 @@ pip install python-dateutil
 pip install python-amazon-simple-product-api
 
 
+pip install git+https://github.com/django-nonrel/django-permission-backend-nonrel.git
