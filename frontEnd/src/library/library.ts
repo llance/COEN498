@@ -57,6 +57,7 @@ export class Library {
 
     viewBooks() {
         event.preventDefault();
+        contentHeaders.append('X-CSRFToken', this.getCookie('csrftoken'));
         this.http.get('http://localhost:8000/books/', { headers: contentHeaders })
             .subscribe(
             response => {
@@ -69,6 +70,14 @@ export class Library {
                 console.log(error.text());
             }
             );
+    }
+
+    getCookie(name) {
+        console.log('document.cookie is ', document.cookie);
+        let value = '; ' + document.cookie;
+        let parts = value.split('; ' + name + '=');
+        if (parts.length === 2)
+            return parts.pop().split(';').shift();
     }
 }
 

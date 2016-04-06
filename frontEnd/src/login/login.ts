@@ -24,6 +24,11 @@ export class Login {
 
     event.preventDefault();
     let body = JSON.stringify({username, password});
+    // console.log("document.cookie is ", document.cookie);
+    contentHeaders.append('X-CSRFToken', this.getCookie('csrftoken'));
+
+    console.log("contentHeaders is ", contentHeaders);
+
     this.http.post('http://localhost:8000/login/', body, { headers: contentHeaders })
       .subscribe(
         response => {
@@ -35,6 +40,15 @@ export class Login {
           console.log(error.text());
         }
       );
+  }
+
+
+  getCookie(name) {
+      console.log('document.cookie is ', document.cookie);
+      let value = '; ' + document.cookie;
+      let parts = value.split('; ' + name + '=');
+      if (parts.length === 2)
+          return parts.pop().split(';').shift();
   }
 
 
