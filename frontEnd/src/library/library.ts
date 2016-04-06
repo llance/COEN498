@@ -5,6 +5,12 @@ import { Http, Headers } from 'angular2/http';
 import { Router } from 'angular2/router';
 import { contentHeaders } from '../common/headers';
 import { FormBuilder, Validators } from 'angular2/common';
+import {LibraryComponent}     from './library.component';
+import {bootstrap}        from 'angular2/platform/browser';
+import {ROUTER_PROVIDERS} from 'angular2/router';
+    bootstrap(LibraryComponent, [
+      ROUTER_PROVIDERS
+    ]);
 
 let styles = require('./library.css');
 let template = require('./library.html');
