@@ -2,6 +2,7 @@
 import json
 
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
 from pymongo import MongoClient, InsertOne
 from django.contrib.auth.models import User
@@ -9,6 +10,7 @@ from django.db import IntegrityError
 import mongoengine
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from shelvedApp.models import *
 from shelvedApp.googleQuery import queryGoogle
@@ -112,13 +114,14 @@ def login(request):
             return HttpResponse("you have either given wrong user name or wrong password", status=404);
 
         if user is not None and user.is_active:
-            print("logging in")
+            print("logging in ", user)
+            #django_login(request, user)
             auth_login(request, user)
             return HttpResponse("logged in!", status=200);
 
 
-@csrf_exempt
-@login_required
+@csrf_protect
+@login_required(login_url='/login')
 def addIbsn(request):
     if request.method == 'POST':
 

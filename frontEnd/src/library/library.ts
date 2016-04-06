@@ -5,11 +5,13 @@ import { Http, Headers } from 'angular2/http';
 import { Router } from 'angular2/router';
 import { contentHeaders } from '../common/headers';
 import { FormBuilder, Validators } from 'angular2/common';
+import { bootstrap } from 'angular2/platform/browser';
+import { Http, HTTP_PROVIDERS } from 'angular2/http';
 
 let styles = require('./library.css');
 let template = require('./library.html');
 
-
+bootstrap(Library, [HTTP_PROVIDERS]);
 
 @Component({
     selector: 'library',
@@ -21,44 +23,12 @@ let template = require('./library.html');
     styles: [styles]
 })
 export class Library {
-    // var mockDataForThisTest = "json=" + encodeURI(JSON.stringify([
-    //     {
-    //         id: 1,
-    //         firstName: "Peter",
-    //         lastName: "Jhons"
-    //     },
-    //     {
-    //         id: 2,
-    //         firstName: "David",
-    //         lastName: "Bowie"
-    //     }
-    // ]));
-
-
-    // var app = angular.module('myApp', []);
-
-    // function PeopleCtrl($scope, $http) {
-
-    //     $scope.people = [];
-
-    //     $scope.loadPeople = function() {
-    //         var httpRequest = $http({
-    //             method: 'POST',
-    //             url: '/echo/json/',
-    //             data: mockDataForThisTest
-
-    //         }).success(function(data, status) {
-    //             $scope.people = data;
-    //         });
-
-    //     };
-
-    // }
 
     constructor(public router: Router, public http: Http) {
     }
 
     viewBooks() {
+        console.log('viewBooks called');
         event.preventDefault();
         this.http.get('http://localhost:8000/books/', { headers: contentHeaders })
             .subscribe(
