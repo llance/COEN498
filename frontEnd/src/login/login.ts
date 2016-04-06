@@ -24,6 +24,7 @@ export class Login {
 
     event.preventDefault();
     let body = JSON.stringify({username, password});
+    contentHeaders.append('X-CSRFToken', this.getCookie('csrftoken'));
     this.http.post('http://localhost:8000/login/', body, { headers: contentHeaders })
       .subscribe(
         response => {
@@ -35,6 +36,13 @@ export class Login {
           console.log(error.text());
         }
       );
+  }
+
+  getCookie(name) {
+    let value = "; " + document.cookie;
+    let parts = value.split("; " + name + "=");
+    if (parts.length == 2) 
+      return parts.pop().split(";").shift();
   }
 
 

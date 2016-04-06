@@ -5,63 +5,51 @@ import { Http, Headers } from 'angular2/http';
 import { Router } from 'angular2/router';
 import { contentHeaders } from '../common/headers';
 import { FormBuilder, Validators } from 'angular2/common';
-import {LibraryComponent}     from './library.component';
-import {bootstrap}        from 'angular2/platform/browser';
-import {ROUTER_PROVIDERS} from 'angular2/router';
-    bootstrap(LibraryComponent, [
-      ROUTER_PROVIDERS
-    ]);
+import { Column } from './column';
 
 let styles = require('./library.css');
 let template = require('./library.html');
 
 
-
 @Component({
     selector: 'library',
+    inputs: ['people: people', 'columns: columns'],
+    templateUrl: './src/library/library.html'
 })
 
-@View({
-    directives: [CORE_DIRECTIVES],
-    template: template,
-    styles: [styles]
-})
 export class Library {
-    // var mockDataForThisTest = "json=" + encodeURI(JSON.stringify([
-    //     {
-    //         id: 1,
-    //         firstName: "Peter",
-    //         lastName: "Jhons"
-    //     },
-    //     {
-    //         id: 2,
-    //         firstName: "David",
-    //         lastName: "Bowie"
-    //     }
-    // ]));
+    BookInJson;
 
+     people: Array<Person>;
+     columns: Array<Column>;
 
-    // var app = angular.module('myApp', []);
+     getPerson(title1: string, authors1: string, subtitle1: string): Array<Person> {
+         return [
+             { title: title1, authors: authors1, subtitle: subtitle1 },
+         ];
+     }
 
-    // function PeopleCtrl($scope, $http) {
+     getPeople(): Array<Person> {
+         return [
+             { title: 'Joe', authors: 'Jackson', subtitle: '20' },{ title: 'Joe', authors: 'Jackson', subtitle: '20' },
+         ];
+     }
 
-    //     $scope.people = [];
-
-    //     $scope.loadPeople = function() {
-    //         var httpRequest = $http({
-    //             method: 'POST',
-    //             url: '/echo/json/',
-    //             data: mockDataForThisTest
-
-    //         }).success(function(data, status) {
-    //             $scope.people = data;
-    //         });
-
-    //     };
-
-    // }
+     getColumns(): Array<Column> {
+         return [
+             new Column('title', 'Title'),
+             new Column('authors', 'Authors'),
+             new Column('subtitle', 'Subtitle'),
+             new Column('pageCount', 'Page Count'),
+             new Column('publisher', 'Publisher'),
+             new Column('publishedDate', 'Published Date'),
+             new Column('language', 'Language'),
+         ];
+     }
 
     constructor(public router: Router, public http: Http) {
+         this.people = this.getPeople();
+         this.columns = this.getColumns();
     }
 
     viewBooks() {
@@ -71,7 +59,12 @@ export class Library {
             response => {
                 var jsonResponse = response.json();
                 console.log('response received!', jsonResponse);
-                // this.router.parent.navigateByUrl('/home');
+                this.BookInJson = jsonResponse;
+                alert(JSON.stringify(jsonResponse));
+                this.people = this.getPerson('Janice', 'Agustin', '23');
+                //for (var i = 0; i < jsonResponse.length; i++) {
+                //    var item = jsonResponse[i];
+                //}
             },
             error => {
                 alert(error.text());
@@ -80,3 +73,10 @@ export class Library {
             );
     }
 }
+
+interface Person {
+    title: string;
+    authors: string;
+    subtitle: string;
+}
+
