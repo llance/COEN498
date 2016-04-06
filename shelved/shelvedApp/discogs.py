@@ -27,12 +27,12 @@ def queryDiscogs(upc, user='books'):
             tracklist[track.data['position']]['duration'] = track.data['duration']
         #import pdb; pdb.set_trace()
         """
-
-        data[str(upc)]['title'] = title
-        data[str(upc)]['artists'] = artists
-        data[str(upc)]['numDisks'] = numDisks
-        data[str(upc)]['physicalMedium'] = physicalMedium
-        data[str(upc)]['label'] = label
+        data['data']['upc'] = str(upc)
+        data['data']['title'] = title
+        data['data']['artists'] = artists
+        data['data']['numDisks'] = numDisks
+        data['data']['physicalMedium'] = physicalMedium
+        data['data']['label'] = label
         #data[str(upc)]['tracklist'] = tracklist
 
         media_type = 'music'

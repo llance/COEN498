@@ -17,6 +17,7 @@ pip install bottlenose
 pip install lxml
 pip install python-dateutil
 pip install python-amazon-simple-product-api
+pip install djangorestframework-jwt=="1.7.2" 
 
-
+pip install git+https://github.com/django-nonrel/django.git
 pip install git+https://github.com/django-nonrel/django-permission-backend-nonrel.git

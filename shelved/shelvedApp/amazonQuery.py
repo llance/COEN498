@@ -17,8 +17,10 @@ def queryAmazon(upc, user='books'):
         product = results[0]
         title = product.title #title, include "(format)"
         productFormat = product.binding #explicit format type "blu-ray" or "dvd"
-        data[str(upc)]['title'] = title
-        data[str(upc)]['productFormat'] = productFormat
+
+        data['data']['title'] = title
+        data['data']['productFormat'] = productFormat
+        data['data']['upc'] = str(upc)
         media_type = 'movie'
 
         addDataToDB(media_type, data, user)
