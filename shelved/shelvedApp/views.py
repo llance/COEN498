@@ -14,6 +14,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from shelvedApp.models import *
 from shelvedApp.googleQuery import queryGoogle
+from shelvedApp.amazonQuery import queryAmazon
+from shelvedApp.discogs import queryDiscogs
 
 
 @csrf_exempt
@@ -119,9 +121,9 @@ def login(request):
             auth_login(request, user)
             return HttpResponse("logged in!", status=200);
 
-
-@csrf_protect
-@login_required(login_url='/login')
+@csrf_exempt
+#@csrf_protect
+#@login_required(login_url='/login')
 def addIbsn(request):
     if request.method == 'POST':
 
@@ -130,11 +132,11 @@ def addIbsn(request):
         # for elem in requestbody:
         #     print ('elem is ', elem, 'val is :',requestbody[elem])
         """current user is always empty, no way to find the current user
-        """
+        
         current_user = request.user
         import pdb; pdb.set_trace()
         print('User ID is : ' + current_user.id)
-        
+        """
 
         ibsnNumber = requestbody['ibsnNum']
         print("ibsnNumber is", ibsnNumber)
@@ -145,3 +147,27 @@ def addIbsn(request):
         json_data = json.dumps(data)
         return HttpResponse(json_data, status=200);
 
+@csrf_protect
+@login_required(login_url='/login')
+def addMovie(request):
+    if request.method == 'POST':
+
+        requestbody = json.loads(request.body)
+        
+        # for elem in requestbody:
+        #     print ('elem is ', elem, 'val is :',requestbody[elem])
+        """current user is always empty, no way to find the current user
+        
+        current_user = request.user
+        import pdb; pdb.set_trace()
+        print('User ID is : ' + current_user.id)
+        """
+
+        upc = requestbody['upc']
+        print("movie upc is", upc)
+        booktitle = queryGoogle(ibsnNumber)
+
+        data = {}
+        data['title'] = booktitle
+        json_data = json.dumps(data)
+        return HttpResponse(json_data, status=200);

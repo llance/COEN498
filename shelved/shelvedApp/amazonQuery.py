@@ -5,42 +5,28 @@ import requests
 from django.utils import timezone
 import os
 from amazon.api import AmazonAPI
+from shelvedApp.dbOperations import addDataToDB, multi_dimensions
 
 
 #revised method using the simple amazon api
-def queryAmazon(upc):
+def queryAmazon(upc, user='books'):
     amazon = AmazonAPI('AKIAIQOSMQ3XYLJ2OWOQ','xBV4OLH9/OorIXGHhUzyeSkPuQGnME/QVQsKQfGS', 'shelvedWebApp')
-    product = amazon.lookup(IdType='UPC', ItemId=upc , SearchIndex='All')
-    title = product.title #title, include "(format)"
-    format = product.binding #explicit format type "blu-ray" or "dvd"
-    #all other attributes are variable ; published, label, creators...
+    try:
+        data = multi_dimensions(2)
+        results = amazon.lookup(IdType='UPC', ItemId=upc , SearchIndex='All')
+        product = results[0]
+        title = product.title #title, include "(format)"
+        productFormat = product.binding #explicit format type "blu-ray" or "dvd"
+        data[str(upc)]['title'] = title
+        data[str(upc)]['productFormat'] = productFormat
+        media_type = 'movie'
+
+        addDataToDB(media_type, data, user)
+
+        return str(title)
+
+    except:
+        empty_dict = {}
+        return empty_dict
 
 
-    # var today = new Date();
-    # var day = today.getDate();
-    # var month = today.getMonth()+1;
-    # var year = today.getFullYear();
-    # var hours = today.getHours() < 10 ? "0"+today.getHours() : today.getHours();
-    # var seconds = today.getSeconds() < 10 ? "0"+today.getSeconds() : today.getSeconds();
-    # var mins = today.getMinutes() < 10 ? "0"+today.getMinutes() : today.getMinutes();
-    # var time = encodeURIComponent(year+"-"+month+"-"+day+"T"+hours+":"+mins+":"+seconds+"Z");
-    # var messageToEncrypt ="GET\nwebservices.amazon.com\n\
-    #     /onca/xml\nAWSAccessKeyId=ACCESSID&ItemId=0679722769&&SignatureMethod=HmacSHA256&SignatureVersion=2&Operation=ItemLookup&ResponseGroup=ItemAttributes%2COffers%2CImages%2CReviews&Service=AWSECommerceService&Timestamp="+time+"&Version=2013-08-01";
-    #
-    # var sig = CryptoJS.HmacSHA256(messageToEncrypt, "SECRET KEY");
-    #
-    # var request = "http://webservices.amazon.com/onca/xml?Service=AWSECommerceService&AWSAccessKeyId=AccessID&Operation=ItemLookup&ItemId=0976925524&ResponseGroup=SalesRank&Version=2013-08-01&Timestamp="+time+"&Signature="+sig;
-    #
-    #
-    # function GET(url) {
-    #     var oFrame = document.getElementById("MyAjaxFrame");
-    #     if (!oFrame) {
-    #         oFrame = document.createElement("iframe");
-    #         oFrame.style.display = "none";
-    #         oFrame.id = "MyAjaxFrame";
-    #         document.body.appendChild(oFrame);
-    #     }
-    #     oFrame.src = url;
-    # }
-    #
-    # GET(request);
