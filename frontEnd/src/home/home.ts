@@ -14,8 +14,6 @@ let template = require('./home.html');
   selector: 'home',
 })
 
-
-
 @View({
   directives: [CORE_DIRECTIVES],
   template: template,

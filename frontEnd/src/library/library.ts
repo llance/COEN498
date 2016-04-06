@@ -5,57 +5,47 @@ import { Http, Headers } from 'angular2/http';
 import { Router } from 'angular2/router';
 import { contentHeaders } from '../common/headers';
 import { FormBuilder, Validators } from 'angular2/common';
+import { Grid } from './grid';
+import { Column } from './column';
 
 let styles = require('./library.css');
-let template = require('./library.html');
-
+let template = require('./grid.html');
 
 
 @Component({
     selector: 'library',
-})
-
-@View({
-    directives: [CORE_DIRECTIVES],
-    template: template,
+    directives: [Grid, CORE_DIRECTIVES],
+    template: '<grid name="person grid" [rows]="people" [columns]="columns"></grid>',
     styles: [styles]
 })
+
 export class Library {
-    // var mockDataForThisTest = "json=" + encodeURI(JSON.stringify([
-    //     {
-    //         id: 1,
-    //         firstName: "Peter",
-    //         lastName: "Jhons"
-    //     },
-    //     {
-    //         id: 2,
-    //         firstName: "David",
-    //         lastName: "Bowie"
-    //     }
-    // ]));
+    BookInJson;
 
+    people: Array<Person>;
+    columns: Array<Column>;
 
-    // var app = angular.module('myApp', []);
+    getPeople(): Array<Person> {
+        return [
+            { title: 'Joe', authors: 'Jackson', subtitle: 20 },
+        ];
+    }
 
-    // function PeopleCtrl($scope, $http) {
-
-    //     $scope.people = [];
-
-    //     $scope.loadPeople = function() {
-    //         var httpRequest = $http({
-    //             method: 'POST',
-    //             url: '/echo/json/',
-    //             data: mockDataForThisTest
-
-    //         }).success(function(data, status) {
-    //             $scope.people = data;
-    //         });
-
-    //     };
-
-    // }
+    getColumns(): Array<Column> {
+        return [
+            new Column('title', 'Title'),
+            new Column('authors', 'Authors'),
+            new Column('subtitle', 'Subtitle'),
+            new Column('pageCount', 'Page Count'),
+            new Column('publisher', 'Publisher'),
+            new Column('publishedDate', 'Published Date'),
+            new Column('language', 'Language'),
+        ];
+    }
 
     constructor(public router: Router, public http: Http) {
+        this.people = this.getPeople();
+        this.columns = this.getColumns();
     }
 
     viewBooks() {
@@ -65,7 +55,7 @@ export class Library {
             response => {
                 var jsonResponse = response.json();
                 console.log('response received!', jsonResponse);
-                // this.router.parent.navigateByUrl('/home');
+                this.BookInJson = jsonResponse;
             },
             error => {
                 alert(error.text());
@@ -73,4 +63,10 @@ export class Library {
             }
             );
     }
+}
+
+interface Person {
+    firstName: string;
+    lastName: string;
+    age: number;
 }
