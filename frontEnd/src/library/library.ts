@@ -5,37 +5,64 @@ import { Http, Headers } from 'angular2/http';
 import { Router } from 'angular2/router';
 import { contentHeaders } from '../common/headers';
 import { FormBuilder, Validators } from 'angular2/common';
-import { bootstrap } from 'angular2/platform/browser';
-import { Http, HTTP_PROVIDERS } from 'angular2/http';
+// import { Grid } from './grid';
+// import { Column } from './column';
 
 let styles = require('./library.css');
 let template = require('./library.html');
 
-bootstrap(Library, [HTTP_PROVIDERS]);
 
 @Component({
     selector: 'library',
+    // directives: [CORE_DIRECTIVES], //Grid
+    // // template: '<grid name="person grid" [rows]="people" [columns]="columns"></grid>',
+    // styles: [styles]
 })
+
 
 @View({
     directives: [CORE_DIRECTIVES],
-    template: template,
-    styles: [styles]
-})
+            template: template,
+            styles: [styles]
+        })
+
 export class Library {
+    BookInJson;
+
+    // people: Array<Person>;
+    // columns: Array<Column>;
+
+    // getPeople(): Array<Person> {
+    //     return [
+    //         { title: 'Joe', authors: 'Jackson', subtitle: 20 },
+    //     ];
+    // }
+
+    // getColumns(): Array<Column> {
+    //     return [
+    //         new Column('title', 'Title'),
+    //         new Column('authors', 'Authors'),
+    //         new Column('subtitle', 'Subtitle'),
+    //         new Column('pageCount', 'Page Count'),
+    //         new Column('publisher', 'Publisher'),
+    //         new Column('publishedDate', 'Published Date'),
+    //         new Column('language', 'Language'),
+    //     ];
+    // }
 
     constructor(public router: Router, public http: Http) {
+        // this.people = this.getPeople();
+        // this.columns = this.getColumns();
     }
 
     viewBooks() {
-        console.log('viewBooks called');
         event.preventDefault();
         this.http.get('http://localhost:8000/books/', { headers: contentHeaders })
             .subscribe(
             response => {
                 var jsonResponse = response.json();
                 console.log('response received!', jsonResponse);
-                // this.router.parent.navigateByUrl('/home');
+                this.BookInJson = jsonResponse;
             },
             error => {
                 alert(error.text());
@@ -44,3 +71,9 @@ export class Library {
             );
     }
 }
+
+// interface Person {
+//     firstName: string;
+//     lastName: string;
+//     age: number;
+// }
