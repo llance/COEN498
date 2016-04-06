@@ -3,6 +3,8 @@
     <div class="home jumbotron centered">
         <h1>View your current Library!</h1>
         <p><a class="btn btn-primary btn-lg" role="button" (click)="viewBooks()">View Books</a></p>
+        <p><a class="btn btn-primary btn-lg" role="button" (click)="viewMovies()">View Movies</a></p>
+        <p><a class="btn btn-primary btn-lg" role="button" (click)="viewMusic()">View Music</a></p>
     </div>
 </div>
 <h1>Your Library</h1>
@@ -10,7 +12,7 @@
     <tr>
         <td *ngFor="#col of columns"><a (click)="sort(col.name)">{{col.descr}}</a></td>
     </tr>
-    <tr *ngFor="#people of people">
-        <td *ngFor="#col of columns">{{people[col.name]}}</td>
+    <tr *ngFor="#item of item">
+        <td *ngFor="#col of columns">{{item[col.name]}}</td>
     </tr>
 </table>
