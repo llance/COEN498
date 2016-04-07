@@ -34,7 +34,7 @@ urlpatterns = [
 
     url(r'^movies/', shelvedApp.views.movies, name='Movies'),
 
-    url(r'^library/', shelvedApp.views.delete, name='delete'),
+    #url(r'^library/', shelvedApp.views.delete, name='delete'),
 
 
     # url(r'^musics/', shelvedApp.views.musics.as_view(), name='getMusics'),
