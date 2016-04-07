@@ -2,7 +2,8 @@
 import json
 
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth import login as auth_login
@@ -54,10 +55,14 @@ def register(request):
         return HttpResponse("user created!", status=201)
 
 
-@csrf_exempt
+#@csrf_exempt
+@method_decorator(ensure_csrf_cookie)
 def login(request):
     if request.method == 'POST':
-
+        # c = {}
+        # c.update(csrf(request))
+        #
+        # print('csrf is ', c)
         requestbody = json.loads(request.body)
 
         for elem in requestbody:
@@ -81,7 +86,7 @@ def login(request):
             data = {}
             data['token'] = token.key
             json_data = json.dumps(data)
-
+            # data['csrf'] = c
             return HttpResponse(json_data, status=201);
 
 @csrf_exempt

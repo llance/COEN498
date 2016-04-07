@@ -73,7 +73,7 @@ export class Library {
             response => {
                 var jsonResponse = response.json();
                 console.log('response received!', jsonResponse);
-                console.log('string response', JSON.stringify(jsonResponse))
+                console.log('string response', JSON.stringify(jsonResponse));
                 this.columns = this.getColumnsBooks();
                 this.item = jsonResponse;
             },
@@ -86,12 +86,13 @@ export class Library {
 
     viewMovies() {
         event.preventDefault();
-        this.http.get('http://localhost:8000/movies/', { headers: contentHeaders })
+        contentHeaders.append('WWW-Authenticate', localStorage.getItem('jwt'));
+        this.http.get('http://localhost:8000/getmovies/', { headers: contentHeaders })
             .subscribe(
             response => {
                 var jsonResponse = response.json();
                 console.log('response received!', jsonResponse);
-                console.log('string response', JSON.stringify(jsonResponse))
+                console.log('string response', JSON.stringify(jsonResponse));
                 this.columns = this.getColumnsMovies();
                 this.item = jsonResponse;
             },
@@ -108,7 +109,7 @@ export class Library {
             response => {
                 var jsonResponse = response.json();
                 console.log('response received!', jsonResponse);
-                console.log('string response', JSON.stringify(jsonResponse))
+                console.log('string response', JSON.stringify(jsonResponse));
                 this.columns = this.getColumnsMusic();
                 this.item = jsonResponse();
             },

@@ -27,13 +27,16 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     url(r'^register/', shelvedApp.views.register, name='register'),
+
     url(r'^login/', shelvedApp.views.login, name='login'),
 
     url(r'^books/', shelvedApp.views.addBook, name='getBooks'),
 
     url(r'^getbooks/', shelvedApp.getFromMongo.getBooks, name='getBooks'),
 
-    url(r'^movies/', shelvedApp.views.movies.as_view(), name='getMovies'),
+    url(r'^movies/', shelvedApp.views.addMovie, name='getMovies'),
+
+    url(r'^getmovies/', shelvedApp.getFromMongo.getMovies, name='getMovies'),
 
     # url(r'^musics/', shelvedApp.views.musics.as_view(), name='getMusics'),
 
