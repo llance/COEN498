@@ -1,4 +1,5 @@
 # Django settings for shelved_nonrel project.
+import datetime
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -199,4 +200,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
+}
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(minutes=60),
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=30),
 }
