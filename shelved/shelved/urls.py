@@ -37,7 +37,7 @@ urlpatterns = [
     #url(r'^library/', shelvedApp.views.delete, name='delete'),
 
 
-    # url(r'^musics/', shelvedApp.views.musics.as_view(), name='getMusics'),
+    url(r'^musics/', shelvedApp.views.musics, name='Musics'),
 
     # url(r'^api-token-auth/', 'rest_framework_jwt.views.obtain_jwt_token'),
 

@@ -55,12 +55,10 @@ export class Library {
          return [
              new Column('upc', 'upc'),
              new Column('title', 'Title'),
-             new Column('artist', 'Artist'),
-             new Column('album', 'Album'),
-             new Column('length', 'Length'),
-             new Column('publisher', 'Publisher'),
-             new Column('publishedDate', 'Published Date'),
-             new Column('language', 'Language'),
+             new Column('artists', 'Artists'),
+             new Column('numDisks', '# of Disks'),
+             new Column('physicalMedium', 'Physical Medium'),
+             new Column('label', 'Label'),
          ];
      }
 
@@ -115,14 +113,15 @@ export class Library {
         console.log('token is ', localStorage.getItem('jwt'));
         contentHeaders.append('WWW-Authenticate', localStorage.getItem('jwt'));
         //contentHeaders.append('X-CSRFToken', this.getCookie('csrftoken'));
-        this.http.get('http://localhost:8000/music/', { headers: contentHeaders })
+        this.http.get('http://localhost:8000/musics/', { headers: contentHeaders })
             .subscribe(
             response => {
                 var jsonResponse = response.json();
                 console.log('response received!', jsonResponse);
                 console.log('string response', JSON.stringify(jsonResponse));
                 this.columns = this.getColumnsMusic();
-                this.item = jsonResponse();
+                console.log(jsonResponse);
+                this.item = jsonResponse;
             },
             error => {
                 alert(error.text());
@@ -217,11 +216,9 @@ interface Movie {
 
 interface Music {
     title: string;
-    artist: string;
-    album: string;
-    length: string;
-    publisher: string;
-    publishedDate: string;
-    language: string;
+    artists: string;
+    numDisks: string;
+    physicalMedium: string;
+    label: string;
 }
 

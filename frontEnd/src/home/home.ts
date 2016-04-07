@@ -56,12 +56,31 @@ export class Home {
         );
   }
 
-  submitUPC(event) {
+  submitUPCMovie(event) {
       var upcNum = this.upcForm.value.upcNumber;
-      console.log('submitIBSN called! UPC number is ', upcNum);
+      console.log('submitUPCMovie called! UPC number is ', upcNum);
       event.preventDefault();
       let body = JSON.stringify({ upcNum });
       this.http.post('http://localhost:8000/movies/', body, { headers: contentHeaders })
+          .subscribe(
+          response => {
+              var jsonResponse = response.json();
+              console.log('response received!', jsonResponse.title);
+              // this.router.parent.navigateByUrl('/home');
+          },
+          error => {
+              alert(error.text());
+              console.log(error.text());
+          }
+          );
+  }
+
+  submitUPCMusic(event) {
+      var upcNum = this.upcForm.value.upcNumber;
+      console.log('submitUPCMusic called! UPC number is ', upcNum);
+      event.preventDefault();
+      let body = JSON.stringify({ upcNum });
+      this.http.post('http://localhost:8000/musics/', body, { headers: contentHeaders })
           .subscribe(
           response => {
               var jsonResponse = response.json();

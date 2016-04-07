@@ -21,10 +21,17 @@
                 <button type="submit" class="btn btn-default">Submit</button>
             </div>
         </form>
-        <form [ngFormModel]="upcForm" (submit)="submitUPC($event)">
+        <form [ngFormModel]="upcForm" (submit)="submitUPCMovie($event)">
             <div class="form-group">
                 <label for="upc">UPC</label>
                 <input id="upcNumber_input" ngControl="upcNumber" type="upcNumber" placeholder="Enter your Movie UPC #">
+            <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+        </form>
+        <form [ngFormModel]="upcForm" (submit)="submitUPCMusic($event)">
+            <div class="form-group">
+                <label for="upc">UPC</label>
+                <input id="upcNumber_input" ngControl="upcNumber" type="upcNumber" placeholder="Enter your Music UPC #">
             <button type="submit" class="btn btn-default">Submit</button>
             </div>
         </form>

@@ -13,6 +13,7 @@ from rest_framework.authtoken.models import Token
 
 from shelvedApp.googleQuery import queryGoogle
 from shelvedApp.amazonQuery import queryAmazon
+from shelvedApp.discogs import queryDiscogs
 from shelvedApp.dbOperations import *
 from shelvedApp import getFromMongo
 
@@ -284,4 +285,24 @@ def books(request):
         delete a book.
         """
         print('/book/ url called with DELETE method!')
+        return delete(request)
+
+@csrf_exempt
+def musics(request):
+    if request.method == 'GET':
+        """
+        Return a list of all movies.
+        """
+        return getFromMongo.getMusic(request)
+
+    if request.method == 'POST':
+        """
+        Add a movie.
+        """
+        return addMusic(request)
+
+    if request.method == 'DELETE':
+        """
+        Delete a movie.
+        """
         return delete(request)
