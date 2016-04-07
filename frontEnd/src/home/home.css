@@ -6,3 +6,16 @@
 #upcNumber_input {
     width: 200px;
 }
+
+#logOut_button{
+    text-align:right;
+    display:inline;
+}
+
+#viewLib_button{
+    text-align:left;
+    display:inline;
+}
+#homepage_buttons{
+    display:inline;
+}
