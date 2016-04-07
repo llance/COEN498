@@ -1,6 +1,7 @@
 __author__ = 'vbilodeau'
 
-from pymongo import MongoClient, InsertOne, DeleteOne, DeleteResult
+from pymongo import MongoClient, InsertOne, DeleteOne
+from pymongo.results import DeleteResult
 from collections import defaultdict, Counter
 
 def addDataToDB(media_type, data, user='books'):
