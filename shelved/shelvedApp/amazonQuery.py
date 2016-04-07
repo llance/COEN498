@@ -10,11 +10,14 @@ from shelvedApp.dbOperations import addDataToDB, multi_dimensions
 
 #revised method using the simple amazon api
 def queryAmazon(upc, user='books'):
+    print('queryAmazon called')
     amazon = AmazonAPI('AKIAIQOSMQ3XYLJ2OWOQ','xBV4OLH9/OorIXGHhUzyeSkPuQGnME/QVQsKQfGS', 'shelvedWebApp')
     try:
         data = multi_dimensions(2)
-        results = amazon.lookup(IdType='UPC', ItemId=upc , SearchIndex='All')
-        product = results[0]
+        product = amazon.lookup(IdType='UPC', ItemId=upc , SearchIndex='All')
+        #print('results is', results)
+        #product = results[0]
+        #print('product is ', product)
         title = product.title #title, include "(format)"
         productFormat = product.binding #explicit format type "blu-ray" or "dvd"
 

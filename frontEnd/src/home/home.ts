@@ -40,6 +40,9 @@ export class Home {
 
       console.log('auth token is ', localStorage.getItem('jwt'));
       contentHeaders.append('WWW-Authenticate', localStorage.getItem('jwt'));
+      contentHeaders.append('HTTP_X_CSRFTOKEN', localStorage.getItem('jwt'));
+
+
       this.http.post('http://localhost:8000/books/', body, { headers: contentHeaders })
         .subscribe(
           response => {
@@ -59,7 +62,7 @@ export class Home {
       console.log('submitIBSN called! UPC number is ', upcNum);
       event.preventDefault();
       let body = JSON.stringify({ upcNum });
-      this.http.post('http://localhost:8000/addUPC/', body, { headers: contentHeaders })
+      this.http.post('http://localhost:8000/movies/', body, { headers: contentHeaders })
           .subscribe(
           response => {
               var jsonResponse = response.json();

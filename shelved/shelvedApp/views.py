@@ -13,6 +13,7 @@ from rest_framework_jwt.settings import api_settings
 from rest_framework.views import APIView
 
 from shelvedApp.googleQuery import queryGoogle
+from shelvedApp.amazonQuery import queryAmazon
 from shelvedApp import getFromMongo
 from django.http import HttpResponse
 
@@ -129,9 +130,9 @@ def addMovie(request):
     print('User ID is : ' + current_user.id)
     """
 
-    upc = requestbody['upc']
+    upc = requestbody['upcNum']
     print("movie upc is", upc)
-    booktitle = queryGoogle(ibsnNumber)
+    booktitle = queryAmazon(upc)
 
     data = {}
     data['title'] = booktitle
@@ -155,7 +156,7 @@ class movies(APIView):
 
 
 class books(APIView):
-    print('book called')
+    #print('book called')
     def get(self, request, format=None):
         """
         Return a list of all books.
