@@ -20,6 +20,7 @@ import { Column } from './column';
 
 export class Library {
     BookInJson;
+    type;
 
      item: Array<any>;
      columns: Array<Column>;
@@ -69,6 +70,7 @@ export class Library {
 
     viewBooks() {
         event.preventDefault();
+        this.type = 'book';
         console.log('token is ', localStorage.getItem('jwt'));
         contentHeaders.append('WWW-Authenticate', localStorage.getItem('jwt'));
         //contentHeaders.append('X-CSRFToken', this.getCookie('csrftoken'));
@@ -90,6 +92,7 @@ export class Library {
 
     viewMovies() {
         event.preventDefault();
+        this.type = 'movie';
         contentHeaders.append('WWW-Authenticate', localStorage.getItem('jwt'));
         this.http.get('http://localhost:8000/movies/', { headers: contentHeaders })
             .subscribe(
@@ -108,6 +111,7 @@ export class Library {
 
     viewMusic() {
         event.preventDefault();
+        this.type = 'music';
         console.log('token is ', localStorage.getItem('jwt'));
         contentHeaders.append('WWW-Authenticate', localStorage.getItem('jwt'));
         //contentHeaders.append('X-CSRFToken', this.getCookie('csrftoken'));
@@ -143,26 +147,28 @@ export class Library {
         event.preventDefault();
         var table: HTMLTableElement = <HTMLTableElement> document.getElementById('tbl');
         var isbn_upc = '';
-        var type = (<HTMLTableObject> table.rows[0]).cells[0].innerHTML;
+        var message = 'deleted ';
+
         for (var i = 1; i < table.rows.length; i++) {
             var row: HTMLTableObject = table.rows[i];
-            var index = row.cells.length;
-            var inner: HTMLInputElement = <HTMLInputElement> row.cells[index - 1].innerHTML;
-                if (inner.indexOf('checked') >= 0) {    //TODO: fix since this is always true
-                isbn_upc = row.cells[0].innerHTML;
-                console.log('deleting', isbn_upc);
-                //alert('will try to delete', isbn_upc)
-                var data = "{\"item_type\": \"book\",\"unique_id\": \"" + isbn_upc + "\"}";
+            var chkbox = document.getElementsByName('chkbox');
+            var inner: HTMLInputElement = <HTMLInputElement> chkbox[i-1];
 
-                //todo: call http delete
-                this.sendDelete(data);
-                }
+            if (inner.checked) {
+            isbn_upc = row.cells[0].innerHTML;
+            console.log('deleting', isbn_upc);
+            message = message + isbn_upc + ' ';
+            var data = "{\"item_type\": \"" + this.type + "\",\"unique_id\": \"" + isbn_upc + "\"}";
+            console.log(data);
+            //uncomment following line to enable delete
+            //this.sendDelete(data);
+            }
         }
+        alert(message);
     }
-
+    //this is broken: fix this to work with /books/ DELETE etc.
     sendDelete(data_string) {
         contentHeaders.append('WWW-Authenticate', localStorage.getItem('jwt'));
-        //contentHeaders.append('X-CSRFToken', this.getCookie('csrftoken'));
         console.log(data_string);
         this.http.delete('http://localhost:8000/library/', { headers: contentHeaders, body: data_string })
             .subscribe(
