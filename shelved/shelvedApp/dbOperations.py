@@ -1,8 +1,16 @@
 __author__ = 'vbilodeau'
 
-from pymongo import MongoClient, InsertOne, DeleteOne
-from pymongo.results import DeleteResult
+#from pymongo import MongoClient, InsertOne, DeleteOne
+#from pymongo.results import DeleteResult
+from pymongo import *
 from collections import defaultdict, Counter
+
+def createUserCollection(user_id):
+  mongo = MongoClient()
+  db = mongo.myMongoDb
+  result = db.create_collection(user_id)
+  print('result from writing to MongoDb was ', result)
+  return result
 
 def addDataToDB(media_type, data, user='books'):
     #print('inserting info for isbn :', str(isbn), 'into MongoDB')

@@ -14,7 +14,7 @@ from rest_framework.views import APIView
 
 from shelvedApp.googleQuery import queryGoogle
 from shelvedApp.amazonQuery import queryAmazon
-from shelvedApp.dbOperations import deleteItem
+from shelvedApp.dbOperations import *
 from shelvedApp import getFromMongo
 from django.http import HttpResponse
 from rest_framework_jwt.settings import api_settings
@@ -48,6 +48,8 @@ def register(request):
                 username=regUsername,
                 email=regUsername,
                 password=regPW)
+
+
 
         except IntegrityError:
             print("already registered")
