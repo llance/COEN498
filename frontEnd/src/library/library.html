@@ -15,7 +15,7 @@
     </tr>
     <tr *ngFor="#item of item">
         <td *ngFor="#col of columns">{{item[col.name]}}</td>
-        <td align="center"><input type="checkbox" id="chk" name="report_myTextEditBox" style="text-align:center; vertical-align: middle;"></td>
+        <td align="center"><input type="checkbox" id="chk" name="chkbox"></td>
     </tr>
 </table>
 <p><a class="btn btn-primary btn-lg" role="button" (click)="delete()">Delete Items</a></p>
