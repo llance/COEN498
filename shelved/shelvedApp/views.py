@@ -14,6 +14,7 @@ from rest_framework.views import APIView
 
 from shelvedApp.googleQuery import queryGoogle
 from shelvedApp.amazonQuery import queryAmazon
+from shelvedApp.dbOperations import deleteItem
 from shelvedApp import getFromMongo
 from django.http import HttpResponse
 
@@ -56,8 +57,8 @@ def register(request):
         return HttpResponse("user created!", status=201)
 
 
-#@csrf_exempt
-@method_decorator(ensure_csrf_cookie)
+@csrf_exempt
+#@method_decorator(ensure_csrf_cookie)
 def login(request):
     if request.method == 'POST':
         # c = {}
@@ -139,6 +140,30 @@ def addMovie(request):
     json_data = json.dumps(data)
     return HttpResponse(json_data, status=200);
 
+@csrf_exempt
+#@csrf_protect
+# @login_required(login_url='/login')
+def delete(request):
+    requestbody = json.loads(request.body)
+
+    # for elem in requestbody:
+    #     print ('elem is ', elem, 'val is :',requestbody[elem])
+    """current user is always empty, no way to find the current user
+
+    current_user = request.user
+    import pdb; pdb.set_trace()
+    print('User ID is : ' + current_user.id)
+    """
+
+    item_type = requestbody['item_type']
+    unique_id = requestbody['unique_id']
+    count = deleteItem(item_type, unique_id)
+
+    data = {}
+    data['deleted_count'] = count
+    json_data = json.dumps(data)
+    return HttpResponse(json_data, status=200);
+
 
 class movies(APIView):
 
@@ -154,6 +179,12 @@ class movies(APIView):
         """
         addMovie(request)
 
+    def delete(self, request, format=None):
+        """
+        Delete a movie.
+        """
+        deleteMovie(request)
+
 
 class books(APIView):
     #print('book called')
@@ -166,7 +197,13 @@ class books(APIView):
 
     def post(self, request, format=None):
         """
-        Add a movie.
+        Add a book.
         """
         addBook(request)
+
+    def delete(self,request, format=None):
+        """
+        delete a book
+        """
+        deleteBook(request)
 
