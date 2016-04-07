@@ -38,6 +38,8 @@ urlpatterns = [
 
     url(r'^movies/', shelvedApp.views.addMovie, name='getMovies'),
 
+    url(r'^library/', shelvedApp.views.delete, name='delete'),
+
     url(r'^getmovies/', shelvedApp.getFromMongo.getMovies, name='getMovies'),
 
     # url(r'^musics/', shelvedApp.views.musics.as_view(), name='getMusics'),

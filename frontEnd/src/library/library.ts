@@ -25,7 +25,7 @@ export class Library {
 
      getColumnsBooks(): Array<Column> {
          return [
-             new Column('isbn', 'ISBN'),
+             new Column('isbn', 'isbn'),
              new Column('title', 'Title'),
              new Column('authors', 'Authors'),
              new Column('subtitle', 'Subtitle'),
@@ -38,20 +38,20 @@ export class Library {
 
     getColumnsMovies(): Array<Column> {
          return [
-             new Column('upc', 'UPC'),
+             new Column('upc', 'upc'),
              new Column('title', 'Title'),
              new Column('directors', 'Directors'),
              new Column('subtitle', 'Subtitle'),
              new Column('length', 'Length'),
              new Column('publisher', 'Publisher'),
-             new Column('publishedDate', 'Published Date'),
+             new Column('productFormat', 'Product Format'),
              new Column('language', 'Language'),
          ];
      }
 
     getColumnsMusic(): Array<Column> {
          return [
-             new Column('upc', 'UPC'),
+             new Column('upc', 'upc'),
              new Column('title', 'Title'),
              new Column('artist', 'Artist'),
              new Column('album', 'Album'),
@@ -134,22 +134,42 @@ export class Library {
     }
 
     delete() {
-        console.log('delete clicked')
+        console.log('delete clicked');
         event.preventDefault();
-        var table:HTMLTableElement = <HTMLTableElement> document.getElementById('tbl');
-        var isbn_upc = "";
+        var table: HTMLTableElement = <HTMLTableElement> document.getElementById('tbl');
+        var isbn_upc = '';
+        var type = (<HTMLTableObject> table.rows[0]).cells[0].innerHTML;
         for (var i = 1; i < table.rows.length; i++) {
-            var row:HTMLTableObject = table.rows[i];
+            var row: HTMLTableObject = table.rows[i];
             var index = row.cells.length;
-            var inner = row.cells[index - 1].innerHTML;
-                if (inner.indexOf('checked') >= 0) {
+            var inner: HTMLInputElement = <HTMLInputElement> row.cells[index - 1].innerHTML;
+                if (inner.indexOf('checked') >= 0) {    //TODO: fix since this is always true
                 isbn_upc = row.cells[0].innerHTML;
-                console.log('deleting', isbn_upc)
+                console.log('deleting', isbn_upc);
                 //alert('will try to delete', isbn_upc)
+                var data = "{\"item_type\": \"book\",\"unique_id\": \"" + isbn_upc + "\"}";
 
                 //todo: call http delete
+                this.sendDelete(data);
                 }
         }
+    }
+
+    sendDelete(data_string) {
+        contentHeaders.append('WWW-Authenticate', localStorage.getItem('jwt'));
+        //contentHeaders.append('X-CSRFToken', this.getCookie('csrftoken'));
+        console.log(data_string);
+        this.http.delete('http://localhost:8000/library/', { headers: contentHeaders, body: data_string })
+            .subscribe(
+            response => {
+                var jsonResponse = response.json();
+                console.log('delete response received!', jsonResponse);
+            },
+            error => {
+                alert(error.text());
+                console.log(error.text());
+            }
+            );
     }
 }
 

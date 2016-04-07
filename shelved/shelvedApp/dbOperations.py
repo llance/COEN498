@@ -24,7 +24,7 @@ def deleteItem(data_type, uniqueIdetifier, user='books'):
     result = collection.delete_one({'isbn':uniqueIdetifier})
   else:
     result = collection.delete_one({'upc':uniqueIdetifier})
-  return result.deleted_count()
+  return result.deleted_count
 
 #Creates an n-dimension dictionary where the n-th dimension is of type 'type'  
 def multi_dimensions(n):
