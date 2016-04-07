@@ -65,8 +65,10 @@ export class Library {
 
     viewBooks() {
         event.preventDefault();
-        contentHeaders.append('X-CSRFToken', this.getCookie('csrftoken'));
-        this.http.get('http://localhost:8000/books/', { headers: contentHeaders })
+        console.log('token is ', localStorage.getItem('jwt'));
+        contentHeaders.append('WWW-Authenticate', localStorage.getItem('jwt'));
+        //contentHeaders.append('X-CSRFToken', this.getCookie('csrftoken'));
+        this.http.get('http://localhost:8000/getbooks/', { headers: contentHeaders })
             .subscribe(
             response => {
                 var jsonResponse = response.json();
