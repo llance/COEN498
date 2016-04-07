@@ -7,14 +7,15 @@ import { contentHeaders } from '../common/headers';
 import { FormBuilder, Validators } from 'angular2/common';
 import { Column } from './column';
 
-let styles = require('./library.css');
-let template = require('./library.html');
+//let styles = require('./library.css');
+//let template = require('./library.html');
 
 
 @Component({
     selector: 'library',
     inputs: ['item: item', 'columns: columns'],
-    templateUrl: './src/library/library.html'
+    templateUrl: './src/library/library.html',
+    // styleUrls: ['./src/library/library.css']
 })
 
 export class Library {

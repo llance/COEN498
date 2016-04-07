@@ -11,7 +11,7 @@ let template = require('./home.html');
 
 
 @Component({
-  selector: 'home',
+  selector: 'home'
 })
 
 @View({
