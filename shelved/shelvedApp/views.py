@@ -40,7 +40,6 @@ def register(request):
                 username=regUsername,
                 email=regUsername,
                 password=regPW)
-            #createUserCollection()
         except IntegrityError:
             print("already registered")
             #return redirect("/?id_already_used")
@@ -62,8 +61,6 @@ def register(request):
         userid_from_payload = get_user_id_hander(payload)
 
         print('userId_payload is ', userid_from_payload)
-
-
 
         return HttpResponse("user created!", status=201)
 
@@ -153,18 +150,9 @@ def addBook(request):
 
     userid_from_payload = getUserIdFromToken(jwt_token_no_bearer)
 
-    # for elem in requestbody:
-    #     print ('elem is ', elem, 'val is :',requestbody[elem])
-    """current user is always empty, no way to find the current user
-
-    current_user = request.user
-    import pdb; pdb.set_trace()
-    print('User ID is : ' + current_user.id)
-    """
-
     ibsnNumber = requestbody['ibsnNum']
     print("ibsnNumber is", ibsnNumber)
-    booktitle = queryGoogle(ibsnNumber)
+    booktitle = queryGoogle(ibsnNumber, userid_from_payload)
 
     data = {}
     data['title'] = booktitle
@@ -177,21 +165,49 @@ def addBook(request):
 def addMovie(request):
     requestbody = json.loads(request.body)
 
-    # for elem in requestbody:
-    #     print ('elem is ', elem, 'val is :',requestbody[elem])
-    """current user is always empty, no way to find the current user
+    # for key in request.META:
+    #     print('key', key, 'val', request.META[key])
 
-    current_user = request.user
-    import pdb; pdb.set_trace()
-    print('User ID is : ' + current_user.id)
-    """
+    jwt_token = request.META['HTTP_AUTHORIZATION']
+
+    print('jwt_token', jwt_token)
+    jwt_token_no_bearer = jwt_token[7:]
+    print('jwt_token_no_bearer', jwt_token_no_bearer)
+
+    userid_from_payload = getUserIdFromToken(jwt_token_no_bearer)
 
     upc = requestbody['upcNum']
     print("movie upc is", upc)
-    booktitle = queryAmazon(upc)
+    movieTitle = queryAmazon(upc, userid_from_payload)
 
     data = {}
-    data['title'] = booktitle
+    data['title'] = movieTitle
+    json_data = json.dumps(data)
+    return HttpResponse(json_data, status=200);
+
+@csrf_exempt
+#@csrf_protect
+# @login_required(login_url='/login')
+def addMusic(request):
+    requestbody = json.loads(request.body)
+
+    # for key in request.META:
+    #     print('key', key, 'val', request.META[key])
+
+    jwt_token = request.META['HTTP_AUTHORIZATION']
+
+    print('jwt_token', jwt_token)
+    jwt_token_no_bearer = jwt_token[7:]
+    print('jwt_token_no_bearer', jwt_token_no_bearer)
+
+    userid_from_payload = getUserIdFromToken(jwt_token_no_bearer)
+
+    upc = requestbody['upcNum']
+    print("Music album upc is", upc)
+    album = queryDiscogs(upc, userid_from_payload)
+
+    data = {}
+    data['title'] = album
     json_data = json.dumps(data)
     return HttpResponse(json_data, status=200);
 
@@ -202,18 +218,21 @@ def delete(request):
     if request.method == 'DELETE':
         requestbody = json.loads(request.body)
 
-        # for elem in requestbody:
-        #     print ('elem is ', elem, 'val is :',requestbody[elem])
-        """current user is always empty, no way to find the current user
+        # for key in request.META:
+        # print('key', key, 'val', request.META[key])
 
-        current_user = request.user
-        import pdb; pdb.set_trace()
-        print('User ID is : ' + current_user.id)
-        """
+        jwt_token = request.META['HTTP_AUTHORIZATION']
+
+        print('jwt_token', jwt_token)
+        jwt_token_no_bearer = jwt_token[7:]
+        print('jwt_token_no_bearer', jwt_token_no_bearer)
+
+        userid_from_payload = getUserIdFromToken(jwt_token_no_bearer)
+
 
         item_type = requestbody['item_type']
         unique_id = requestbody['unique_id']
-        count = deleteItem(item_type, unique_id)
+        count = deleteItem(item_type, unique_id, userid_from_payload)
 
         data = {}
         data['deleted_count'] = count
