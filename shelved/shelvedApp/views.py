@@ -57,7 +57,11 @@ def register(request):
         payload = jwt_payload_handler(auth_user)
         jwt_token = jwt_encode_handler(payload)
 
-        print('jwt_token is ', jwt_token)
+        get_user_id_hander = api_settings.JWT_PAYLOAD_GET_USER_ID_HANDLER
+
+        userid_from_payload = get_user_id_hander(payload)
+
+        print('userId_payload is ', userid_from_payload)
 
 
 
@@ -90,8 +94,6 @@ def login(request):
             print('rest_token key is : ', rest_token.key)
 
 
-
-
             jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
             jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
@@ -99,6 +101,12 @@ def login(request):
             jwt_token = jwt_encode_handler(payload)
 
             print('jwt_token is ', jwt_token)
+
+            get_user_id_hander = api_settings.JWT_PAYLOAD_GET_USER_ID_HANDLER
+
+            userid_from_payload = get_user_id_hander(payload)
+
+            print('userId_payload is ', userid_from_payload)
 
             data = {}
             data['resttoken'] = rest_token.key
