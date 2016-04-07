@@ -121,13 +121,17 @@ def addBook(request):
 
     get_user_name_hander = api_settings.JWT_PAYLOAD_GET_USERNAME_HANDLER
 
+    get_user_id_hander = api_settings.JWT_PAYLOAD_GET_USER_ID_HANDLER
+
     payload_from_token = get_pay_load_from_token(jwt_token_no_bearer)
 
     print('payload_from_token', payload_from_token)
 
+    userid_from_payload = get_user_id_hander(payload_from_token)
+
     user_from_payload = get_user_name_hander(payload_from_token)
 
-    print('DjangoRestFramework user is ', user_from_payload)
+    print('DjangoRestFramework user is ', user_from_payload, 'id is ', userid_from_payload)
 
 
 
