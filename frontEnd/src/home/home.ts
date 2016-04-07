@@ -21,11 +21,15 @@ let template = require('./home.html');
 })
 export class Home {
     ibsnForm: ControlGroup;
+    upcForm: ControlGroup;
 
     constructor(public router: Router, public http: Http, fb: FormBuilder) {
         this.ibsnForm = fb.group({
           ibsnNumber: ['', Validators.required]
       });
+        this.upcForm = fb.group({
+            upcNumber: ['', Validators.required]
+        });
   }
 
   submitIBSN(event) {
@@ -33,7 +37,10 @@ export class Home {
       console.log('submitIBSN called! IBSN number is ', ibsnNum);
       event.preventDefault();
       let body = JSON.stringify({ ibsnNum });
-      this.http.post('http://localhost:8000/addIbsn/', body, { headers: contentHeaders })
+
+      console.log('auth token is ', localStorage.getItem('jwt'));
+      contentHeaders.append('WWW-Authenticate', localStorage.getItem('jwt'));
+      this.http.post('http://localhost:8000/books/', body, { headers: contentHeaders })
         .subscribe(
           response => {
             var jsonResponse = response.json();
@@ -45,6 +52,25 @@ export class Home {
             console.log(error.text());
           }
         );
+  }
+
+  submitUPC(event) {
+      var upcNum = this.upcForm.value.upcNumber;
+      console.log('submitIBSN called! UPC number is ', upcNum);
+      event.preventDefault();
+      let body = JSON.stringify({ upcNum });
+      this.http.post('http://localhost:8000/addUPC/', body, { headers: contentHeaders })
+          .subscribe(
+          response => {
+              var jsonResponse = response.json();
+              console.log('response received!', jsonResponse.title);
+              // this.router.parent.navigateByUrl('/home');
+          },
+          error => {
+              alert(error.text());
+              console.log(error.text());
+          }
+          );
   }
 
   viewLibrary() {

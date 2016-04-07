@@ -13,12 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 import shelvedApp.views
 import shelvedApp.amazonQuery
 import shelvedApp.discogs
 import shelvedApp.getFromMongo
+from rest_framework.authtoken import views
 
 admin.autodiscover()
 
@@ -28,9 +29,14 @@ urlpatterns = [
     url(r'^register/', shelvedApp.views.register, name='register'),
     url(r'^login/', shelvedApp.views.login, name='login'),
 
-    url(r'^addIbsn/', shelvedApp.views.addIbsn, name='addIbsn'),
+    url(r'^books/', shelvedApp.views.addBook, name='getBooks'),
 
-    url(r'^books/', shelvedApp.getFromMongo.getBooks, name='getBooks'),
+    url(r'^movies/', shelvedApp.views.movies.as_view(), name='getMovies'),
 
-    url(r'^set/', shelvedApp.views.set),
+    # url(r'^musics/', shelvedApp.views.musics.as_view(), name='getMusics'),
+
+    url(r'^api-token-auth/', 'rest_framework_jwt.views.obtain_jwt_token'),
+
+    url(r'^api-token-auth/', views.obtain_auth_token),
 ]
+

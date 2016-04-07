@@ -2,63 +2,22 @@
 import json
 
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
-from pymongo import MongoClient, InsertOne
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-import mongoengine
-from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from shelvedApp.models import *
+from django.contrib.auth import authenticate
+from rest_framework_jwt.settings import api_settings
+from rest_framework.views import APIView
+
 from shelvedApp.googleQuery import queryGoogle
-from shelvedApp.amazonQuery import queryAmazon
-from shelvedApp.discogs import queryDiscogs
+from shelvedApp import getFromMongo
+from django.http import HttpResponse
 
 
-@csrf_exempt
-def set(request):
-    if request.method == 'POST':
-        print("POST Request body is : " + str(request.POST.get('foo')));
-        myMongoClient = MongoClient()
-        myMongoDb = myMongoClient.myMongoDb
+from rest_framework.authtoken.models import Token
 
-        requests = [InsertOne({'y': str(request.POST.get('foo'))})]
-        result = myMongoDb.test.bulk_write(requests)
-
-        print('mongoDB write result is : ' + str(result));
-
-        return HttpResponse("OK", status=200);
-    else:
-        return HttpResponse(status=400)
-
-@csrf_exempt
-def setwithMongoEngine(request):
-    if request.method == 'POST':
-        print("POST Request body is : " + str(request.POST.get('foo')));
-
-        myPost = Post.objects.create(
-            title="foo",
-            text="bar",
-        )
-
-        my_con = mongoengine.connect(db='myMongoDb', alias='default')
-        myPost.save()
-        #my_con.disconnect()
-
-
-        return HttpResponse("OK", status=200);
-    else:
-        return HttpResponse(status=400)
-
-
-
-@csrf_exempt
-def welcome(request):
-    if request.method == 'GET':
-        return render(request, 'index.html')
 
 @csrf_exempt
 def register(request):
@@ -92,8 +51,7 @@ def register(request):
         # print("jwt_auth.views.obtain_jwt_token is :", jwt_auth.views.ObtainJSONWebToken.post(request))
         user.save()
 
-        return HttpResponse(status=201)
-
+        return HttpResponse("user created!", status=201)
 
 
 @csrf_exempt
@@ -117,32 +75,92 @@ def login(request):
 
         if user is not None and user.is_active:
             print("logging in ", user)
-            #django_login(request, user)
             auth_login(request, user)
-            return HttpResponse("logged in!", status=200);
+            token = Token.objects.create(user=user)
+            print('token key is : ', token.key)
+            data = {}
+            data['token'] = token.key
+            json_data = json.dumps(data)
+
+            return HttpResponse(json_data, status=201);
 
 @csrf_exempt
 #@csrf_protect
 #@login_required(login_url='/login')
-def addIbsn(request):
-    if request.method == 'POST':
+def addBook(request):
+    print('called!', request.user.is_anonymous())
+    requestbody = json.loads(request.body)
 
-        requestbody = json.loads(request.body)
-        
-        # for elem in requestbody:
-        #     print ('elem is ', elem, 'val is :',requestbody[elem])
-        """current user is always empty, no way to find the current user
-        
-        current_user = request.user
-        import pdb; pdb.set_trace()
-        print('User ID is : ' + current_user.id)
+    # for elem in requestbody:
+    #     print ('elem is ', elem, 'val is :',requestbody[elem])
+    """current user is always empty, no way to find the current user
+
+    current_user = request.user
+    import pdb; pdb.set_trace()
+    print('User ID is : ' + current_user.id)
+    """
+
+    ibsnNumber = requestbody['ibsnNum']
+    print("ibsnNumber is", ibsnNumber)
+    booktitle = queryGoogle(ibsnNumber)
+
+    data = {}
+    data['title'] = booktitle
+    json_data = json.dumps(data)
+    return HttpResponse(json_data, status=200);
+
+@csrf_exempt
+#@csrf_protect
+# @login_required(login_url='/login')
+def addMovie(request):
+    requestbody = json.loads(request.body)
+
+    # for elem in requestbody:
+    #     print ('elem is ', elem, 'val is :',requestbody[elem])
+    """current user is always empty, no way to find the current user
+
+    current_user = request.user
+    import pdb; pdb.set_trace()
+    print('User ID is : ' + current_user.id)
+    """
+
+    upc = requestbody['upc']
+    print("movie upc is", upc)
+    booktitle = queryGoogle(ibsnNumber)
+
+    data = {}
+    data['title'] = booktitle
+    json_data = json.dumps(data)
+    return HttpResponse(json_data, status=200);
+
+
+class movies(APIView):
+
+    def get(self, request, format=None):
+        """
+        Return a list of all movies.
+        """
+        getFromMongo.getMovies(request)
+
+    def post(self, request, format=None):
+        """
+        Add a movie.
+        """
+        addMovie(request)
+
+
+class books(APIView):
+    print('book called')
+    def get(self, request, format=None):
+        """
+        Return a list of all books.
         """
 
-        ibsnNumber = requestbody['ibsnNum']
-        print("ibsnNumber is", ibsnNumber)
-        booktitle = queryGoogle(ibsnNumber)
+        getFromMongo.getMovies(request)
 
-        data = {}
-        data['title'] = booktitle
-        json_data = json.dumps(data)
-        return HttpResponse(json_data, status=200);
+    def post(self, request, format=None):
+        """
+        Add a movie.
+        """
+        addBook(request)
+
