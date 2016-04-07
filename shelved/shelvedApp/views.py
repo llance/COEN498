@@ -56,11 +56,12 @@ def register(request):
         payload = jwt_payload_handler(auth_user)
         jwt_token = jwt_encode_handler(payload)
 
-        get_user_id_hander = api_settings.JWT_PAYLOAD_GET_USER_ID_HANDLER
+        get_user_name_hander = api_settings.JWT_PAYLOAD_GET_USERNAME_HANDLER
 
-        userid_from_payload = get_user_id_hander(payload)
+        username = get_user_name_hander(payload)
 
-        print('userId_payload is ', userid_from_payload)
+        print('user name is : ', username)
+        createUserCollection(username)
 
         return HttpResponse("user created!", status=201)
 
