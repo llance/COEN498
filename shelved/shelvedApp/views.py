@@ -221,11 +221,10 @@ def movies(request):
         return addMovie(request)
 
     if request.method == 'DELETE':
-    #     """
-    #     Delete a movie.
-    #     """
-    #     deleteMovie(request)
-        pass
+        """
+        Delete a movie.
+        """
+        return delete(request)
 
 @csrf_exempt
 def books(request):
@@ -252,5 +251,4 @@ def books(request):
         delete a book.
         """
         print('/book/ url called with DELETE method!')
-        pass
-        #addBook(request)
+        return delete(request)
