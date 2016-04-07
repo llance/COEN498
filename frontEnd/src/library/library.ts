@@ -125,6 +125,10 @@ export class Library {
             });
     }
 
+    viewHome() {
+        this.router.parent.navigateByUrl('/home');
+    }
+
     getCookie(name) {
         console.log('document.cookie is ', document.cookie);
         let value = '; ' + document.cookie;

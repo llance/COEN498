@@ -1,10 +1,7 @@
 __author__ = 'lanceli'
 
-import datetime
-import requests
-from django.utils import timezone
-import os
 from amazon.api import AmazonAPI
+
 from shelvedApp.dbOperations import addDataToDB, multi_dimensions
 
 

@@ -30,6 +30,7 @@ export class Login {
     this.http.post('http://localhost:8000/login/', body, { headers: contentHeaders })
       .subscribe(
         response => {
+          console.log("response.json().jwttoken is", response.json().jwttoken);
           localStorage.setItem('restsessiontoken', response.json().resttoken);
           localStorage.setItem('jwttoken', response.json().jwttoken);
           console.log('routing to /home');

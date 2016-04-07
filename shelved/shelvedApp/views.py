@@ -1,28 +1,20 @@
 # Create your views here.
 import json
 
-from django.http import HttpResponse
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth import login as auth_login
-from django.shortcuts import render
 from django.contrib.auth import authenticate
-from rest_framework_jwt.settings import api_settings
 from rest_framework.views import APIView
+from django.http import HttpResponse
+from rest_framework_jwt.settings import api_settings
+from rest_framework.authtoken.models import Token
 
 from shelvedApp.googleQuery import queryGoogle
 from shelvedApp.amazonQuery import queryAmazon
 from shelvedApp.dbOperations import *
 from shelvedApp import getFromMongo
-from django.http import HttpResponse
-from rest_framework_jwt.settings import api_settings
-
-from rest_framework.authtoken.models import Token
-
-
-
 
 @csrf_exempt
 def register(request):
@@ -48,15 +40,25 @@ def register(request):
                 username=regUsername,
                 email=regUsername,
                 password=regPW)
-
-
-
         except IntegrityError:
             print("already registered")
             #return redirect("/?id_already_used")
 
         # print("jwt_auth.views.obtain_jwt_token is :", jwt_auth.views.ObtainJSONWebToken.post(request))
         user.save()
+
+        #authenticate the user in register to get the user id
+        auth_user = authenticate(username = regUsername,password = regPW)
+
+        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
+        payload = jwt_payload_handler(auth_user)
+        jwt_token = jwt_encode_handler(payload)
+
+        print('jwt_token is ', jwt_token)
+
+
 
         return HttpResponse("user created!", status=201)
 
@@ -85,6 +87,8 @@ def login(request):
             auth_login(request, user)
             rest_token = Token.objects.create(user=user)
             print('rest_token key is : ', rest_token.key)
+
+
 
 
             jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
@@ -127,15 +131,13 @@ def addBook(request):
 
     payload_from_token = get_pay_load_from_token(jwt_token_no_bearer)
 
-    print('payload_from_token', payload_from_token)
+    #print('payload_from_token', payload_from_token)
 
     userid_from_payload = get_user_id_hander(payload_from_token)
 
     user_from_payload = get_user_name_hander(payload_from_token)
 
     print('DjangoRestFramework user is ', user_from_payload, 'id is ', userid_from_payload)
-
-
 
     # for elem in requestbody:
     #     print ('elem is ', elem, 'val is :',requestbody[elem])
@@ -219,11 +221,11 @@ class movies(APIView):
         """
         addMovie(request)
 
-    def delete(self, request, format=None):
-        """
-        Delete a movie.
-        """
-        deleteMovie(request)
+    # def delete(self, request, format=None):
+    #     """
+    #     Delete a movie.
+    #     """
+    #     deleteMovie(request)
 
 
 class books(APIView):
@@ -232,18 +234,19 @@ class books(APIView):
         """
         Return a list of all books.
         """
-
+        print('/book/ url called with GET method!')
         getFromMongo.getMovies(request)
 
     def post(self, request, format=None):
         """
         Add a book.
         """
+        print('/book/ url called with POST method!')
         addBook(request)
 
-    def delete(self,request, format=None):
-        """
-        delete a book
-        """
-        deleteBook(request)
+    # def delete(self,request, format=None):
+    #     """
+    #     delete a book
+    #     """
+    #     deleteBook(request)
 
