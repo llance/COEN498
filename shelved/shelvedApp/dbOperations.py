@@ -1,6 +1,6 @@
 __author__ = 'vbilodeau'
 
-from pymongo import MongoClient, InsertOne
+from pymongo import MongoClient, InsertOne, DeleteOne, DeleteResult
 from collections import defaultdict, Counter
 
 def addDataToDB(media_type, data, user='books'):
@@ -14,8 +14,16 @@ def addDataToDB(media_type, data, user='books'):
     result = collection.bulk_write(requests)
     print('result from writing to MongoDb was ', result)
 
-def deleteItem(uniqueIdetifier, user='books'):
-  return 0
+def deleteItem(data_type, uniqueIdetifier, user='books'):
+  myMongoClient = MongoClient()
+  myMongoDb = myMongoClient.myMongoDb
+  collection = myMongoDb[user]
+  result = DeleteResult
+  if data_type is 'book':
+    result = collection.delete_one({'isbn':uniqueIdetifier})
+  else:
+    result = collection.delete_one({'upc':uniqueIdetifier})
+  return result.deleted_count()
 
 #Creates an n-dimension dictionary where the n-th dimension is of type 'type'  
 def multi_dimensions(n):
