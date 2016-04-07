@@ -38,9 +38,7 @@ export class Home {
       event.preventDefault();
       let body = JSON.stringify({ ibsnNum });
 
-      console.log('contentHeaders is', contentHeaders);
-
-      
+      console.log('contentheader before sending addbook is ', contentHeaders);
       this.http.post('http://localhost:8000/books/', body, { headers: contentHeaders })
         .subscribe(
           response => {
