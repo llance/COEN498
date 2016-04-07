@@ -14,7 +14,7 @@ def createUserCollection(user_id):
 
 def addDataToDB(media_type, data, user='books'):
     #print('inserting info for isbn :', str(isbn), 'into MongoDB')
-    user = user
+    user = str(user)
     data['type'] = media_type
     myMongoClient = MongoClient()
     myMongoDb = myMongoClient.myMongoDb
@@ -23,15 +23,16 @@ def addDataToDB(media_type, data, user='books'):
     result = collection.bulk_write(requests)
     print('result from writing to MongoDb was ', result)
 
-def deleteItem(data_type, uniqueIdetifier, user='books'):
+def deleteItem(data_type, uniqueIdentifier, user='books'):
   myMongoClient = MongoClient()
   myMongoDb = myMongoClient.myMongoDb
   collection = myMongoDb[user]
-  result = DeleteResult
-  if data_type is 'book':
-    result = collection.delete_one({'isbn':uniqueIdetifier})
+  if str(data_type) == 'book':
+    print "the data type is book"
+    result = collection.delete_one({'isbn':uniqueIdentifier}) 
   else:
-    result = collection.delete_one({'upc':uniqueIdetifier})
+    print "the data type is movie or music"
+    result = collection.delete_one({'upc':uniqueIdentifier})
   return result.deleted_count
 
 #Creates an n-dimension dictionary where the n-th dimension is of type 'type'  

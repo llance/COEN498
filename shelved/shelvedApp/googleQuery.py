@@ -16,6 +16,7 @@ def queryGoogle(isbn, user='books'):
 
     try:
         book = books["items"][0]['volumeInfo']
+        data['isbn'] = query
         data['data']['isbn'] = query
         for key in fields:
             if key in book:

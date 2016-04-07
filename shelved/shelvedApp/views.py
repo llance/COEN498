@@ -40,6 +40,7 @@ def register(request):
                 username=regUsername,
                 email=regUsername,
                 password=regPW)
+            #createUserCollection()
         except IntegrityError:
             print("already registered")
             #return redirect("/?id_already_used")

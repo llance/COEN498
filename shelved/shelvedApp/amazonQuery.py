@@ -17,7 +17,7 @@ def queryAmazon(upc, user='books'):
         #print('product is ', product)
         title = product.title #title, include "(format)"
         productFormat = product.binding #explicit format type "blu-ray" or "dvd"
-
+        data['upc'] = str(upc)
         data['data']['title'] = title
         data['data']['productFormat'] = productFormat
         data['data']['upc'] = str(upc)

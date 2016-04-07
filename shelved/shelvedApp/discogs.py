@@ -27,6 +27,7 @@ def queryDiscogs(upc, user='books'):
             tracklist[track.data['position']]['duration'] = track.data['duration']
         #import pdb; pdb.set_trace()
         """
+        data['upc'] = str(upc)
         data['data']['upc'] = str(upc)
         data['data']['title'] = title
         data['data']['artists'] = artists
