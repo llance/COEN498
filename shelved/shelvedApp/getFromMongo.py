@@ -34,7 +34,7 @@ def getBooks(request):
     try:
         if request.method == 'GET':
             #current_user = request.user
-            data = find_items('type','book',current_user='books')
+            data = find_items('type','book')
             json_data = json.dumps(data)
             return HttpResponse(json_data, status=200)
     except:
@@ -44,7 +44,7 @@ def getMovies(request):
     try:
         if request.method == 'GET':
             #current_user = request.user
-            data = find_items('type','movie',current_user='books')
+            data = find_items('type','movie')
             json_data = json.dumps(data)
             return HttpResponse(json_data, status=200)
     except:
@@ -54,7 +54,7 @@ def getMusic(request):
     try:
         if request.method == 'GET':
             #current_user = request.user
-            data = find_items('type','music',current_user='books')
+            data = find_items('type','music')
             json_data = json.dumps(data)
             return HttpResponse(json_data, status=200)
     except:
