@@ -187,6 +187,12 @@ export class Library {
             }
             );
     }
+
+    logout() {
+        localStorage.removeItem('jwttoken');
+        localStorage.removeItem('restsessiontoken');
+        this.router.parent.navigateByUrl('/login');
+    }
 }
 
 interface Book {
