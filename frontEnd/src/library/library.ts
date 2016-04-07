@@ -72,7 +72,7 @@ export class Library {
         console.log('token is ', localStorage.getItem('jwt'));
         contentHeaders.append('WWW-Authenticate', localStorage.getItem('jwt'));
         //contentHeaders.append('X-CSRFToken', this.getCookie('csrftoken'));
-        this.http.get('http://localhost:8000/books/', { headers: contentHeaders })
+        this.http.get('http://127.0.0.1:8000/books/', { headers: contentHeaders })
             .subscribe(
             response => {
                 var jsonResponse = response.json();
@@ -92,7 +92,7 @@ export class Library {
         event.preventDefault();
         this.type = 'movie';
         contentHeaders.append('WWW-Authenticate', localStorage.getItem('jwt'));
-        this.http.get('http://localhost:8000/movies/', { headers: contentHeaders })
+        this.http.get('http://127.0.0.1:8000/movies/', { headers: contentHeaders })
             .subscribe(
             response => {
                 var jsonResponse = response.json();
@@ -113,7 +113,7 @@ export class Library {
         console.log('token is ', localStorage.getItem('jwt'));
         contentHeaders.append('WWW-Authenticate', localStorage.getItem('jwt'));
         //contentHeaders.append('X-CSRFToken', this.getCookie('csrftoken'));
-        this.http.get('http://localhost:8000/musics/', { headers: contentHeaders })
+        this.http.get('http://127.0.0.1:8000/musics/', { headers: contentHeaders })
             .subscribe(
             response => {
                 var jsonResponse = response.json();
@@ -173,7 +173,7 @@ export class Library {
     sendDelete(data_string) {
         contentHeaders.append('WWW-Authenticate', localStorage.getItem('jwt'));
         console.log(data_string);
-        var url = 'http://localhost:8000/' + this.type + 's/';
+        var url = 'http://127.0.0.1:8000/' + this.type + 's/';
         this.http.delete(url, { headers: contentHeaders, body: data_string })
             .subscribe(
             response => {
