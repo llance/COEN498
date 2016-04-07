@@ -52,17 +52,6 @@ export class Login {
       return parts.pop().split(";").shift();
   }
 
-
-  getCookie(name) {
-      //console.log('document.cookie is ', document.cookie);
-      let value = '; ' + document.cookie;
-      let parts = value.split('; ' + name + '=');
-      if (parts.length === 2)
-          return parts.pop().split(';').shift();
-  }
-
-
-
   signup(event) {
     event.preventDefault();
     this.router.parent.navigateByUrl('/signup');
