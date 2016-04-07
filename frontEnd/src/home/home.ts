@@ -38,11 +38,9 @@ export class Home {
       event.preventDefault();
       let body = JSON.stringify({ ibsnNum });
 
-      console.log('auth token is ', localStorage.getItem('jwt'));
-      contentHeaders.append('WWW-Authenticate', localStorage.getItem('jwt'));
-      contentHeaders.append('HTTP_X_CSRFTOKEN', localStorage.getItem('jwt'));
+      console.log('contentHeaders is', contentHeaders);
 
-
+      
       this.http.post('http://localhost:8000/books/', body, { headers: contentHeaders })
         .subscribe(
           response => {
@@ -81,6 +79,8 @@ export class Home {
   }
 
   logout() {
+    localStorage.removeItem('jwttoken');
+    localStorage.removeItem('restsessiontoken');
     this.router.parent.navigateByUrl('/login');
   }
 

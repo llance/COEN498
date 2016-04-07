@@ -17,9 +17,11 @@ from shelvedApp.amazonQuery import queryAmazon
 from shelvedApp.dbOperations import deleteItem
 from shelvedApp import getFromMongo
 from django.http import HttpResponse
-
+from rest_framework_jwt.settings import api_settings
 
 from rest_framework.authtoken.models import Token
+
+
 
 
 @csrf_exempt
@@ -61,10 +63,6 @@ def register(request):
 #@method_decorator(ensure_csrf_cookie)
 def login(request):
     if request.method == 'POST':
-        # c = {}
-        # c.update(csrf(request))
-        #
-        # print('csrf is ', c)
         requestbody = json.loads(request.body)
 
         for elem in requestbody:
@@ -83,12 +81,23 @@ def login(request):
         if user is not None and user.is_active:
             print("logging in ", user)
             auth_login(request, user)
-            token = Token.objects.create(user=user)
-            print('token key is : ', token.key)
+            rest_token = Token.objects.create(user=user)
+            print('rest_token key is : ', rest_token.key)
+
+
+            jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+            jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
+            payload = jwt_payload_handler(user)
+            jwt_token = jwt_encode_handler(payload)
+
+            print('jwt_token is ', jwt_token)
+
             data = {}
-            data['token'] = token.key
+            data['resttoken'] = rest_token.key
+            data['jwttoken'] = jwt_token
+
             json_data = json.dumps(data)
-            # data['csrf'] = c
             return HttpResponse(json_data, status=201);
 
 @csrf_exempt
@@ -97,6 +106,30 @@ def login(request):
 def addBook(request):
     print('called!', request.user.is_anonymous())
     requestbody = json.loads(request.body)
+    print('jwt header is in',request.META['HTTP_AUTHORIZATION'])
+
+    # for key in request.META:
+    #     print('key', key, 'val', request.META[key])
+
+    jwt_token = request.META['HTTP_AUTHORIZATION']
+
+    print('jwt_token', jwt_token)
+    jwt_token_no_bearer = jwt_token[7:]
+    print('jwt_token_no_bearer', jwt_token_no_bearer)
+
+    get_pay_load_from_token = api_settings.JWT_DECODE_HANDLER
+
+    get_user_name_hander = api_settings.JWT_PAYLOAD_GET_USERNAME_HANDLER
+
+    payload_from_token = get_pay_load_from_token(jwt_token_no_bearer)
+
+    print('payload_from_token', payload_from_token)
+
+    user_from_payload = get_user_name_hander(payload_from_token)
+
+    print('DjangoRestFramework user is ', user_from_payload)
+
+
 
     # for elem in requestbody:
     #     print ('elem is ', elem, 'val is :',requestbody[elem])

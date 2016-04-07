@@ -100,6 +100,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    #my own middleware to bypass jwt for authentification
+    'shelvedApp.bypass_middleware.AuthenticationMiddlewareJWT',
+
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -172,13 +175,15 @@ LOGGING = {
 #django-cors-headers
 CORS_ORIGIN_ALLOW_ALL = True
 
+CSRF_COOKIE_SECURE = True
+
 CORS_ALLOW_HEADERS = (
         'x-requested-with',
         'content-type',
         'accept',
         'origin',
         'authorization',
-        'x-csrftoken',
+        'JWT-token',
         'Access-Control-Allow-Origin',
         'X-XSRF-TOKEN',
         'X-CSRFToken',

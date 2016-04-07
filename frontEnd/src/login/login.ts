@@ -24,17 +24,14 @@ export class Login {
 
     event.preventDefault();
     let body = JSON.stringify({username, password});
-    console.log("document.cookie is ", this.getCookie('csrftoken'));
-    contentHeaders.append('X-CSRFToken', this.getCookie('csrftoken'));
-
-
 
     console.log("contentHeaders is ", contentHeaders);
 
     this.http.post('http://localhost:8000/login/', body, { headers: contentHeaders })
       .subscribe(
         response => {
-          localStorage.setItem('jwt', response.json().token);
+          localStorage.setItem('restsessiontoken', response.json().resttoken);
+          localStorage.setItem('jwttoken', response.json().jwttoken);
           console.log('routing to /home');
           this.router.parent.navigateByUrl('/home');
         },
@@ -43,13 +40,6 @@ export class Login {
           console.log(error.text());
         }
       );
-  }
-
-  getCookie(name) {
-    let value = "; " + document.cookie;
-    let parts = value.split("; " + name + "=");
-    if (parts.length == 2) 
-      return parts.pop().split(";").shift();
   }
 
   signup(event) {
