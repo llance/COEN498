@@ -25,10 +25,11 @@ export class Library {
 
      getColumnsBooks(): Array<Column> {
          return [
+             new Column('isbn', 'ISBN'),
              new Column('title', 'Title'),
              new Column('authors', 'Authors'),
              new Column('subtitle', 'Subtitle'),
-             new Column('pageCount', 'Page Count'),
+             new Column('pageCount', 'Pages'),
              new Column('publisher', 'Publisher'),
              new Column('publishedDate', 'Published Date'),
              new Column('language', 'Language'),
@@ -37,6 +38,7 @@ export class Library {
 
     getColumnsMovies(): Array<Column> {
          return [
+             new Column('upc', 'UPC'),
              new Column('title', 'Title'),
              new Column('directors', 'Directors'),
              new Column('subtitle', 'Subtitle'),
@@ -49,6 +51,7 @@ export class Library {
 
     getColumnsMusic(): Array<Column> {
          return [
+             new Column('upc', 'UPC'),
              new Column('title', 'Title'),
              new Column('artist', 'Artist'),
              new Column('album', 'Album'),
@@ -104,6 +107,9 @@ export class Library {
 
     viewMusic() {
         event.preventDefault();
+        console.log('token is ', localStorage.getItem('jwt'));
+        contentHeaders.append('WWW-Authenticate', localStorage.getItem('jwt'));
+        //contentHeaders.append('X-CSRFToken', this.getCookie('csrftoken'));
         this.http.get('http://localhost:8000/music/', { headers: contentHeaders })
             .subscribe(
             response => {
@@ -125,6 +131,25 @@ export class Library {
         let parts = value.split('; ' + name + '=');
         if (parts.length === 2)
             return parts.pop().split(';').shift();
+    }
+
+    delete() {
+        console.log('delete clicked')
+        event.preventDefault();
+        var table:HTMLTableElement = <HTMLTableElement> document.getElementById('tbl');
+        var isbn_upc = "";
+        for (var i = 1; i < table.rows.length; i++) {
+            var row:HTMLTableObject = table.rows[i];
+            var index = row.cells.length;
+            var inner = row.cells[index - 1].innerHTML;
+                if (inner.indexOf('checked') >= 0) {
+                isbn_upc = row.cells[0].innerHTML;
+                console.log('deleting', isbn_upc)
+                //alert('will try to delete', isbn_upc)
+
+                //todo: call http delete
+                }
+        }
     }
 }
 
