@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from pymongo import MongoClient, InsertOne
 from shelvedApp.dbOperations import find_items
+from shelvedApp.views import getUserIdFromToken
 
 # @csrf_exempt
 # def getBooks(request):
@@ -33,8 +34,14 @@ from shelvedApp.dbOperations import find_items
 def getBooks(request):
     try:
         if request.method == 'GET':
-            #current_user = request.user
-            data = find_items('type','book')
+            jwt_token = request.META['HTTP_AUTHORIZATION']
+
+            print('jwt_token', jwt_token)
+            jwt_token_no_bearer = jwt_token[7:]
+            print('jwt_token_no_bearer', jwt_token_no_bearer)
+            userid_from_payload = getUserIdFromToken(jwt_token_no_bearer)
+
+            data = find_items('type','book', userid_from_payload)
             json_data = json.dumps(data)
             return HttpResponse(json_data, status=200)
     except:
@@ -43,8 +50,15 @@ def getBooks(request):
 def getMovies(request):
     try:
         if request.method == 'GET':
-            #current_user = request.user
-            data = find_items('type','movie')
+
+            jwt_token = request.META['HTTP_AUTHORIZATION']
+
+            print('jwt_token', jwt_token)
+            jwt_token_no_bearer = jwt_token[7:]
+            print('jwt_token_no_bearer', jwt_token_no_bearer)
+            userid_from_payload = getUserIdFromToken(jwt_token_no_bearer)
+
+            data = find_items('type','movie', userid_from_payload)
             json_data = json.dumps(data)
             return HttpResponse(json_data, status=200)
     except:
@@ -53,8 +67,15 @@ def getMovies(request):
 def getMusic(request):
     try:
         if request.method == 'GET':
-            #current_user = request.user
-            data = find_items('type','music')
+
+            jwt_token = request.META['HTTP_AUTHORIZATION']
+
+            print('jwt_token', jwt_token)
+            jwt_token_no_bearer = jwt_token[7:]
+            print('jwt_token_no_bearer', jwt_token_no_bearer)
+            userid_from_payload = getUserIdFromToken(jwt_token_no_bearer)
+
+            data = find_items('type','music', userid_from_payload)
             json_data = json.dumps(data)
             return HttpResponse(json_data, status=200)
     except:
