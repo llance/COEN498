@@ -160,17 +160,21 @@ export class Library {
             message = message + isbn_upc + ' ';
             var data = "{\"item_type\": \"" + this.type + "\",\"unique_id\": \"" + isbn_upc + "\"}";
             console.log(data);
-            //uncomment following line to enable delete
-            this.sendDelete(this.type, data);
+            this.sendDelete(data);
             }
         }
         alert(message);
+        switch (this.type) {
+            case 'book': this.viewBooks(); return;
+            case 'movie': this.viewMovies(); return;
+            case 'music': this.viewMusic(); return;
+        }
     }
-    //this is broken: fix this to work with /books/ DELETE etc.
-    sendDelete(type, data_string) {
+
+    sendDelete(data_string) {
         contentHeaders.append('WWW-Authenticate', localStorage.getItem('jwt'));
         console.log(data_string);
-        var url = 'http://localhost:8000/' + type + 's/';
+        var url = 'http://localhost:8000/' + this.type + 's/';
         this.http.delete(url, { headers: contentHeaders, body: data_string })
             .subscribe(
             response => {
