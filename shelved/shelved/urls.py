@@ -34,10 +34,7 @@ urlpatterns = [
 
     url(r'^getbooks/', shelvedApp.getFromMongo.getBooks, name='getBooks'),
 
-
     # url(r'^books/', shelvedApp.views.books.as_view(), name='getBooks'),
-
-
 
     url(r'^movies/', shelvedApp.views.addMovie, name='getMovies'),
 

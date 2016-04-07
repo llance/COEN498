@@ -35,6 +35,7 @@ export class Login {
           localStorage.setItem('jwttoken', response.json().jwttoken);
           console.log('routing to /home');
           this.router.parent.navigateByUrl('/home');
+          console.log('im here');
         },
         error => {
           alert(error.text());
