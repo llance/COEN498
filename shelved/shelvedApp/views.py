@@ -130,7 +130,7 @@ def getUserIdFromToken(jwt_token_no_bearer):
     user_from_payload = get_user_name_hander(payload_from_token)
 
     print('DjangoRestFramework user is ', user_from_payload, 'id is ', userid_from_payload)
-    return userid_from_payload
+    return user_from_payload
 
 
 @csrf_exempt

@@ -39,6 +39,9 @@ export class Home {
       let body = JSON.stringify({ ibsnNum });
 
       console.log('contentheader before sending addbook is ', contentHeaders);
+      console.log('jwt token ', localStorage.getItem('jwttoken'));
+
+
       this.http.post('http://localhost:8000/books/', body, { headers: contentHeaders })
         .subscribe(
           response => {
