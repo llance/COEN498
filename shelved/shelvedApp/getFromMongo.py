@@ -1,35 +1,29 @@
 import json
 
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from pymongo import MongoClient, InsertOne
+from rest_framework_jwt.settings import api_settings
+
 from shelvedApp.dbOperations import find_items
-from shelvedApp.views import getUserIdFromToken
 
-# @csrf_exempt
-# def getBooks(request):
-#     if request.method == 'GET':
-#         myMongoClient = MongoClient()
-#         myMongoDb = myMongoClient.myMongoDb
-#         cursor = myMongoDb.books.find()
 
-#         json_format_data = {}
+def getUserIdFromToken(jwt_token_no_bearer):
+    get_pay_load_from_token = api_settings.JWT_DECODE_HANDLER
 
-#         list_of_dict = []
+    get_user_name_hander = api_settings.JWT_PAYLOAD_GET_USERNAME_HANDLER
 
-#         for elem in cursor:
-#             list_of_dict.append(elem)
+    get_user_id_hander = api_settings.JWT_PAYLOAD_GET_USER_ID_HANDLER
 
-#         for listIndex, dict_in_list in enumerate(list_of_dict):
-#             for elem in dict_in_list:
-#                 print("elem ", elem, 'val', dict_in_list[elem])
-#                 if str(elem).find('_id') > -1: #ignore those while creating json
-#                     print('not an elem!')
-#                 else:
-#                     json_format_data[elem] = dict_in_list[elem]
-#         print('json_format_data', json_format_data)
-#         json_data = json.dumps(json_format_data)
-#         return HttpResponse(json_data, status=200);
+    payload_from_token = get_pay_load_from_token(jwt_token_no_bearer)
+
+    #print('payload_from_token', payload_from_token)
+
+    userid_from_payload = get_user_id_hander(payload_from_token)
+
+    user_from_payload = get_user_name_hander(payload_from_token)
+
+    print('DjangoRestFramework user is ', user_from_payload, 'id is ', userid_from_payload)
+    return user_from_payload
+
 
 def getBooks(request):
     try:

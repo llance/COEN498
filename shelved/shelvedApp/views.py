@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import authenticate
-from rest_framework.views import APIView
 from django.http import HttpResponse
 from rest_framework_jwt.settings import api_settings
 from rest_framework.authtoken.models import Token
