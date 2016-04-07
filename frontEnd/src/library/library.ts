@@ -42,12 +42,7 @@ export class Library {
          return [
              new Column('upc', 'upc'),
              new Column('title', 'Title'),
-             new Column('directors', 'Directors'),
-             new Column('subtitle', 'Subtitle'),
-             new Column('length', 'Length'),
-             new Column('publisher', 'Publisher'),
              new Column('productFormat', 'Product Format'),
-             new Column('language', 'Language'),
          ];
      }
 
@@ -206,12 +201,7 @@ interface Book {
 
 interface Movie {
     title: string;
-    directors: string;
-    subtitle: string;
-    length: string;
-    publisher: string;
-    publishedDate: string;
-    language: string;
+    productFormat: string;
 }
 
 interface Music {
