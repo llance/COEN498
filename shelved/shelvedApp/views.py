@@ -115,23 +115,9 @@ def login(request):
             json_data = json.dumps(data)
             return HttpResponse(json_data, status=201);
 
-@csrf_exempt
-#@csrf_protect
-#@login_required(login_url='/login')
-def addBook(request):
-    print('called!', request.user.is_anonymous())
-    requestbody = json.loads(request.body)
-    print('jwt header is in',request.META['HTTP_AUTHORIZATION'])
 
-    # for key in request.META:
-    #     print('key', key, 'val', request.META[key])
 
-    jwt_token = request.META['HTTP_AUTHORIZATION']
-
-    print('jwt_token', jwt_token)
-    jwt_token_no_bearer = jwt_token[7:]
-    print('jwt_token_no_bearer', jwt_token_no_bearer)
-
+def getUserIdFromToken(jwt_token_no_bearer):
     get_pay_load_from_token = api_settings.JWT_DECODE_HANDLER
 
     get_user_name_hander = api_settings.JWT_PAYLOAD_GET_USERNAME_HANDLER
@@ -147,6 +133,25 @@ def addBook(request):
     user_from_payload = get_user_name_hander(payload_from_token)
 
     print('DjangoRestFramework user is ', user_from_payload, 'id is ', userid_from_payload)
+    return userid_from_payload
+
+
+@csrf_exempt
+def addBook(request):
+    print('called!', request.user.is_anonymous())
+    requestbody = json.loads(request.body)
+    print('jwt header is in',request.META['HTTP_AUTHORIZATION'])
+
+    # for key in request.META:
+    #     print('key', key, 'val', request.META[key])
+
+    jwt_token = request.META['HTTP_AUTHORIZATION']
+
+    print('jwt_token', jwt_token)
+    jwt_token_no_bearer = jwt_token[7:]
+    print('jwt_token_no_bearer', jwt_token_no_bearer)
+
+    userid_from_payload = getUserIdFromToken(jwt_token_no_bearer)
 
     # for elem in requestbody:
     #     print ('elem is ', elem, 'val is :',requestbody[elem])
