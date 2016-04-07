@@ -30,17 +30,12 @@ urlpatterns = [
 
     url(r'^login/', shelvedApp.views.login, name='login'),
 
-    url(r'^books/', shelvedApp.views.addBook, name='getBooks'),
+    url(r'^books/', shelvedApp.views.books, name='Books'),
 
-    url(r'^getbooks/', shelvedApp.getFromMongo.getBooks, name='getBooks'),
-
-    # url(r'^books/', shelvedApp.views.books.as_view(), name='getBooks'),
-
-    url(r'^movies/', shelvedApp.views.addMovie, name='getMovies'),
+    url(r'^movies/', shelvedApp.views.movies, name='Movies'),
 
     url(r'^library/', shelvedApp.views.delete, name='delete'),
 
-    url(r'^getmovies/', shelvedApp.getFromMongo.getMovies, name='getMovies'),
 
     # url(r'^musics/', shelvedApp.views.musics.as_view(), name='getMusics'),
 

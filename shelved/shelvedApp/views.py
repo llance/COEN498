@@ -206,47 +206,51 @@ def delete(request):
         json_data = json.dumps(data)
         return HttpResponse(json_data, status=200);
 
-
-class movies(APIView):
-
-    def get(self, request, format=None):
+@csrf_exempt
+def movies(request):
+    if request.method == 'GET':
         """
         Return a list of all movies.
         """
-        getFromMongo.getMovies(request)
+        return getFromMongo.getMovies(request)
 
-    def post(self, request, format=None):
+    if request.method == 'POST':
         """
         Add a movie.
         """
-        addMovie(request)
+        return addMovie(request)
 
-    # def delete(self, request, format=None):
+    if request.method == 'DELETE':
     #     """
     #     Delete a movie.
     #     """
     #     deleteMovie(request)
+        pass
 
-
-class books(APIView):
-    #print('book called')
-    def get(self, request, format=None):
+@csrf_exempt
+def books(request):
+    if request.method == 'GET':
         """
         Return a list of all books.
         """
         print('/book/ url called with GET method!')
-        getFromMongo.getMovies(request)
+        return getFromMongo.getBooks(request)
 
-    def post(self, request, format=None):
+        # Code for GET requests
+    elif request.method == 'POST':
+        # Code for POST requests
         """
         Add a book.
         """
         print('/book/ url called with POST method!')
-        addBook(request)
+        return addBook(request)
 
-    # def delete(self,request, format=None):
-    #     """
-    #     delete a book
-    #     """
-    #     deleteBook(request)
 
+    elif request.method == 'DELETE':
+        # Code for POST requests
+        """
+        delete a book.
+        """
+        print('/book/ url called with DELETE method!')
+        pass
+        #addBook(request)
