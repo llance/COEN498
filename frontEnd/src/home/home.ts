@@ -24,6 +24,14 @@ export class Home {
     upcForm: ControlGroup;
 
     constructor(public router: Router, public http: Http, fb: FormBuilder) {
+        console.log("contentHeaders is ", contentHeaders.get("Authorization"));
+        var jwt_token_check = contentHeaders.get("Authorization");
+        if (String(jwt_token_check).indexOf('null') > 0){
+            console.log('null contentHeader detected!');
+            contentHeaders.delete('Authorization');
+            contentHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('jwttoken'));
+        }
+
         this.ibsnForm = fb.group({
           ibsnNumber: ['', Validators.required]
       });
@@ -41,8 +49,7 @@ export class Home {
       console.log('contentheader before sending addbook is ', contentHeaders);
       console.log('jwt token ', localStorage.getItem('jwttoken'));
 
-
-      this.http.post('http://localhost:8000/books/', body, { headers: contentHeaders })
+      this.http.post('http://0.0.0.0:8000/books/', body, { headers: contentHeaders })
         .subscribe(
           response => {
             var jsonResponse = response.json();
@@ -61,7 +68,7 @@ export class Home {
       console.log('submitUPCMovie called! UPC number is ', upcNum);
       event.preventDefault();
       let body = JSON.stringify({ upcNum });
-      this.http.post('http://localhost:8000/movies/', body, { headers: contentHeaders })
+      this.http.post('http://0.0.0.0:8000/movies/', body, { headers: contentHeaders })
           .subscribe(
           response => {
               var jsonResponse = response.json();
@@ -80,7 +87,7 @@ export class Home {
       console.log('submitUPCMusic called! UPC number is ', upcNum);
       event.preventDefault();
       let body = JSON.stringify({ upcNum });
-      this.http.post('http://localhost:8000/musics/', body, { headers: contentHeaders })
+      this.http.post('http://0.0.0.0:8000/musics/', body, { headers: contentHeaders })
           .subscribe(
           response => {
               var jsonResponse = response.json();

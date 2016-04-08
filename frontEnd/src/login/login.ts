@@ -27,7 +27,7 @@ export class Login {
 
     console.log("contentHeaders is ", contentHeaders);
 
-    this.http.post('http://127.0.0.1:8000/login/', body, { headers: contentHeaders })
+    this.http.post('http://0.0.0.0:8000/login/', body, { headers: contentHeaders })
       .subscribe(
         response => {
           console.log("response.json().jwttoken is", response.json().jwttoken);
@@ -35,6 +35,7 @@ export class Login {
           localStorage.setItem('jwttoken', response.json().jwttoken);
           console.log('routing to /home');
           this.router.parent.navigateByUrl('/home');
+          this.router.renavigate();
           console.log('im here');
         },
         error => {
