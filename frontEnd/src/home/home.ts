@@ -49,7 +49,7 @@ export class Home {
       console.log('contentheader before sending addbook is ', contentHeaders);
       console.log('jwt token ', localStorage.getItem('jwttoken'));
 
-      this.http.post('http://0.0.0.0:8000/books/', body, { headers: contentHeaders })
+      this.http.post('http://52.36.37.141:8000/books/', body, { headers: contentHeaders })
         .subscribe(
           response => {
             var jsonResponse = response.json();
@@ -68,7 +68,7 @@ export class Home {
       console.log('submitUPCMovie called! UPC number is ', upcNum);
       event.preventDefault();
       let body = JSON.stringify({ upcNum });
-      this.http.post('http://0.0.0.0:8000/movies/', body, { headers: contentHeaders })
+      this.http.post('http://52.36.37.141:8000/movies/', body, { headers: contentHeaders })
           .subscribe(
           response => {
               var jsonResponse = response.json();
@@ -87,7 +87,7 @@ export class Home {
       console.log('submitUPCMusic called! UPC number is ', upcNum);
       event.preventDefault();
       let body = JSON.stringify({ upcNum });
-      this.http.post('http://0.0.0.0:8000/musics/', body, { headers: contentHeaders })
+      this.http.post('http://52.36.37.141:8000/musics/', body, { headers: contentHeaders })
           .subscribe(
           response => {
               var jsonResponse = response.json();

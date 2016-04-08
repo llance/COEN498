@@ -27,7 +27,7 @@ export class Login {
 
     console.log("contentHeaders is ", contentHeaders);
 
-    this.http.post('http://0.0.0.0:8000/login/', body, { headers: contentHeaders })
+    this.http.post('http://52.36.37.141:8000/login/', body, { headers: contentHeaders })
       .subscribe(
         response => {
           console.log("response.json().jwttoken is", response.json().jwttoken);

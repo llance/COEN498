@@ -24,7 +24,7 @@ export class Signup {
     event.preventDefault();
     let body = JSON.stringify({ username, password });
     console.log('body is : ', body);
-    this.http.post('http://0.0.0.0:8000/register/', body, { headers: contentHeaders })
+    this.http.post('http://52.36.37.141:8000/register/', body, { headers: contentHeaders })
       .subscribe(
         response => {
           this.router.parent.navigateByUrl('/login');
